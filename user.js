@@ -276,27 +276,31 @@ const removeFromPlaybookWithProduct = (e) => {
 
     console.log("clicked")
 
-    fetch(API_LINK + "/user/removeFromPlaybook", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          userID: currUserID,
-          providerID: btn.dataset.providerID,
-          serviceID: btn.dataset.serviceID
-        })
+    fetch(`${API_LINK}/ceremonial/removeService?userID=${currUserID}&serviceID=${btn.dataset.serviceID}`, {
+        method: "DELETE"
+      })
+      .then(res => {
+        // if there's no content, avoid calling .json()
+        return res.status === 204 ? {} : res.json();
+      })
+      .then(ceremonialResponse => {
+        console.log("Ceremonial:", ceremonialResponse);
+      
+        return fetch(`${API_LINK}/user/removeFromPlaybook`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            userID: currUserID,
+            providerID: btn.dataset.providerID,
+            serviceID: btn.dataset.serviceID
+          })
+        });
       })
       .then(res => res.json())
       .then(playbookResponse => {
         console.log("Playbook:", playbookResponse);
-      
-        return fetch(API_LINK + `/ceremonial/removeService?userID=${currUserID}&serviceID=${btn.dataset.serviceID}`, {
-          method: "DELETE"
-        }).then(res => res.json());
-      })
-      .then(ceremonialResponse => {
-        console.log("Ceremonial:", ceremonialResponse);
       
         btn.textContent = "Select Service";
         btn.style.backgroundColor = "green";
