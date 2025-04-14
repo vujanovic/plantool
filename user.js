@@ -276,25 +276,26 @@ const removeFromPlaybookWithProduct = (e) => {
 
     console.log("clicked")
 
-    Promise.all([
-        fetch(API_LINK + "/user/removeFromPlaybook", {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            userID: currUserID,
-            providerID: btn.dataset.providerID,
-            serviceID: btn.dataset.serviceID
-          })
-        }).then(res => res.json()),
-      
-        fetch(API_LINK + `/ceremonial/removeService?userID=${currUserID}&serviceID=${btn.dataset.serviceID}`, {
-          method: "DELETE"
-        }).then(res => res.json())
-      ])
-      .then(([playbookResponse, ceremonialResponse]) => {
+    fetch(API_LINK + "/user/removeFromPlaybook", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          userID: currUserID,
+          providerID: btn.dataset.providerID,
+          serviceID: btn.dataset.serviceID
+        })
+      })
+      .then(res => res.json())
+      .then(playbookResponse => {
         console.log("Playbook:", playbookResponse);
+      
+        return fetch(API_LINK + `/ceremonial/removeService?userID=${currUserID}&serviceID=${btn.dataset.serviceID}`, {
+          method: "DELETE"
+        }).then(res => res.json());
+      })
+      .then(ceremonialResponse => {
         console.log("Ceremonial:", ceremonialResponse);
       
         btn.textContent = "Select Service";
@@ -303,8 +304,9 @@ const removeFromPlaybookWithProduct = (e) => {
         btn.removeEventListener("click", removeFromPlaybookWithProduct);
       })
       .catch(err => {
-        console.error("One or both DELETEs failed:", err);
+        console.error("One of the DELETEs failed:", err);
       });
+      
       
 };
 
