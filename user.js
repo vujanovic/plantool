@@ -128,11 +128,11 @@ function renderAllProviders(data) {
         const websiteParagraph = card.querySelector("#website");
         const cardBtn = card.querySelector(".card-btn");
 
-        if (cermonialIDs.includes(item.address["_id"])) {
+        if (ceremonialIDs.includes(item.address["_id"])) {
 
             cardBtn.textContent = "Remove from Plan";
             cardBtn.style.backgroundColor = "red";
-            cardBtn.dataset.serviceIdToDelete = cermonialIDs[item.address["_id"]]
+            cardBtn.dataset.serviceIdToDelete = ceremonialIDs[item.address["_id"]]
             cardBtn.addEventListener("click", removeFromPlaybookWithProduct);
 
         }
@@ -407,11 +407,11 @@ function renderFeatured(data) {
         }
         stars.children[whole].querySelector("div").style.width = `${decimal * 30}px`;
 
-        if (cermonialIDs.includes(service.address["_id"])) {
+        if (ceremonialIDs.includes(service.address["_id"])) {
 
             cardBtn.textContent = "Remove from Plan";
             cardBtn.style.backgroundColor = "red";
-            cardBtn.dataset.serviceIdToDelete = cermonialIDs[service.address["_id"]]
+            cardBtn.dataset.serviceIdToDelete = ceremonialIDs[service.address["_id"]]
             cardBtn.addEventListener("click", removeFromPlaybookWithProduct);
 
         }
@@ -475,11 +475,11 @@ function renderNear(data) {
         }
         stars.children[whole].querySelector("div").style.width = `${decimal * 30}px`;
 
-        if (cermonialIDs.includes(service.address["_id"])) {
+        if (ceremonialIDs.includes(service.address["_id"])) {
 
             cardBtn.textContent = "Remove from Plan";
             cardBtn.style.backgroundColor = "red";
-            cardBtn.dataset.serviceIdToDelete = cermonialIDs[service.address["_id"]]
+            cardBtn.dataset.serviceIdToDelete = ceremonialIDs[service.address["_id"]]
             cardBtn.addEventListener("click", removeFromPlaybookWithProduct);
 
         }
