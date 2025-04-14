@@ -246,7 +246,7 @@ function addToPlaybookWithProduct() {
             servicePickedBtn.dataset.productID = productCombo.value;
 
             servicePickedBtn.removeEventListener("click", handleSelect);
-            servicePickedBtn.addEventListener("click", removeFromremoveFromPlaybookWithProduct);
+            servicePickedBtn.addEventListener("click", removeFromPlaybookWithProduct);
 
             if (productCombo.value === "") {
                 closeBtn.click();
