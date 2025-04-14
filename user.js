@@ -12,7 +12,7 @@ let productID = null;
 
 // u ceremonialIDs kao kljuc ide _id
 //  od adrese servisa a u vrednost id servisa za brisanje
-const ceremonialIDs = {} 
+const ceremonialIDs = {}
 
 console.log("UCITANNA SKRIPTA")
 
@@ -140,7 +140,7 @@ function renderAllProviders(data) {
         else {
             cardBtn.addEventListener("click", handleSelect);
         }
-        
+
         cardBtn.dataset.serviceID = item["_id"];
         cardBtn.dataset.providerID = item["providerID"];
         cardBtn.dataset.name = item["name"];
@@ -261,7 +261,7 @@ function addToPlaybookWithProduct() {
             servicePickedBtn.textContent = "Remove from Plan";
             servicePickedBtn.style.backgroundColor = "red";
             servicePickedBtn.dataset.productID = productCombo.value;
-            
+
             servicePickedBtn.removeEventListener("click", handleSelect);
             servicePickedBtn.addEventListener("click", removeFromPlaybookWithProduct);
 
@@ -270,23 +270,10 @@ function addToPlaybookWithProduct() {
     Webflow.require('slider').redraw();
 
 
-    fetch(API_LINK + `/ceremonial/setNewService?userID=${currUserID}&providerID=${providerID}&serviceID=${serviceID}`, {
+    fetch(API_LINK + `/commerce/addProductCeremonial?userID=${currUserID}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            name: "",
-            type: "",
-            phoneNumber: "",
-            email: "",
-            country: "",
-            city: "",
-            street: "",
-            number: "",
-            zip: "",
-            specific: "",
-            productID: productCombo.value
-          }
-          )
+        body: JSON.stringify({ productID: productCombo.value || "", specific: "" })
     })
         .then(res => res.json())
         .then(data => {
@@ -314,40 +301,40 @@ const removeFromPlaybookWithProduct = (e) => {
 
     fetch(`${API_LINK}/ceremonial/removeService?userID=${currUserID}&serviceID=${btn.dataset.serviceIdToDelete}`, {
         method: "DELETE"
-      })
-      .then(res => {
-        // if there's no content, avoid calling .json()
-        return res.status === 204 ? {} : res.json();
-      })
-      .then(ceremonialResponse => {
-        console.log("Ceremonial:", ceremonialResponse);
-      
-        return fetch(`${API_LINK}/user/removeFromPlaybook`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            userID: currUserID,
-            providerID: btn.dataset.providerID,
-            serviceID: btn.dataset.serviceID
-          })
+    })
+        .then(res => {
+            // if there's no content, avoid calling .json()
+            return res.status === 204 ? {} : res.json();
+        })
+        .then(ceremonialResponse => {
+            console.log("Ceremonial:", ceremonialResponse);
+
+            return fetch(`${API_LINK}/user/removeFromPlaybook`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    userID: currUserID,
+                    providerID: btn.dataset.providerID,
+                    serviceID: btn.dataset.serviceID
+                })
+            });
+        })
+        .then(res => res.json())
+        .then(playbookResponse => {
+            console.log("Playbook:", playbookResponse);
+
+            btn.textContent = "Select Service";
+            btn.style.backgroundColor = "#15a60b";
+            btn.addEventListener("click", handleSelect);
+            btn.removeEventListener("click", removeFromPlaybookWithProduct);
+        })
+        .catch(err => {
+            console.error("One of the DELETEs failed:", err);
         });
-      })
-      .then(res => res.json())
-      .then(playbookResponse => {
-        console.log("Playbook:", playbookResponse);
-      
-        btn.textContent = "Select Service";
-        btn.style.backgroundColor = "#15a60b";
-        btn.addEventListener("click", handleSelect);
-        btn.removeEventListener("click", removeFromPlaybookWithProduct);
-      })
-      .catch(err => {
-        console.error("One of the DELETEs failed:", err);
-      });
-      
-      
+
+
 };
 
 addToPlanBtn.addEventListener("click", addToPlaybookWithProduct);
@@ -869,7 +856,7 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
             }
         }
 
-        
+
         cityField.value = data?.placeOfBirth?.city ?? ""
         countryField.value = data?.placeOfBirth?.country ?? ""
         dateField.value = data.dateOfBirth?.split("T")[0] ?? ""
