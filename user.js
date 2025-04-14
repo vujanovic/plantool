@@ -1633,7 +1633,6 @@ function updateCurrentSlide() {
   }
   
   nextBtn.addEventListener("click", e => {
-    currentSlide = updateCurrentSlide();
     const currStep = currentSlide.getAttribute("slide");
   
     if (currStep === "ceremonyPlan") {
@@ -1662,10 +1661,12 @@ function updateCurrentSlide() {
       // do funeralHome api calls + display some stuff
       return;
     }
+
+    currentSlide = updateCurrentSlide();
+
   });
   
   prevBtn.addEventListener("click", e => {
-    currentSlide = updateCurrentSlide();
     const currStep = currentSlide.getAttribute("slide");
   
     if (currStep === "ceremonyPlan") {
@@ -1688,5 +1689,7 @@ function updateCurrentSlide() {
       nextBtn.style.display = "none";
       return;
     }
+    currentSlide = updateCurrentSlide();
+
   });
   
