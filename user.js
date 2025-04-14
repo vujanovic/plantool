@@ -12,7 +12,7 @@ let productID = null;
 
 // u ceremonialIDs kao kljuc ide _id
 //  od adrese servisa a u vrednost id servisa za brisanje
-let ceremonialIDs = {} 
+const ceremonialIDs = {} 
 
 console.log("UCITANNA SKRIPTA")
 
@@ -128,7 +128,7 @@ function renderAllProviders(data) {
         const websiteParagraph = card.querySelector("#website");
         const cardBtn = card.querySelector(".card-btn");
 
-        if (ceremonialIDs.includes(item.address["_id"])) {
+        if (ceremonialIDs[item.address["_id"]]) {
 
             cardBtn.textContent = "Remove from Plan";
             cardBtn.style.backgroundColor = "red";
@@ -407,7 +407,7 @@ function renderFeatured(data) {
         }
         stars.children[whole].querySelector("div").style.width = `${decimal * 30}px`;
 
-        if (ceremonialIDs.includes(service.address["_id"])) {
+        if (ceremonialIDs[service.address["_id"]]) {
 
             cardBtn.textContent = "Remove from Plan";
             cardBtn.style.backgroundColor = "red";
@@ -475,7 +475,7 @@ function renderNear(data) {
         }
         stars.children[whole].querySelector("div").style.width = `${decimal * 30}px`;
 
-        if (ceremonialIDs.includes(service.address["_id"])) {
+        if (ceremonialIDs[service.address["_id"]]) {
 
             cardBtn.textContent = "Remove from Plan";
             cardBtn.style.backgroundColor = "red";
