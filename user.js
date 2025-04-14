@@ -276,22 +276,36 @@ const removeFromPlaybookWithProduct = (e) => {
 
     console.log("clicked")
 
-    fetch(API_LINK + "/user/removeFromPlaybook", {
-        method: "DELETE",
-        body: JSON.stringify({ userID: currUserID, providerID: btn.dataset.providerID, serviceID: btn.dataset.serviceID })
-    })
-        .then(res => res.json())
-        .then(data => {
-            console.log(data)
-            btn.textContent = "Select Service";
-            btn.style.backgroundColor = "green";
-            btn.addEventListener("click", handleSelect);
-            btn.removeEventListener("click", removeFromPlaybookWithProduct);
-        });
-
-    fetch(API_LINK + `/ceremonial/removeService?userID=${currUserID}&serviceID=${btn.dataset.serviceID}`, {
-        method: "DELETE"
-    });
+    Promise.all([
+        fetch(API_LINK + "/user/removeFromPlaybook", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            userID: currUserID,
+            providerID: btn.dataset.providerID,
+            serviceID: btn.dataset.serviceID
+          })
+        }).then(res => res.json()),
+      
+        fetch(API_LINK + `/ceremonial/removeService?userID=${currUserID}&serviceID=${btn.dataset.serviceID}`, {
+          method: "DELETE"
+        }).then(res => res.json())
+      ])
+      .then(([playbookResponse, ceremonialResponse]) => {
+        console.log("Playbook:", playbookResponse);
+        console.log("Ceremonial:", ceremonialResponse);
+      
+        btn.textContent = "Select Service";
+        btn.style.backgroundColor = "green";
+        btn.addEventListener("click", handleSelect);
+        btn.removeEventListener("click", removeFromPlaybookWithProduct);
+      })
+      .catch(err => {
+        console.error("One or both DELETEs failed:", err);
+      });
+      
 };
 
 addToPlanBtn.addEventListener("click", addToPlaybookWithProduct);
