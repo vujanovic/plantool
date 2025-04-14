@@ -10,6 +10,10 @@ let providerID = null;
 let serviceID = null;
 let productID = null;
 
+// u ceremonialIDs kao kljuc ide _id
+//  od adrese servisa a u vrednost id servisa za brisanje
+let cermonialIDs = {} 
+
 console.log("UCITANNA SKRIPTA")
 
 // ========================
@@ -124,13 +128,26 @@ function renderAllProviders(data) {
         const websiteParagraph = card.querySelector("#website");
         const cardBtn = card.querySelector(".card-btn");
 
-        cardBtn.addEventListener("click", handleSelect);
+        if (cermonialIDs.includes(item.address["_id"])) {
+
+            cardBtn.textContent = "Remove from Plan";
+            cardBtn.style.backgroundColor = "red";
+            cardBtn.dataset.serviceIdToDelete = cermonialIDs[item.address["_id"]]
+            cardBtn.addEventListener("click", removeFromPlaybookWithProduct);
+
+        }
+
+        else {
+            cardBtn.addEventListener("click", handleSelect);
+        }
+        
         cardBtn.dataset.serviceID = item["_id"];
         cardBtn.dataset.providerID = item["providerID"];
         cardBtn.dataset.name = item["name"];
         cardBtn.dataset.serviceImages = item["images"];
         cardBtn.dataset.serviceDescription = item["description"] || "-";
         cardBtn.dataset.address = JSON.stringify(item["address"]);
+        cardBtn.dataset.addressID = item.address["_id"]
         cardBtn.dataset.contactInfo = JSON.stringify(item["contactInfo"] || { email: "-", phoneNumber: "-" });
         cardBtn.dataset.website = item["website"] || "-";
 
@@ -244,31 +261,50 @@ function addToPlaybookWithProduct() {
             servicePickedBtn.textContent = "Remove from Plan";
             servicePickedBtn.style.backgroundColor = "red";
             servicePickedBtn.dataset.productID = productCombo.value;
-
+            
             servicePickedBtn.removeEventListener("click", handleSelect);
             servicePickedBtn.addEventListener("click", removeFromPlaybookWithProduct);
 
-            if (productCombo.value === "") {
-                closeBtn.click();
-                return;
-            }
         });
 
     Webflow.require('slider').redraw();
 
-    if (productCombo.value === "") return;
 
-    fetch(API_LINK + `/commerce/addProductCeremonial?userID=${currUserID}`, {
+    fetch(API_LINK + `/ceremonial/setNewService?userID=${currUserID}&providerID=${providerID}&serviceID=${serviceID}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productID: productCombo.value, specific: "" })
+        body: JSON.stringify({
+            name: "",
+            type: "",
+            phoneNumber: "",
+            email: "",
+            country: "",
+            city: "",
+            street: "",
+            number: "",
+            zip: "",
+            specific: "",
+            productID: productCombo.value
+          }
+          )
     })
         .then(res => res.json())
         .then(data => {
             alert("dodat u proizvode");
             closeBtn.click();
             console.log(data);
-        });
+            return fetch(API_LINK + `/ceremonial/getServices?userID=${currUserID}`)
+        })
+        .then(res => res.json())
+        .then(services => {
+            for (const service of services.data) {
+                if (service.address["_id"] === servicePickedBtn.dataset.addressID) {
+                    ceremonialIDs[service.address["_id"]] = service["_id"]
+                    servicePickedBtn.dataset.serviceIdToDelete = service["_id"]
+                    return
+                }
+            }
+        })
 }
 
 const removeFromPlaybookWithProduct = (e) => {
@@ -276,7 +312,7 @@ const removeFromPlaybookWithProduct = (e) => {
 
     console.log("clicked")
 
-    fetch(`${API_LINK}/ceremonial/removeService?userID=${currUserID}&serviceID=${btn.dataset.serviceID}`, {
+    fetch(`${API_LINK}/ceremonial/removeService?userID=${currUserID}&serviceID=${btn.dataset.serviceIdToDelete}`, {
         method: "DELETE"
       })
       .then(res => {
@@ -303,7 +339,7 @@ const removeFromPlaybookWithProduct = (e) => {
         console.log("Playbook:", playbookResponse);
       
         btn.textContent = "Select Service";
-        btn.style.backgroundColor = "green";
+        btn.style.backgroundColor = "#15a60b";
         btn.addEventListener("click", handleSelect);
         btn.removeEventListener("click", removeFromPlaybookWithProduct);
       })
@@ -371,6 +407,19 @@ function renderFeatured(data) {
         }
         stars.children[whole].querySelector("div").style.width = `${decimal * 30}px`;
 
+        if (cermonialIDs.includes(service.address["_id"])) {
+
+            cardBtn.textContent = "Remove from Plan";
+            cardBtn.style.backgroundColor = "red";
+            cardBtn.dataset.serviceIdToDelete = cermonialIDs[service.address["_id"]]
+            cardBtn.addEventListener("click", removeFromPlaybookWithProduct);
+
+        }
+
+        else {
+            cardBtn.addEventListener("click", handleSelect);
+        }
+
         cardBtn.dataset.serviceID = service["_id"];
         cardBtn.dataset.providerID = service["providerID"];
         cardBtn.dataset.serviceImages = service["images"];
@@ -379,7 +428,8 @@ function renderFeatured(data) {
         cardBtn.dataset.contactInfo = JSON.stringify(service["contactInfo"] || { email: "-", phoneNumber: "-" });
         cardBtn.dataset.website = service["website"] || "-";
         cardBtn.dataset.name = service["name"];
-        cardBtn.addEventListener("click", handleSelect);
+        cardBtn.dataset.addressID = service.address["_id"]
+
 
         featuredGrid.appendChild(currCard);
     }
@@ -425,6 +475,19 @@ function renderNear(data) {
         }
         stars.children[whole].querySelector("div").style.width = `${decimal * 30}px`;
 
+        if (cermonialIDs.includes(service.address["_id"])) {
+
+            cardBtn.textContent = "Remove from Plan";
+            cardBtn.style.backgroundColor = "red";
+            cardBtn.dataset.serviceIdToDelete = cermonialIDs[service.address["_id"]]
+            cardBtn.addEventListener("click", removeFromPlaybookWithProduct);
+
+        }
+
+        else {
+            cardBtn.addEventListener("click", handleSelect);
+        }
+
         cardBtn.dataset.serviceID = service["_id"];
         cardBtn.dataset.providerID = service["providerID"];
         cardBtn.dataset.serviceImages = service["images"];
@@ -433,7 +496,7 @@ function renderNear(data) {
         cardBtn.dataset.contactInfo = JSON.stringify(service["contactInfo"] || { email: "-", phoneNumber: "-" });
         cardBtn.dataset.website = service["website"] || "-";
         cardBtn.dataset.name = service["name"];
-        cardBtn.addEventListener("click", handleSelect);
+        cardBtn.dataset.addressID = service.address["_id"]
 
         nearGrid.appendChild(currCard);
     }
@@ -798,6 +861,10 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
             if (input) {
                 input.value = data[key] ? data[key] : ""
             }
+        }
+
+        for (const service of data.ceremonial.services) {
+            ceremonialIDs[service.address["_id"]] = service["_id"]
         }
 
         cityField.value = data?.placeOfBirth?.city ?? ""
