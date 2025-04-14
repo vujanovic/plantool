@@ -863,10 +863,13 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
             }
         }
 
-        for (const service of data.ceremonial?.services) {
-            ceremonialIDs[service.address["_id"]] = service["_id"]
+        if (data.ceremonial) {
+            for (const service of data.ceremonial?.services) {
+                ceremonialIDs[service.address["_id"]] = service["_id"]
+            }
         }
 
+        
         cityField.value = data?.placeOfBirth?.city ?? ""
         countryField.value = data?.placeOfBirth?.country ?? ""
         dateField.value = data.dateOfBirth?.split("T")[0] ?? ""
