@@ -269,11 +269,28 @@ function addToPlaybookWithProduct() {
 
     Webflow.require('slider').redraw();
 
+    const bodyData = {
+        name: "",
+        type: "",
+        phoneNumber: "",
+        email: "",
+        country: "",
+        city: "",
+        street: "",
+        number: "",
+        zip: "",
+        specific: ""
+      };
 
-    fetch(API_LINK + `/commerce/addProductCeremonial?userID=${currUserID}`, {
+      if (productCombo.value !== "") {
+        bodyData.productID = productCombo.value
+      }
+
+
+    fetch(API_LINK + `/ceremonial/setNewService?userID=${currUserID}&providerID=${providerID}&serviceID=${serviceID}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productID: productCombo.value || "", specific: "" })
+        body: JSON.stringify(bodyData)
     })
         .then(res => res.json())
         .then(data => {
