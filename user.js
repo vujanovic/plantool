@@ -1581,3 +1581,75 @@ function deleteContact(btn) {
         })
 
 }
+
+
+////////////////////////////////////
+// =================================
+// STEP 4 FUNCTIONALITY
+// =================================
+////////////////////////////////////
+
+
+/////////////////////////////
+// BURIAL/CREMATION (SLIDE 1)
+/////////////////////////////
+
+const burialCremationForm = document.querySelector("#burialCremationForm")
+const ceremonyPlanForm = document.querySelector("#ceremonyPlanForm")
+const funeralHomeForm = document.querySelector("#funeralHomeForm")
+
+const funeralType = burialCremationForm.querySelector("#type")
+const ashDestination = burialCremationForm.querySelector("#ashDestination")
+const cemetery = burialCremationForm.querySelector("#cemetery")
+const interment = burialCremationForm.querySelector("#interment")
+const permit = burialCremationForm.querySelector("#permit")
+
+const nextBtn = document.querySelector("#nextBtn")
+const prevBtn = document.querySelector("#prevBtn")
+prevBtn.style.display = "none"
+
+const slider = document.querySelector(".w-slider");
+let currentSlide = slider.querySelector(".w-slide.w-active");
+
+funeralType.addEventListener("change", e => {
+
+    if (funeralType.value === "") {
+        return
+    }
+    else if (funeralType.value === "burial") {
+        // do something
+    }
+    else {
+        // do something else
+    }
+
+})
+
+nextBtn.addEventListener("click", e => {
+
+    const currStep = currentSlide.getAttribute("slide")
+    currentSlide = slider.querySelector(".w-slide.w-active")
+
+    if (currStep === "burial/cremation") {
+        // do burialCremation api calls
+        nextBtn.style.display = "inline-block"
+        prevBtn.style.display = "inline-block"
+        return
+    }
+    else if (currStep === "ceremonyPlan") {
+        nextBtn.style.display = "inline-block"
+        prevBtn.style.display = "none"
+        return
+        // do ceremony plan calls
+    }
+    else if (currStep === "funeralHome") {
+        // do funeralHome api calls + display some shit
+        nextBtn.style.display = "none"
+        return
+    }
+
+
+})
+
+
+
