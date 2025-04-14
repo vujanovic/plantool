@@ -12,7 +12,7 @@ let productID = null;
 
 // u ceremonialIDs kao kljuc ide _id
 //  od adrese servisa a u vrednost id servisa za brisanje
-let cermonialIDs = {} 
+let ceremonialIDs = {} 
 
 console.log("UCITANNA SKRIPTA")
 
