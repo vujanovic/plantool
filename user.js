@@ -275,6 +275,8 @@ function addToPlaybookWithProduct() {
 const removeFromPlaybookWithProduct = (e) => {
     const btn = e.target;
 
+    console.log("clicked")
+
     fetch(API_LINK + "/user/removeFromPlaybook", {
         method: "DELETE",
         body: JSON.stringify({ userID: currUserID, providerID: btn.dataset.providerID, serviceID: btn.dataset.serviceID })
