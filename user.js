@@ -1610,6 +1610,7 @@ prevBtn.style.display = "none"
 
 const slider = document.querySelector(".w-slider");
 let currentSlide = slider.querySelector(".w-slide.w-active");
+currentSlide = updateCurrentSlide();
 
 funeralType.addEventListener("change", e => {
 
