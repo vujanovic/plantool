@@ -863,7 +863,7 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
             }
         }
 
-        for (const service of data.ceremonial.services) {
+        for (const service of data.ceremonial?.services) {
             ceremonialIDs[service.address["_id"]] = service["_id"]
         }
 
