@@ -11,7 +11,8 @@ let servicePickedBtn = null;
 let providerID = null;
 let serviceID = null;
 let productID = null;
-let 
+
+console.log("UCITANNA SKRIPTA")
 
 // ========================
 // DOM Elements
