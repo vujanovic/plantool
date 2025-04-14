@@ -1,3 +1,4 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 // ========================
 // Constants and Globals
@@ -10,6 +11,7 @@ let servicePickedBtn = null;
 let providerID = null;
 let serviceID = null;
 let productID = null;
+let 
 
 // ========================
 // DOM Elements
@@ -237,21 +239,21 @@ function addToPlaybookWithProduct() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userID: currUserID, providerID, serviceID })
     })
-    .then(res => res.json())
-    .then(data => {
-        alert("dodat u plejbuk");
-        servicePickedBtn.textContent = "Remove from Plan";
-        servicePickedBtn.style.backgroundColor = "red";
-        servicePickedBtn.dataset.productID = productCombo.value;
+        .then(res => res.json())
+        .then(data => {
+            alert("dodat u plejbuk");
+            servicePickedBtn.textContent = "Remove from Plan";
+            servicePickedBtn.style.backgroundColor = "red";
+            servicePickedBtn.dataset.productID = productCombo.value;
 
-        servicePickedBtn.removeEventListener("click", handleSelect);
-        servicePickedBtn.addEventListener("click", removeFromPlaybookWithProduct);
+            servicePickedBtn.removeEventListener("click", handleSelect);
+            servicePickedBtn.addEventListener("click", removeFromremoveFromPlaybookWithProduct);
 
-        if (productCombo.value === "") {
-            closeBtn.click();
-            return;
-        }
-    });
+            if (productCombo.value === "") {
+                closeBtn.click();
+                return;
+            }
+        });
 
     Webflow.require('slider').redraw();
 
@@ -262,12 +264,12 @@ function addToPlaybookWithProduct() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ productID: productCombo.value, specific: "" })
     })
-    .then(res => res.json())
-    .then(data => {
-        alert("dodat u proizvode");
-        closeBtn.click();
-        console.log(data);
-    });
+        .then(res => res.json())
+        .then(data => {
+            alert("dodat u proizvode");
+            closeBtn.click();
+            console.log(data);
+        });
 }
 
 const removeFromPlaybookWithProduct = (e) => {
@@ -277,13 +279,14 @@ const removeFromPlaybookWithProduct = (e) => {
         method: "DELETE",
         body: JSON.stringify({ userID: currUserID, providerID: btn.dataset.providerID, serviceID: btn.dataset.serviceID })
     })
-    .then(res => res.json())
-    .then(data => {
-        btn.textContent = "Select Service";
-        btn.style.backgroundColor = "green";
-        btn.addEventListener("click", handleSelect);
-        btn.removeEventListener("click", removeFromPlaybookWithProduct);
-    });
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+            btn.textContent = "Select Service";
+            btn.style.backgroundColor = "green";
+            btn.addEventListener("click", handleSelect);
+            btn.removeEventListener("click", removeFromPlaybookWithProduct);
+        });
 
     fetch(API_LINK + `/ceremonial/removeService?userID=${currUserID}&serviceID=${btn.dataset.serviceID}`, {
         method: "DELETE"
@@ -324,17 +327,17 @@ function renderFeatured(data) {
         }
 
         description.textContent = service.description?.slice(0, 200) || "-";
-        
+
         if (description.textContent.length === 200) {
-        		const text = description.textContent;
+            const text = description.textContent;
             const lastSplitIndex = Math.max(text.lastIndexOf(" "), text.lastIndexOf("."));
 
             if (lastSplitIndex !== -1) {
-              description.textContent = text.slice(0, lastSplitIndex) + "...";
+                description.textContent = text.slice(0, lastSplitIndex) + "...";
             }
         }
-        
-        
+
+
         addressInfo.textContent = `${service.address.street}, ${service.address.zip} ${service.address.city}, ${service.address.country}`;
         email.textContent = service.contactInfo?.email || "-";
         phone.textContent = service.contactInfo?.phoneNumber || "-";
@@ -458,7 +461,7 @@ ctaLink.addEventListener("click", e => {
 
 
 
-    const COUNTRIES_STRING = `Afghanistan
+const COUNTRIES_STRING = `Afghanistan
 Albania
 Algeria
 Andorra
@@ -654,833 +657,832 @@ Yemen
 Zambia
 Zimbabwe`
 
-    const countryField = document.querySelector("#countryField")
-    const anotherCountryField = document.querySelector("#currentCountry")
+const countryField = document.querySelector("#countryField")
+const anotherCountryField = document.querySelector("#currentCountry")
 
-    COUNTRIES_STRING.split("\n").forEach(country => {
+COUNTRIES_STRING.split("\n").forEach(country => {
 
-        country = country.trim();
-        if (!country) {
-            return;
-        }
-        const option = document.createElement("option");
-        option.value = country;
-        option.textContent = country;
-        countryField.appendChild(option);
-				anotherCountryField.appendChild(option.cloneNode(true))
+    country = country.trim();
+    if (!country) {
+        return;
+    }
+    const option = document.createElement("option");
+    option.value = country;
+    option.textContent = country;
+    countryField.appendChild(option);
+    anotherCountryField.appendChild(option.cloneNode(true))
+})
+
+
+
+let allUserData = null;
+
+const submitInfo = document.querySelector("#updateBasicInfoBtn")
+const nameField = document.querySelector("#nameField")
+const lastnameField = document.querySelector("#lastnameField")
+const dateField = document.querySelector("#dateField")
+// countryField is selected already in prev script
+const cityField = document.querySelector("#cityField")
+const emailField = document.querySelector("#emailField")
+const phoneField = document.querySelector("#phoneField")
+
+const updateInfoForm = document.querySelector("#updateInfoForm")
+
+const nameHeading = document.querySelector("#nameHeading");
+
+const verificationSection = document.querySelector(".verification-section")
+const verificationStatus = document.querySelector(".verification-status")
+const overlay = document.querySelector(".black-overlay")
+
+const faSection = document.querySelector("#FASection")
+const faSubmit = document.querySelector("#FASubmit")
+const resendFA = document.querySelector("#resendFaCode")
+const faMessage = document.querySelector("#faMessage")
+const faInput = faSection.querySelector("input")
+
+resendFA.addEventListener("click", e => {
+    fetch(API_LINK + `/sendFACode`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ id: currUserID })
     })
+})
 
+faSubmit.addEventListener("click", e => {
 
+    e.preventDefault()
 
-    let allUserData = null;
-
-    const submitInfo = document.querySelector("#updateBasicInfoBtn")
-    const nameField = document.querySelector("#nameField")
-    const lastnameField = document.querySelector("#lastnameField")
-    const dateField = document.querySelector("#dateField")
-    // countryField is selected already in prev script
-    const cityField = document.querySelector("#cityField")
-    const emailField = document.querySelector("#emailField")
-    const phoneField = document.querySelector("#phoneField")
-
-    const updateInfoForm = document.querySelector("#updateInfoForm")
-
-    const nameHeading = document.querySelector("#nameHeading");
-
-    const verificationSection = document.querySelector(".verification-section")
-    const verificationStatus = document.querySelector(".verification-status")
-    const overlay = document.querySelector(".black-overlay")
-    
-    const faSection = document.querySelector("#FASection")
-    const faSubmit = document.querySelector("#FASubmit")
-    const resendFA = document.querySelector("#resendFaCode")
-    const faMessage = document.querySelector("#faMessage")
-    const faInput = faSection.querySelector("input")
-    
-    resendFA.addEventListener("click", e => {
-    						fetch(API_LINK + `/sendFACode`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({id: currUserID})
-                })		
+    fetch(API_LINK + `/2FACheck`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ id: currUserID, code: faInput.value })
     })
-    
-    faSubmit.addEventListener("click", e => {
-    		
-        e.preventDefault()
-    
-    		fetch(API_LINK + `/2FACheck`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({id: currUserID, code: faInput.value})
-         })
-         .then(res => res.json())
-         .then(data => {
-         		if (data.status !== 200) {
-            		faMessage.textContent = "Code is incorrect."
+        .then(res => res.json())
+        .then(data => {
+            if (data.status !== 200) {
+                faMessage.textContent = "Code is incorrect."
                 faMessage.style.color = "red"
                 faMessage.style.display = "block"
                 return
             }
-            
+
             overlay.style.display = "none"
             faSection.style.display = "none"
-            
-         })
-    })
 
-    function goToStep(stepIndex) {
-        if (stepIndex < 0 || stepIndex >= steps.length) return;
+        })
+})
 
-        // Remove the current step class from all steps
-        steps.forEach((step, index) => {
-            step.classList.remove('current-step');
-            step.style.transform = index < stepIndex ? 'translateX(-100%)' : 'translateX(100%)';
-            step.style.opacity = '0';
-        });
+function goToStep(stepIndex) {
+    if (stepIndex < 0 || stepIndex >= steps.length) return;
 
-        // Add class to the new step
-        steps[stepIndex].classList.add('current-step');
-        steps[stepIndex].style.transform = 'translateX(0)';
-        steps[stepIndex].style.opacity = '1';
+    // Remove the current step class from all steps
+    steps.forEach((step, index) => {
+        step.classList.remove('current-step');
+        step.style.transform = index < stepIndex ? 'translateX(-100%)' : 'translateX(100%)';
+        step.style.opacity = '0';
+    });
 
-        // Adjust the container height smoothly
-        stepContainer.style.height = `${steps[stepIndex].offsetHeight}px`;
-    }
-    
+    // Add class to the new step
+    steps[stepIndex].classList.add('current-step');
+    steps[stepIndex].style.transform = 'translateX(0)';
+    steps[stepIndex].style.opacity = '1';
+
+    // Adjust the container height smoothly
+    stepContainer.style.height = `${steps[stepIndex].offsetHeight}px`;
+}
 
 
-    fetch(API_LINK + `/user/allData?id=${currUserID}`)
-        .then(response => response.json())
-        .then(data => {
 
-            nameHeading.textContent = nameHeading.textContent.replace("$name", data["firstname"]);
+fetch(API_LINK + `/user/allData?id=${currUserID}`)
+    .then(response => response.json())
+    .then(data => {
 
-            for (const key in data) {
-            		if (key === "address") {
-                		for (const detail in data[key]) {
-                    		const input = document.querySelector(`[name="${detail}"]`)
-                        if (input) {
-                            input.value = data[key][detail] || ""
-                        }
+        nameHeading.textContent = nameHeading.textContent.replace("$name", data["firstname"]);
+
+        for (const key in data) {
+            if (key === "address") {
+                for (const detail in data[key]) {
+                    const input = document.querySelector(`[name="${detail}"]`)
+                    if (input) {
+                        input.value = data[key][detail] || ""
                     }
-                    continue
                 }
-                const input = document.querySelector(`input[name="${key}"]`)
-                if (input) {
-                    input.value = data[key] ? data[key] : ""
-                }
+                continue
             }
-
-            cityField.value = data?.placeOfBirth?.city ?? ""
-            countryField.value = data?.placeOfBirth?.country ?? ""
-            dateField.value = data.dateOfBirth?.split("T")[0] ?? ""
-
-            for (const partner of data["marriages"]) {
-                addPartnerToList(partner)
+            const input = document.querySelector(`input[name="${key}"]`)
+            if (input) {
+                input.value = data[key] ? data[key] : ""
             }
-
-            for (const child of data["children"]) {
-                addChildToList(child)
-            }
-
-            for (const friend of data["contacts"]) {
-                addFriendToList(friend)
-            }
-
-            addDeleteListeners()
-
-            if (data["verified"]) {
-                verificationStatus.style.color = "green"
-                verificationStatus.textContent = "VERIFIED"
-                verificationSection.style.display = "none"
-                overlay.style.display = "none"
-            }
-            
-            if (data["enabledFA"] && data["verified"]) {
-            		fetch(API_LINK + `/sendFACode`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({id: currUserID})
-                })
-                faSection.style.display = "flex"
-                overlay.style.display = "block"
-            }
-            
-            console.log(data)
-
-        })
-        .catch(err => {
-            console.log(err);
-        })
-
-    submitInfo.addEventListener("click", function (e) {
-        if (!updateInfoForm.checkValidity()) {
-            e.stopPropagation();
         }
-    }, true);
 
-    updateInfoForm.addEventListener("submit", function (e) {
-        e.preventDefault();
-        if (updateInfoForm.checkValidity()) {
+        cityField.value = data?.placeOfBirth?.city ?? ""
+        countryField.value = data?.placeOfBirth?.country ?? ""
+        dateField.value = data.dateOfBirth?.split("T")[0] ?? ""
 
-            const formData = new FormData(updateInfoForm)
-            const dataObject = Object.fromEntries(formData.entries())
-            delete dataObject["cf-turnstile-response"]
+        for (const partner of data["marriages"]) {
+            addPartnerToList(partner)
+        }
 
-            fetch(API_LINK + `/user/updateBasicData?userID=${currUserID}`, {
+        for (const child of data["children"]) {
+            addChildToList(child)
+        }
+
+        for (const friend of data["contacts"]) {
+            addFriendToList(friend)
+        }
+
+        addDeleteListeners()
+
+        if (data["verified"]) {
+            verificationStatus.style.color = "green"
+            verificationStatus.textContent = "VERIFIED"
+            verificationSection.style.display = "none"
+            overlay.style.display = "none"
+        }
+
+        if (data["enabledFA"] && data["verified"]) {
+            fetch(API_LINK + `/sendFACode`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(dataObject)
+                body: JSON.stringify({ id: currUserID })
             })
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data)
-
-                })
-                .catch(err => alert("greska"))
-                
-             fetch(`${API_LINK}/user/changeAddress`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(dataObject)
-              }).then(res => res.json())
-              .then(data => console.log(data))
-
+            faSection.style.display = "flex"
+            overlay.style.display = "block"
         }
 
-
-    });
-
-    const stepBtns = document.querySelectorAll(".step-btn")
-
-    stepBtns.forEach(btn => {
-
-        btn.addEventListener("click", e => {
-            for (const button of stepBtns) {
-                button.classList.remove("active-step-btn")
-            }
-            btn.classList.add("active-step-btn")
-            goToStep(btn.textContent - 1)
-        })
+        console.log(data)
 
     })
+    .catch(err => {
+        console.log(err);
+    })
+
+submitInfo.addEventListener("click", function (e) {
+    if (!updateInfoForm.checkValidity()) {
+        e.stopPropagation();
+    }
+}, true);
+
+updateInfoForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (updateInfoForm.checkValidity()) {
+
+        const formData = new FormData(updateInfoForm)
+        const dataObject = Object.fromEntries(formData.entries())
+        delete dataObject["cf-turnstile-response"]
+
+        fetch(API_LINK + `/user/updateBasicData?userID=${currUserID}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(dataObject)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+
+            })
+            .catch(err => alert("greska"))
+
+        fetch(`${API_LINK}/user/changeAddress`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(dataObject)
+        }).then(res => res.json())
+            .then(data => console.log(data))
+
+    }
+
+
+});
+
+const stepBtns = document.querySelectorAll(".step-btn")
+
+stepBtns.forEach(btn => {
+
+    btn.addEventListener("click", e => {
+        for (const button of stepBtns) {
+            button.classList.remove("active-step-btn")
+        }
+        btn.classList.add("active-step-btn")
+        goToStep(btn.textContent - 1)
+    })
+
+})
 
 
 
 
-    const codeInput = document.querySelector("#codeField")
-    const verificationForm = document.querySelector(".verification-form")
-    const verificationSubmit = document.querySelector("#verificationSubmit")
-    const verificationErrMsg = document.querySelector("#verificationErrMsg")
-    const resendCode = document.querySelector("#resendCode")
+const codeInput = document.querySelector("#codeField")
+const verificationForm = document.querySelector(".verification-form")
+const verificationSubmit = document.querySelector("#verificationSubmit")
+const verificationErrMsg = document.querySelector("#verificationErrMsg")
+const resendCode = document.querySelector("#resendCode")
 
-    resendCode.addEventListener("click", e => {
+resendCode.addEventListener("click", e => {
 
-        e.preventDefault()
-        fetch(API_LINK + "/generateNewVerificationCode", {
+    e.preventDefault()
+    fetch(API_LINK + "/generateNewVerificationCode", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            id: currUserID
+        })
+    })
+        .then(res => res.json())
+        .then(data => {
+
+            verificationErrMsg.style.display = "block"
+
+            if (data.status !== 200) {
+                verificationErrMsg.textContent = "Something went wrong."
+                return
+            }
+
+            verificationErrMsg.textContent = "Code sent."
+            verificationErrMsg.style.color = "green"
+
+        })
+
+})
+
+verificationSubmit.addEventListener("click", e => {
+
+    e.preventDefault()
+
+    if (verificationForm.checkValidity()) {
+        fetch(API_LINK + "/verifyAccount", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                id: currUserID
+                id: currUserID,
+                code: codeInput.value
             })
         })
-            .then(res => res.json())
-            .then(data => {
-
-                verificationErrMsg.style.display = "block"
-
-                if (data.status !== 200) {
-                    verificationErrMsg.textContent = "Something went wrong."
-                    return
-                }
-
-                verificationErrMsg.textContent = "Code sent."
-                verificationErrMsg.style.color = "green"
-
+            .then(res => {
+                console.log(res.status)
+                return res.json()
             })
-
-    })
-
-    verificationSubmit.addEventListener("click", e => {
-
-        e.preventDefault()
-
-        if (verificationForm.checkValidity()) {
-            fetch(API_LINK + "/verifyAccount", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    id: currUserID,
-                    code: codeInput.value
-                })
-            })
-                .then(res => {
-                    console.log(res.status)
-                    return res.json()
-                })
-                .then(data => {
-                    console.log(data)
-                    if (data.status != 200) {
-                        verificationErrMsg.style.display = "block"
-                        return;
-                    }
-                    verificationStatus.textContent = "VERIFIED"
-                    verificationStatus.style.color = "green"
-                    verificationSection.style.display = "none"
-                    overlay.style.display = "none"
-                })
-                .catch(err => {
-                    console.error("Fetch error:", err)
-                    verificationErrMsg.style.display = "block"
-                });
-
-
-        }
-
-    })
-
-
-
-
-    const dateInputs = document.querySelectorAll('input[data-placeholder]');
-
-    dateInputs.forEach(input => {
-        if (!input.value) {
-            input.setAttribute("type", "text");
-            input.setAttribute("placeholder", input.getAttribute("data-placeholder"));
-        }
-
-        input.addEventListener("focus", function () {
-            this.type = this.getAttribute("name") !== "ceremonyHour" ? "date" : "datetime-local";
-        });
-
-        input.addEventListener("blur", function () {
-            if (!this.value) {
-                this.type = "text";
-                this.setAttribute("placeholder", this.getAttribute("data-placeholder"));
-            }
-        });
-    });
-
-
-
-
-		const responsiveInfoTitle = document.querySelector(".responsive-info-title")
-
-    const partnersGrid = document.querySelector("#partnersList")
-    const addPartnerBtn = document.querySelector("#addPartnerBtn")
-    const partnerForm = document.querySelector("#addPartnerForm")
-    const deleteBtn = document.querySelector(".delete-btn")
-    const line = document.querySelector(".grid-line")
-
-    const childPartnerCombo = document.querySelector("#childPartnerCombo")
-
-    function addPartnerToList(data) {
-        // const formData = new FormData(partnerForm);
-        // formData.delete("cf-turnstile-response")
-        // const formEntries = Object.fromEntries(formData.entries())
-        const formEntries = data
-
-        const option = document.createElement("option")
-        option.textContent = `${formEntries["firstname"]} ${formEntries["lastname"]}`
-        option.value = formEntries["_id"]
-
-        childPartnerCombo.appendChild(option)
-
-        for (const key in formEntries) {
-        		
-            const infoTitle = responsiveInfoTitle.cloneNode(true)
-            let titleText = ""
-        		
-            if (key === "_id") {
-                continue
-            }
-            
-            switch(key) {
-            		case "statusSince":
-                		formEntries[key] = formEntries[key].split("T")[0]
-                    titleText = "Since"
-                    break
-                case "firstname":
-                		titleText = "First Name"
-                    break
-                case "lastname":
-                		titleText = "Last Name"
-                    break    
-                case "status":
-                		titleText = "Status"
-                    break    
-            }
-          
-          	infoTitle.textContent = titleText
-          
-            const info = document.createElement("p")
-            info.textContent = formEntries[key]
-            info.classList.add("contact-table-info")
-            
-            partnersGrid.appendChild(infoTitle)
-            partnersGrid.appendChild(info)
-        }
-
-        const newDelete = deleteBtn.cloneNode(true)
-        newDelete.style.display = "block"
-        newDelete.dataset.deleteType = "Partner"
-        newDelete.dataset.idToDelete = formEntries["_id"]
-
-        const newLine = line.cloneNode(true)
-
-        partnersGrid.appendChild(newDelete)
-        partnersGrid.appendChild(newLine)
-
-        addDeleteListeners()
-
-        window.Webflow && window.Webflow.require('ix2').init();
-
-    }
-    addPartnerBtn.addEventListener("click", e => {
-
-        if (!partnerForm.checkValidity()) {
-            partnerForm.reportValidity();
-            return;
-        }
-
-        const formData = new FormData(partnerForm);
-        formData.delete("cf-turnstile-response")
-        const formEntries = Object.fromEntries(formData.entries())
-
-        fetch(API_LINK + `/user/addPartner?userID=${currUserID}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(formEntries)
-        })
-            .then(response => response.json())
             .then(data => {
                 console.log(data)
-                formEntries["_id"] = data["_id"]
-                addPartnerToList(formEntries);
-                partnerForm.reset();
-
+                if (data.status != 200) {
+                    verificationErrMsg.style.display = "block"
+                    return;
+                }
+                verificationStatus.textContent = "VERIFIED"
+                verificationStatus.style.color = "green"
+                verificationSection.style.display = "none"
+                overlay.style.display = "none"
             })
+            .catch(err => {
+                console.error("Fetch error:", err)
+                verificationErrMsg.style.display = "block"
+            });
 
 
-    })
+    }
 
-    partnerForm.addEventListener("keydown", e => {
+})
 
-        if (e.key === "Enter") {
-            addPartnerBtn.click();
+
+
+
+const dateInputs = document.querySelectorAll('input[data-placeholder]');
+
+dateInputs.forEach(input => {
+    if (!input.value) {
+        input.setAttribute("type", "text");
+        input.setAttribute("placeholder", input.getAttribute("data-placeholder"));
+    }
+
+    input.addEventListener("focus", function () {
+        this.type = this.getAttribute("name") !== "ceremonyHour" ? "date" : "datetime-local";
+    });
+
+    input.addEventListener("blur", function () {
+        if (!this.value) {
+            this.type = "text";
+            this.setAttribute("placeholder", this.getAttribute("data-placeholder"));
+        }
+    });
+});
+
+
+
+
+const responsiveInfoTitle = document.querySelector(".responsive-info-title")
+
+const partnersGrid = document.querySelector("#partnersList")
+const addPartnerBtn = document.querySelector("#addPartnerBtn")
+const partnerForm = document.querySelector("#addPartnerForm")
+const deleteBtn = document.querySelector(".delete-btn")
+const line = document.querySelector(".grid-line")
+
+const childPartnerCombo = document.querySelector("#childPartnerCombo")
+
+function addPartnerToList(data) {
+    // const formData = new FormData(partnerForm);
+    // formData.delete("cf-turnstile-response")
+    // const formEntries = Object.fromEntries(formData.entries())
+    const formEntries = data
+
+    const option = document.createElement("option")
+    option.textContent = `${formEntries["firstname"]} ${formEntries["lastname"]}`
+    option.value = formEntries["_id"]
+
+    childPartnerCombo.appendChild(option)
+
+    for (const key in formEntries) {
+
+        const infoTitle = responsiveInfoTitle.cloneNode(true)
+        let titleText = ""
+
+        if (key === "_id") {
+            continue
         }
 
-    })
-
-
-
-    const childGrid = document.querySelector("#childList")
-    const addChildBtn = document.querySelector("#addChildBtn")
-    const childForm = document.querySelector("#addChildForm")
-
-    const deceasedCheckbox = childForm.querySelector("#deceasedCheckbox")
-    const dateOfDeath = childForm.querySelector("#dateOfDeath")
-
-    deceasedCheckbox.addEventListener("change", e => {
-
-        if (deceasedCheckbox.checked) {
-            dateOfDeath.setAttribute("required", "")
-        }
-        else {
-            dateOfDeath.removeAttribute("required")
+        switch (key) {
+            case "statusSince":
+                formEntries[key] = formEntries[key].split("T")[0]
+                titleText = "Since"
+                break
+            case "firstname":
+                titleText = "First Name"
+                break
+            case "lastname":
+                titleText = "Last Name"
+                break
+            case "status":
+                titleText = "Status"
+                break
         }
 
+        infoTitle.textContent = titleText
+
+        const info = document.createElement("p")
+        info.textContent = formEntries[key]
+        info.classList.add("contact-table-info")
+
+        partnersGrid.appendChild(infoTitle)
+        partnersGrid.appendChild(info)
+    }
+
+    const newDelete = deleteBtn.cloneNode(true)
+    newDelete.style.display = "block"
+    newDelete.dataset.deleteType = "Partner"
+    newDelete.dataset.idToDelete = formEntries["_id"]
+
+    const newLine = line.cloneNode(true)
+
+    partnersGrid.appendChild(newDelete)
+    partnersGrid.appendChild(newLine)
+
+    addDeleteListeners()
+
+    window.Webflow && window.Webflow.require('ix2').init();
+
+}
+addPartnerBtn.addEventListener("click", e => {
+
+    if (!partnerForm.checkValidity()) {
+        partnerForm.reportValidity();
+        return;
+    }
+
+    const formData = new FormData(partnerForm);
+    formData.delete("cf-turnstile-response")
+    const formEntries = Object.fromEntries(formData.entries())
+
+    fetch(API_LINK + `/user/addPartner?userID=${currUserID}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formEntries)
     })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            formEntries["_id"] = data["_id"]
+            addPartnerToList(formEntries);
+            partnerForm.reset();
 
-    function addChildToList(data) {
+        })
 
-        const formEntries = data
-        const keys = ["firstname", "lastname", "dateOfBirth", "partnerID", "deceased", "dateOfDeath"]
 
-        for (const key of keys) {
-						
-            const infoTitle = responsiveInfoTitle.cloneNode(true)
-            let titleText = ""
+})
 
-            const info = document.createElement("p")
-            info.textContent = formEntries[key]
-            info.classList.add("contact-table-info")
+partnerForm.addEventListener("keydown", e => {
 
-            if (key === "partnerID") {
-            		titleText = "Partner"
-                for (const option of childPartnerCombo.options) {
-                    if (option.value === formEntries[key]) {
-                        info.textContent = option.text
-                    }
+    if (e.key === "Enter") {
+        addPartnerBtn.click();
+    }
+
+})
+
+
+
+const childGrid = document.querySelector("#childList")
+const addChildBtn = document.querySelector("#addChildBtn")
+const childForm = document.querySelector("#addChildForm")
+
+const deceasedCheckbox = childForm.querySelector("#deceasedCheckbox")
+const dateOfDeath = childForm.querySelector("#dateOfDeath")
+
+deceasedCheckbox.addEventListener("change", e => {
+
+    if (deceasedCheckbox.checked) {
+        dateOfDeath.setAttribute("required", "")
+    }
+    else {
+        dateOfDeath.removeAttribute("required")
+    }
+
+})
+
+function addChildToList(data) {
+
+    const formEntries = data
+    const keys = ["firstname", "lastname", "dateOfBirth", "partnerID", "deceased", "dateOfDeath"]
+
+    for (const key of keys) {
+
+        const infoTitle = responsiveInfoTitle.cloneNode(true)
+        let titleText = ""
+
+        const info = document.createElement("p")
+        info.textContent = formEntries[key]
+        info.classList.add("contact-table-info")
+
+        if (key === "partnerID") {
+            titleText = "Partner"
+            for (const option of childPartnerCombo.options) {
+                if (option.value === formEntries[key]) {
+                    info.textContent = option.text
                 }
             }
-            
+        }
 
 
-            if (key === "deceased") {
-            		titleText = "Deceased"
-                info.textContent = `${formEntries[key]}` === "true" ? "✓" : "-"
+
+        if (key === "deceased") {
+            titleText = "Deceased"
+            info.textContent = `${formEntries[key]}` === "true" ? "✓" : "-"
+        }
+
+        if (key === "dateOfBirth") {
+            titleText = "Birth Date"
+            info.textContent = formEntries[key].split("T")[0]
+        }
+
+        if (key === "dateOfDeath") {
+            titleText = "Death Date"
+            if (!formEntries[key]) {
+                info.textContent = "-"
             }
-
-            if (key === "dateOfBirth") {
-            		titleText = "Birth Date"
+            else {
                 info.textContent = formEntries[key].split("T")[0]
             }
-
-            if (key === "dateOfDeath") {
-              	titleText = "Death Date"
-                if (!formEntries[key]) {
-                    info.textContent = "-"
-                }
-                else {
-                    info.textContent = formEntries[key].split("T")[0]
-                }
-            }
-            
-            if (key === "firstname") {
-            		titleText = "Name"
-            }
-            
-            if (key === "lastname") {
-            		titleText = "Lastname"
-            }
-            
-            infoTitle.textContent = titleText
-
-						childGrid.appendChild(infoTitle)
-            childGrid.appendChild(info)
         }
 
+        if (key === "firstname") {
+            titleText = "Name"
+        }
 
-        const newDelete = deleteBtn.cloneNode(true)
-        newDelete.style.display = "block"
-        newDelete.dataset.deleteType = "Child"
-        newDelete.dataset.idToDelete = formEntries["_id"]
+        if (key === "lastname") {
+            titleText = "Lastname"
+        }
 
-        const newLine = document.querySelector(".span-7").cloneNode(true)
+        infoTitle.textContent = titleText
 
-        childGrid.appendChild(newDelete)
-        childGrid.appendChild(newLine)
-
-        addDeleteListeners()
-
-        window.Webflow && window.Webflow.require('ix2').init();
-
+        childGrid.appendChild(infoTitle)
+        childGrid.appendChild(info)
     }
 
-    addChildBtn.addEventListener("click", e => {
 
-        if (!childForm.checkValidity()) {
-            childForm.reportValidity();
-            return;
-        }
+    const newDelete = deleteBtn.cloneNode(true)
+    newDelete.style.display = "block"
+    newDelete.dataset.deleteType = "Child"
+    newDelete.dataset.idToDelete = formEntries["_id"]
 
-        const formData = new FormData(childForm);
-        formData.delete("cf-turnstile-response")
-        const formEntries = Object.fromEntries(formData.entries())
-        formEntries["deceased"] = `${deceasedCheckbox.checked}`
-        console.log(formEntries["deceased"])
-        console.log(formEntries)
+    const newLine = document.querySelector(".span-7").cloneNode(true)
 
-        fetch(API_LINK + `/user/addPartnerChildren?userID=${currUserID}&partnerID=${childPartnerCombo.value}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(formEntries)
+    childGrid.appendChild(newDelete)
+    childGrid.appendChild(newLine)
+
+    addDeleteListeners()
+
+    window.Webflow && window.Webflow.require('ix2').init();
+
+}
+
+addChildBtn.addEventListener("click", e => {
+
+    if (!childForm.checkValidity()) {
+        childForm.reportValidity();
+        return;
+    }
+
+    const formData = new FormData(childForm);
+    formData.delete("cf-turnstile-response")
+    const formEntries = Object.fromEntries(formData.entries())
+    formEntries["deceased"] = `${deceasedCheckbox.checked}`
+    console.log(formEntries["deceased"])
+    console.log(formEntries)
+
+    fetch(API_LINK + `/user/addPartnerChildren?userID=${currUserID}&partnerID=${childPartnerCombo.value}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formEntries)
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            formEntries["_id"] = data["_id"]
+            addChildToList(formEntries);
+            childForm.reset();
+
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                formEntries["_id"] = data["_id"]
-                addChildToList(formEntries);
-                childForm.reset();
-
-            })
 
 
-    })
+})
 
 
-    childForm.addEventListener("keydown", e => {
+childForm.addEventListener("keydown", e => {
 
-        if (e.key === "Enter") {
-            addChildBtn.click();
-        }
+    if (e.key === "Enter") {
+        addChildBtn.click();
+    }
 
-    })
+})
 
 
 
-    const friendsGrid = document.querySelector("#friendList")
-    const addFriendBtn = document.querySelector("#addFriendBtn")
-    const friendForm = document.querySelector("#addFriendForm")
+const friendsGrid = document.querySelector("#friendList")
+const addFriendBtn = document.querySelector("#addFriendBtn")
+const friendForm = document.querySelector("#addFriendForm")
 
-    const friendsListInput = document.getElementById('friendsListInput');
-    const friendsListInfo = document.getElementById('friendsListInfo');
-    const friendsListName = document.getElementById('friendsListName');
-    const removeBtn = document.getElementById('removeFriendsListBtn');
-    const confirmFriendsBtn = document.querySelector("#confirmFriendsBtn")
+const friendsListInput = document.getElementById('friendsListInput');
+const friendsListInfo = document.getElementById('friendsListInfo');
+const friendsListName = document.getElementById('friendsListName');
+const removeBtn = document.getElementById('removeFriendsListBtn');
+const confirmFriendsBtn = document.querySelector("#confirmFriendsBtn")
 
-    friendsListInput.addEventListener('change', () => {
-        if (friendsListInput.files.length > 0) {
-            friendsListName.textContent = friendsListInput.files[0].name;
-            friendsListInfo.style.display = 'block';
-            confirmFriendsBtn.style.display = "block"
-        }
-    });
+friendsListInput.addEventListener('change', () => {
+    if (friendsListInput.files.length > 0) {
+        friendsListName.textContent = friendsListInput.files[0].name;
+        friendsListInfo.style.display = 'block';
+        confirmFriendsBtn.style.display = "block"
+    }
+});
 
-    removeBtn.addEventListener('click', () => {
-        friendsListInput.value = '';
-        friendsListName.textContent = '';
-        friendsListInfo.style.display = 'none';
-        confirmFriendsBtn.style.display = "none"
-    });
+removeBtn.addEventListener('click', () => {
+    friendsListInput.value = '';
+    friendsListName.textContent = '';
+    friendsListInfo.style.display = 'none';
+    confirmFriendsBtn.style.display = "none"
+});
 
-    confirmFriendsBtn.addEventListener("click", async () => {
-        const file = friendsListInput.files[0];
-        if (!file) return;
+confirmFriendsBtn.addEventListener("click", async () => {
+    const file = friendsListInput.files[0];
+    if (!file) return;
 
-        const data = await file.arrayBuffer(); // Read file contents
-        const workbook = XLSX.read(data, { type: 'array' });
-        const sheet = workbook.Sheets[workbook.SheetNames[0]];
-        const json = XLSX.utils.sheet_to_json(sheet, { defval: '' }); // default value = empty string
+    const data = await file.arrayBuffer(); // Read file contents
+    const workbook = XLSX.read(data, { type: 'array' });
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    const json = XLSX.utils.sheet_to_json(sheet, { defval: '' }); // default value = empty string
 
 
-        const requiredColumns = ['Name', 'Country', 'City', "Street", "Zip", "Email", "Phone Number"]; // all lowercase
+    const requiredColumns = ['Name', 'Country', 'City', "Street", "Zip", "Email", "Phone Number"]; // all lowercase
 
-        const missingRows = [];
+    const missingRows = [];
 
-        const normalizedData = json.map(row => {
-            const normalizedRow = {};
-            Object.keys(row).forEach(key => {
-              if (!requiredColumns.includes(key)) {
+    const normalizedData = json.map(row => {
+        const normalizedRow = {};
+        Object.keys(row).forEach(key => {
+            if (!requiredColumns.includes(key)) {
                 return;
-              }
-              normalizedRow[key] = row[key];
-            });
-            return normalizedRow;
-				});
-
-        
-        normalizedData.forEach((row, index) => {
-            requiredColumns.forEach(col => {
-                if (!row[col] || String(row[col]).trim() === '') {
-                    missingRows.push({ row: index + 2, column: col });
-                }
-            });
+            }
+            normalizedRow[key] = row[key];
         });
+        return normalizedRow;
+    });
 
-        if (missingRows.length > 0) {
-            let message = "Missing values detected:\n";
-            missingRows.forEach(entry => {
-                message += `- Row ${entry.row}: Missing "${entry.column}"\n`;
-            });
-            alert(message);
-            return;
-        }
 
-        console.log(normalizedData)
-        
-        const formData = new FormData();
-  			formData.append('data', file)
-        
-        fetch(API_LINK + `/user/addContactsTableImport?userID=${currUserID}`, {
-        		method: "POST",
-            body: formData
-        })
+    normalizedData.forEach((row, index) => {
+        requiredColumns.forEach(col => {
+            if (!row[col] || String(row[col]).trim() === '') {
+                missingRows.push({ row: index + 2, column: col });
+            }
+        });
+    });
+
+    if (missingRows.length > 0) {
+        let message = "Missing values detected:\n";
+        missingRows.forEach(entry => {
+            message += `- Row ${entry.row}: Missing "${entry.column}"\n`;
+        });
+        alert(message);
+        return;
+    }
+
+    console.log(normalizedData)
+
+    const formData = new FormData();
+    formData.append('data', file)
+
+    fetch(API_LINK + `/user/addContactsTableImport?userID=${currUserID}`, {
+        method: "POST",
+        body: formData
+    })
         .then(res => res.json())
         .then(data => {
-        
-        		console.log(data)
-            
+
+            console.log(data)
+
         })
-        
-        const renderingRows = ["name", "country", "city", "street", "zip", "email", "phone Number"]
-        
-        for (const contact of normalizedData) {
-            const orderedContact = {};
 
-            renderingRows.forEach(key => {
-              orderedContact[key] = contact[key.charAt(0).toUpperCase() + key.slice(1)];
-            });
-            
-            console.log(orderedContact)
-            addFriendToList(orderedContact)
-        }
-        
-        
+    const renderingRows = ["name", "country", "city", "street", "zip", "email", "phone Number"]
 
+    for (const contact of normalizedData) {
+        const orderedContact = {};
 
-    });
+        renderingRows.forEach(key => {
+            orderedContact[key] = contact[key.charAt(0).toUpperCase() + key.slice(1)];
+        });
 
-    function addFriendToList(data) {
-        // const formData = new FormData(partnerForm);
-        // formData.delete("cf-turnstile-response")
-        // const formEntries = Object.fromEntries(formData.entries())
-        const formEntries = data
-       
-
-
-        for (const key in formEntries) {
-            if (key === "userID") {
-                continue
-            }
-
-            if (key === "_id") {
-                continue
-            }
-            
-            const infoTitle = responsiveInfoTitle.cloneNode(true)
-        		let titleText = key.charAt(0).toUpperCase() + key.slice(1)
-            
-            const info = document.createElement("p")
-            info.textContent = formEntries[key]
-            info.classList.add("contact-table-info")
-
-            if (key === "address") {
-            		titleText = "Address"
-                let address = formEntries[key]
-                info.textContent = `${address["street"]}, ${address["zip"] || ""} ${address["city"]}, ${address["country"]}`
-            }
-
-            if (key === "country") {
-            		titleText = "Address"
-                info.textContent = `${formEntries["street"]}, ${formEntries["zip"] || ""} ${formEntries["city"]}, ${formEntries["country"]}`
-            }
-
-            if (key === "city" || key === "street" || key === "zip") {
-                continue
-            }
-            
-            if (key === "phoneNumber") {
-            		titleText = "Phone"
-            }
-            
-            infoTitle.textContent = titleText
-						
-            friendsGrid.appendChild(infoTitle)
-            friendsGrid.appendChild(info)
-        }
-
-        const newDelete = deleteBtn.cloneNode(true)
-        newDelete.style.display = "block"
-        newDelete.dataset.deleteType = "Friend"
-        newDelete.dataset.idToDelete = formEntries["_id"]
-
-        const newLine = line.cloneNode(true)
-
-        friendsGrid.appendChild(newDelete)
-        friendsGrid.appendChild(newLine)
-
-        addDeleteListeners()
-
-        window.Webflow && window.Webflow.require('ix2').init();
-
+        console.log(orderedContact)
+        addFriendToList(orderedContact)
     }
 
-    addFriendBtn.addEventListener("click", e => {
 
-        if (!friendForm.checkValidity()) {
-            friendForm.reportValidity();
-            return;
+
+
+});
+
+function addFriendToList(data) {
+    // const formData = new FormData(partnerForm);
+    // formData.delete("cf-turnstile-response")
+    // const formEntries = Object.fromEntries(formData.entries())
+    const formEntries = data
+
+
+
+    for (const key in formEntries) {
+        if (key === "userID") {
+            continue
         }
 
-        const formData = new FormData(friendForm);
-        formData.delete("cf-turnstile-response")
-        const formEntries = Object.fromEntries(formData.entries())
-        formEntries["userID"] = currUserID
+        if (key === "_id") {
+            continue
+        }
 
-        fetch(API_LINK + `/user/addContacts`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(formEntries)
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                formEntries["_id"] = data["_id"]
-                addFriendToList(formEntries);
-                friendForm.reset();
+        const infoTitle = responsiveInfoTitle.cloneNode(true)
+        let titleText = key.charAt(0).toUpperCase() + key.slice(1)
 
-            })
+        const info = document.createElement("p")
+        info.textContent = formEntries[key]
+        info.classList.add("contact-table-info")
 
+        if (key === "address") {
+            titleText = "Address"
+            let address = formEntries[key]
+            info.textContent = `${address["street"]}, ${address["zip"] || ""} ${address["city"]}, ${address["country"]}`
+        }
 
+        if (key === "country") {
+            titleText = "Address"
+            info.textContent = `${formEntries["street"]}, ${formEntries["zip"] || ""} ${formEntries["city"]}, ${formEntries["country"]}`
+        }
+
+        if (key === "city" || key === "street" || key === "zip") {
+            continue
+        }
+
+        if (key === "phoneNumber") {
+            titleText = "Phone"
+        }
+
+        infoTitle.textContent = titleText
+
+        friendsGrid.appendChild(infoTitle)
+        friendsGrid.appendChild(info)
+    }
+
+    const newDelete = deleteBtn.cloneNode(true)
+    newDelete.style.display = "block"
+    newDelete.dataset.deleteType = "Friend"
+    newDelete.dataset.idToDelete = formEntries["_id"]
+
+    const newLine = line.cloneNode(true)
+
+    friendsGrid.appendChild(newDelete)
+    friendsGrid.appendChild(newLine)
+
+    addDeleteListeners()
+
+    window.Webflow && window.Webflow.require('ix2').init();
+
+}
+
+addFriendBtn.addEventListener("click", e => {
+
+    if (!friendForm.checkValidity()) {
+        friendForm.reportValidity();
+        return;
+    }
+
+    const formData = new FormData(friendForm);
+    formData.delete("cf-turnstile-response")
+    const formEntries = Object.fromEntries(formData.entries())
+    formEntries["userID"] = currUserID
+
+    fetch(API_LINK + `/user/addContacts`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formEntries)
     })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            formEntries["_id"] = data["_id"]
+            addFriendToList(formEntries);
+            friendForm.reset();
 
-    friendForm.addEventListener("keydown", e => {
-
-        if (e.key === "Enter") {
-            addFriendBtn.click();
-        }
-
-    })
-
-
-
-    function addDeleteListeners() {
-        const deleteBtns = document.querySelectorAll(".delete-btn")
-        for (const btn of deleteBtns) {
-            btn.addEventListener("click", e => deleteContact(btn), { once: true })
-        }
-    }
-
-
-    function deleteContact(btn) {
-
-        let prevToDelete;
-
-        const type = btn.dataset.deleteType
-
-        if (type === "Partner" || type === "Friend") {
-            prevToDelete = 4
-        }
-
-        else if (type === "Child") {
-            prevToDelete = 6
-        }
-
-        fetch(API_LINK + `/user/delete${type}?userID=${currUserID}&${type.toLowerCase()}ID=${btn.dataset.idToDelete}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            }
         })
-            .then(response => response.json())
-            .then(data => {
-                for (let i = 0; i < prevToDelete; i++) {
-                    if (btn.previousElementSibling) {
-                        btn.previousElementSibling.remove()
-                    }
-                    else {
-                        break
-                    }
-                }
 
-                if (btn.nextElementSibling) {
-                    btn.nextElementSibling.remove();
-                }
 
-                btn.remove()
-            })
+})
 
+friendForm.addEventListener("keydown", e => {
+
+    if (e.key === "Enter") {
+        addFriendBtn.click();
     }
 
+})
+
+
+
+function addDeleteListeners() {
+    const deleteBtns = document.querySelectorAll(".delete-btn")
+    for (const btn of deleteBtns) {
+        btn.addEventListener("click", e => deleteContact(btn), { once: true })
+    }
+}
+
+
+function deleteContact(btn) {
+
+    let prevToDelete;
+
+    const type = btn.dataset.deleteType
+
+    if (type === "Partner" || type === "Friend") {
+        prevToDelete = 4
+    }
+
+    else if (type === "Child") {
+        prevToDelete = 6
+    }
+
+    fetch(API_LINK + `/user/delete${type}?userID=${currUserID}&${type.toLowerCase()}ID=${btn.dataset.idToDelete}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            for (let i = 0; i < prevToDelete; i++) {
+                if (btn.previousElementSibling) {
+                    btn.previousElementSibling.remove()
+                }
+                else {
+                    break
+                }
+            }
+
+            if (btn.nextElementSibling) {
+                btn.nextElementSibling.remove();
+            }
+
+            btn.remove()
+        })
+
+}
