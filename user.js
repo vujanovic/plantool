@@ -1625,31 +1625,68 @@ funeralType.addEventListener("change", e => {
 
 })
 
-nextBtn.addEventListener("click", e => {
-
-    const currStep = currentSlide.getAttribute("slide")
-    currentSlide = slider.querySelector(".w-slide.w-active")
-
+function updateCurrentSlide() {
+    const sliderMask = document.querySelector(".w-slider-mask");
+    return Array.from(sliderMask.children).find(slide => {
+      return getComputedStyle(slide).display !== "none";
+    });
+  }
+  
+  nextBtn.addEventListener("click", e => {
+    currentSlide = updateCurrentSlide();
+    const currStep = currentSlide.getAttribute("slide");
+  
+    if (currStep === "ceremonyPlan") {
+      // First slide
+      nextBtn.style.display = "inline-block";
+      prevBtn.style.display = "none";
+  
+      // do ceremony plan calls
+      return;
+    }
+  
     if (currStep === "burial/cremation") {
-        // do burialCremation api calls
-        nextBtn.style.display = "inline-block"
-        prevBtn.style.display = "inline-block"
-        return
+      // Second slide
+      nextBtn.style.display = "inline-block";
+      prevBtn.style.display = "inline-block";
+  
+      // do burialCremation api calls
+      return;
     }
-    else if (currStep === "ceremonyPlan") {
-        nextBtn.style.display = "inline-block"
-        prevBtn.style.display = "none"
-        return
-        // do ceremony plan calls
+  
+    if (currStep === "funeralHome") {
+      // Third slide
+      nextBtn.style.display = "none";
+      prevBtn.style.display = "inline-block";
+  
+      // do funeralHome api calls + display some stuff
+      return;
     }
-    else if (currStep === "funeralHome") {
-        // do funeralHome api calls + display some shit
-        nextBtn.style.display = "none"
-        return
+  });
+  
+  prevBtn.addEventListener("click", e => {
+    currentSlide = updateCurrentSlide();
+    const currStep = currentSlide.getAttribute("slide");
+  
+    if (currStep === "ceremonyPlan") {
+      // First slide — shouldn't happen, but just in case
+      prevBtn.style.display = "none";
+      nextBtn.style.display = "inline-block";
+      return;
     }
-
-
-})
-
-
-
+  
+    if (currStep === "burial/cremation") {
+      // Second slide
+      prevBtn.style.display = "inline-block";
+      nextBtn.style.display = "inline-block";
+      return;
+    }
+  
+    if (currStep === "funeralHome") {
+      // Third slide
+      prevBtn.style.display = "inline-block";
+      nextBtn.style.display = "none";
+      return;
+    }
+  });
+  
