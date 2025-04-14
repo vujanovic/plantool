@@ -1628,7 +1628,7 @@ funeralType.addEventListener("change", e => {
 function updateCurrentSlide() {
     const sliderMask = document.querySelector(".w-slider-mask");
     return Array.from(sliderMask.children).find(slide => {
-      return getComputedStyle(slide).ariaHidden !== "true";
+      return slide.getAttribute("aria-hidden") !== "true";
     });
   }
   
