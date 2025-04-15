@@ -1648,7 +1648,6 @@ function updateCurrentSlide() {
 
     const currStep = currentSlide.getAttribute("slide");
 
-    sliderAPI.move(slider, "right")
     
 
   });
@@ -1667,8 +1666,6 @@ function updateCurrentSlide() {
     }
 
     const currStep = currentSlide.getAttribute("slide");
-
-    sliderAPI.move(slider, "left")
 
     
   });
