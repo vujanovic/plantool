@@ -1637,7 +1637,7 @@ function updateCurrentSlide() {
 
     currentSlide = updateCurrentSlide()
 
-    if (!currentSlide.previousSibling()) {
+    if (!currentSlide.previousSibling) {
         prevBtn.style.display = "none"
     }
     else {
@@ -1658,7 +1658,7 @@ function updateCurrentSlide() {
 
     const currStep = currentSlide.getAttribute("slide");
 
-    if (!currentSlide.previousSibling()) {
+    if (!currentSlide.previousSibling) {
         prevBtn.style.display = "none"
     }
     else {
