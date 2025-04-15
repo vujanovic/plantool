@@ -1638,29 +1638,29 @@ funeralType.addEventListener("change", e => {
 
 nextBtn.addEventListener("click", e => {
 
+    activeSlideNumber = activeSlideNumber !== 3 ? activeSlideNumber + 1 : 1
+    activeSlide = slides[`slide${activeSlideNumber}`]
+
     if (activeSlide === slides.slide1) {
         prevBtn.style.display = "none"
     }
     else {
         prevBtn.style.display = "inline-block"
     }
-
-    activeSlideNumber = activeSlideNumber !== 3 ? activeSlideNumber + 1 : 1
-    activeSlide = slides[`slide${activeSlideNumber}`]
 
 });
   
 prevBtn.addEventListener("click", e => {
 
+    activeSlideNumber = activeSlideNumber !== 1 ? activeSlideNumber - 1 : 1
+    activeSlide = slides[`slide${activeSlideNumber}`]
+
     if (activeSlide === slides.slide1) {
         prevBtn.style.display = "none"
     }
     else {
         prevBtn.style.display = "inline-block"
     }
-
-    activeSlideNumber = activeSlideNumber !== 3 ? activeSlideNumber + 1 : 1
-    activeSlide = slides[`slide${activeSlideNumber}`]
 
 });
   
