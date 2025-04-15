@@ -1610,7 +1610,7 @@ prevBtn.style.display = "none"
 
 const slider = document.querySelector(".w-slider");
 const sliderAPI = Webflow.require("slider");
-let currentSlide = updateCurrentSlide();
+let currentSlide = updateCurrentSlide().nextElementSibling;
 
 funeralType.addEventListener("change", e => {
 
