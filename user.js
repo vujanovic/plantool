@@ -1609,6 +1609,7 @@ const prevBtn = document.querySelector("#prevBtn")
 prevBtn.style.display = "none"
 
 const slider = document.querySelector(".w-slider");
+const sliderAPI = Webflow.require("slider");
 let currentSlide = updateCurrentSlide();
 
 funeralType.addEventListener("change", e => {
@@ -1634,6 +1635,10 @@ function updateCurrentSlide() {
   
   nextBtn.addEventListener("click", e => {
 
+    e.preventDefault()
+
+    currentSlide = updateCurrentSlide()
+
     if (!currentSlide.previousSibling) {
         prevBtn.style.display = "none"
     }
@@ -1642,16 +1647,17 @@ function updateCurrentSlide() {
     }
 
     const currStep = currentSlide.getAttribute("slide");
+
+    sliderAPI.move(slider, "right")
     
-
-    currentSlide = updateCurrentSlide()
-
 
   });
   
   prevBtn.addEventListener("click", e => {
 
-    const currStep = currentSlide.getAttribute("slide");
+    e.preventDefault()
+
+    currentSlide = updateCurrentSlide()
 
     if (!currentSlide.previousSibling) {
         prevBtn.style.display = "none"
@@ -1659,8 +1665,10 @@ function updateCurrentSlide() {
     else {
         prevBtn.style.display = "inline-block"
     }
-    // gledam preko prev siblinga
-    currentSlide = updateCurrentSlide()
+
+    const currStep = currentSlide.getAttribute("slide");
+
+    sliderAPI.move(slider, "left")
 
     
   });
