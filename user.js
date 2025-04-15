@@ -1629,9 +1629,11 @@ funeralType.addEventListener("change", e => {
     }
     else if (funeralType.value === "burial") {
         // do something
+        return
     }
     else {
         // do something else
+        return
     }
 
 })
@@ -1642,10 +1644,30 @@ nextBtn.addEventListener("click", e => {
         console.log("radim api za 1")
     }
     else if (activeSlideNumber === 2) {
-        console.log("radim api za 1")
+        console.log("radim api za 2")
     }
     else {
         console.log("radim api za 3")
+
+        if (funeralHomeForm.checkValidity()) {
+            const formData = new FormData(funeralHomeForm)
+            const formEntries = Object.fromEntries(formData)
+            fetch(API_LINK + `/ceremonial/addFuneralHome?${currUserID}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formEntries)
+            })
+            .then(res => res.json())
+            .then(data => console.log(data))
+        }
+
+        else {
+            funeralHomeForm.reportValidity()
+        }
+
+        
     }
 
     activeSlideNumber = activeSlideNumber !== 3 ? activeSlideNumber + 1 : 1
@@ -1666,10 +1688,27 @@ prevBtn.addEventListener("click", e => {
         console.log("radim api za 1")
     }
     else if (activeSlideNumber === 2) {
-        console.log("radim api za 1")
+        console.log("radim api za 2")
     }
     else {
         console.log("radim api za 3")
+        if (funeralHomeForm.checkValidity()) {
+            const formData = new FormData(funeralHomeForm)
+            const formEntries = Object.fromEntries(formData)
+            fetch(API_LINK + `/ceremonial/addFuneralHome?${currUserID}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formEntries)
+            })
+            .then(res => res.json())
+            .then(data => console.log(data))
+        }
+
+        else {
+            funeralHomeForm.reportValidity()
+        }
     }
 
     activeSlideNumber = activeSlideNumber !== 1 ? activeSlideNumber - 1 : 1
