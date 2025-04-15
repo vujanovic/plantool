@@ -1634,63 +1634,37 @@ function updateCurrentSlide() {
   }
   
   nextBtn.addEventListener("click", e => {
-    const currStep = currentSlide.getAttribute("slide");
-  
-    if (currStep === "ceremonyPlan") {
-      // First slide
-      nextBtn.style.display = "inline-block";
-      prevBtn.style.display = "none";
-  
-      // do ceremony plan calls
-      return;
+
+    currentSlide = updateCurrentSlide()
+
+    if (!currentSlide.previousSibling()) {
+        prevBtn.style.display = "none"
     }
-  
-    if (currStep === "burial/cremation") {
-      // Second slide
-      nextBtn.style.display = "inline-block";
-      prevBtn.style.display = "inline-block";
-  
-      // do burialCremation api calls
-      return;
-    }
-  
-    if (currStep === "funeralHome") {
-      // Third slide
-      nextBtn.style.display = "none";
-      prevBtn.style.display = "inline-block";
-  
-      // do funeralHome api calls + display some stuff
-      return;
+    else {
+        prevBtn.style.display = "inline-block"
     }
 
-    currentSlide = updateCurrentSlide();
+    const currStep = currentSlide.getAttribute("slide");
+    
+
+    
+    // gledam preko next siblinga
 
   });
   
   prevBtn.addEventListener("click", e => {
-    const currStep = currentSlide.getAttribute("slide");
-  
-    if (currStep === "ceremonyPlan") {
-      // First slide — shouldn't happen, but just in case
-      prevBtn.style.display = "none";
-      nextBtn.style.display = "inline-block";
-      return;
-    }
-  
-    if (currStep === "burial/cremation") {
-      // Second slide
-      prevBtn.style.display = "inline-block";
-      nextBtn.style.display = "inline-block";
-      return;
-    }
-  
-    if (currStep === "funeralHome") {
-      // Third slide
-      prevBtn.style.display = "inline-block";
-      nextBtn.style.display = "none";
-      return;
-    }
-    currentSlide = updateCurrentSlide();
 
+    currentSlide = updateCurrentSlide()
+
+    const currStep = currentSlide.getAttribute("slide");
+
+    if (!currentSlide.previousSibling()) {
+        prevBtn.style.display = "none"
+    }
+    else {
+        prevBtn.style.display = "inline-block"
+    }
+    // gledam preko prev siblinga
+    
   });
   
