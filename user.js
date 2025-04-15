@@ -1610,7 +1610,17 @@ prevBtn.style.display = "none"
 
 const slider = document.querySelector(".w-slider");
 const sliderAPI = Webflow.require("slider");
-let currentSlide = updateCurrentSlide().nextElementSibling;
+const sliderMask = document.querySelector(".w-slider-mask");
+
+let slides = {
+    slide1 : sliderMask.children[0],
+    slide2 : sliderMask.children[1],
+    slide3 : sliderMask.children[2]
+}
+
+
+let activeSlide = slides.slide1
+let activeSlideNumber = 1
 
 funeralType.addEventListener("change", e => {
 
@@ -1626,47 +1636,31 @@ funeralType.addEventListener("change", e => {
 
 })
 
-function updateCurrentSlide() {
-    const sliderMask = document.querySelector(".w-slider-mask");
-    return Array.from(sliderMask.children).find(slide => {
-      return slide.getAttribute("aria-hidden") !== "true";
-    });
-  }
-  
-  nextBtn.addEventListener("click", e => {
+nextBtn.addEventListener("click", e => {
 
-    e.preventDefault()
-
-    currentSlide = updateCurrentSlide().previousElementSibling || updateCurrentSlide()
-
-    if (!currentSlide.previousElementSibling) {
+    if (activeSlide === slides.slide1) {
         prevBtn.style.display = "none"
     }
     else {
         prevBtn.style.display = "inline-block"
     }
 
-    const currStep = currentSlide.getAttribute("slide");
+    activeSlideNumber = activeSlideNumber !== 3 ? activeSlideNumber + 1 : 1
+    activeSlide = slides[`slide${activeSlideNumber}`]
 
-    
-
-  });
+});
   
-  prevBtn.addEventListener("click", e => {
+prevBtn.addEventListener("click", e => {
 
-    e.preventDefault()
-
-    currentSlide = updateCurrentSlide().previousElementSibling || updateCurrentSlide()
-
-    if (!currentSlide.previousElementSibling) {
+    if (activeSlide === slides.slide1) {
         prevBtn.style.display = "none"
     }
     else {
         prevBtn.style.display = "inline-block"
     }
 
-    const currStep = currentSlide.getAttribute("slide");
+    activeSlideNumber = activeSlideNumber !== 3 ? activeSlideNumber + 1 : 1
+    activeSlide = slides[`slide${activeSlideNumber}`]
 
-    
-  });
+});
   
