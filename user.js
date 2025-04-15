@@ -1605,6 +1605,10 @@ const interment = burialCremationForm.querySelector("#interment")
 const permit = burialCremationForm.querySelector("#permit")
 const permitBlock = burialCremationForm.querySelector("#permitBlock")
 
+const wake = ceremonyPlanForm.querySelector("#wake")
+const ceremonyHour = ceremonyPlanForm.querySelector("#ceremonyHour")
+const enlargementPhoto = ceremonyPlanForm.querySelector("#enlargementPhoto")
+
 const nextBtn = document.querySelector("#nextBtn")
 const prevBtn = document.querySelector("#prevBtn")
 prevBtn.style.display = "none"
@@ -1664,13 +1668,78 @@ nextBtn.addEventListener("click", e => {
         console.log("radim api za 1")
         const formData = new FormData(burialCremationForm)
         const formEntries = Object.fromEntries(formData)
-        console.log(formEntries)
+        fetch(API_LINK + `/ceremonial/setBurialCremation?userID=${currUserID}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formEntries)
+        })
+            .then(res => res.json())
+            .then(data => console.log(data))
     }
     else if (activeSlideNumber === 2) {
+
         console.log("radim api za 2")
+
         const formData = new FormData(ceremonyPlanForm)
         const formEntries = Object.fromEntries(formData)
-        console.log(formEntries)
+        const endpoints = [
+            "setCeremonyPlace",
+            "setCeremonyPrayer",
+            "setCeremonyMoralCounselor",
+            "setCeremonySpecific",
+        ];
+
+        const body = JSON.stringify(formEntries);
+
+        // wake
+        // ceremonyHour
+        // enlargementPhoto
+
+        fetch(API_LINK + `/ceremonial/addWake?userID=${currUserID}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({date: wake.value})
+        })
+
+        fetch(API_LINK + `/ceremonial/setCeremonyHour?userID=${currUserID}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({date: ceremonyHour.value})
+        })
+
+        // /uploadEnlargementPhoto
+
+        const enlargementPhotoFormData = new FormData()
+        enlargementPhotoFormData.append("enlargementPhotos", enlargementPhoto.files[0])
+
+        fetch(API_LINK + `/ceremonial/uploadEnlargementPhoto?userID=${currUserID}`, {
+            method: "POST",
+            body: enlargementPhotoFormData
+        })
+
+        endpoints.forEach(endpoint => {
+            fetch(`${API_LINK}/ceremonial/${endpoint}?userID=${currUserID}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: body
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(`[${endpoint}] Success:`, data);
+                })
+                .catch(err => {
+                    console.error(`[${endpoint}] Error:`, err);
+                });
+        });
+
     }
     else {
         console.log("radim api za 3")
