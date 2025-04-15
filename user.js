@@ -1005,9 +1005,11 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
 
 submitInfo.addEventListener("click", function (e) {
     if (!updateInfoForm.checkValidity()) {
-        e.stopPropagation();
+        updateInfoForm.reportValidity()
+        return
     }
-}, true);
+    updateInfoForm.submit()
+});
 
 updateInfoForm.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -1801,7 +1803,7 @@ nextBtn.addEventListener("click", e => {
         // /uploadEnlargementPhoto
 
         const enlargementPhotoFormData = new FormData()
-        enlargementPhotoFormData.append("enlargementPhotos", enlargementPhoto.files[0])
+        enlargementPhotoFormData.append("images", enlargementPhoto.files[0])
 
         fetch(API_LINK + `/ceremonial/uploadEnlargementPhoto?userID=${currUserID}`, {
             method: "POST",
