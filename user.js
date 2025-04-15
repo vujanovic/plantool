@@ -1700,6 +1700,8 @@ const slider = document.querySelector(".w-slider");
 const sliderAPI = Webflow.require("slider");
 const sliderMask = document.querySelector(".w-slider-mask");
 
+const doneSection = document.querySelector(".done-section")
+
 let slides = {
     slide1: sliderMask.children[0],
     slide2: sliderMask.children[1],
@@ -1842,6 +1844,7 @@ nextBtn.addEventListener("click", e => {
                     console.log(data)
                     alert("GOTOVO CEKAJ SAD")
                     slider.style.display = "none"
+                    doneSection.style.display = "flex"
                 })
         }
 
