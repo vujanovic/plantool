@@ -1637,7 +1637,7 @@ function updateCurrentSlide() {
 
     e.preventDefault()
 
-    currentSlide = updateCurrentSlide()
+    currentSlide = updateCurrentSlide().previousSibling
 
     if (!currentSlide.previousSibling) {
         prevBtn.style.display = "none"
@@ -1656,7 +1656,7 @@ function updateCurrentSlide() {
 
     e.preventDefault()
 
-    currentSlide = updateCurrentSlide()
+    currentSlide = updateCurrentSlide().previousSibling
 
     if (!currentSlide.previousSibling) {
         prevBtn.style.display = "none"
