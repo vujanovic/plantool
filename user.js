@@ -1609,8 +1609,7 @@ const prevBtn = document.querySelector("#prevBtn")
 prevBtn.style.display = "none"
 
 const slider = document.querySelector(".w-slider");
-let currentSlide = slider.querySelector(".w-slide.w-active");
-currentSlide = updateCurrentSlide();
+let currentSlide = updateCurrentSlide();
 
 funeralType.addEventListener("change", e => {
 
@@ -1635,8 +1634,6 @@ function updateCurrentSlide() {
   
   nextBtn.addEventListener("click", e => {
 
-    currentSlide = updateCurrentSlide()
-
     if (!currentSlide.previousSibling) {
         prevBtn.style.display = "none"
     }
@@ -1647,14 +1644,12 @@ function updateCurrentSlide() {
     const currStep = currentSlide.getAttribute("slide");
     
 
-    
-    // gledam preko next siblinga
+    currentSlide = updateCurrentSlide()
+
 
   });
   
   prevBtn.addEventListener("click", e => {
-
-    currentSlide = updateCurrentSlide()
 
     const currStep = currentSlide.getAttribute("slide");
 
@@ -1665,6 +1660,8 @@ function updateCurrentSlide() {
         prevBtn.style.display = "inline-block"
     }
     // gledam preko prev siblinga
+    currentSlide = updateCurrentSlide()
+
     
   });
   
