@@ -1630,12 +1630,16 @@ funeralType.addEventListener("change", e => {
     if (!type) return;
 
     const show = (el) => {
-        el.previousElementSibling?.style.display = "block";
+        if (el.previousElementSibling) {
+            el.previousElementSibling.style.display = "block";
+        }
         el.style.display = "block";
     };
 
     const hide = (el) => {
-        el.previousElementSibling?.style.display = "none";
+        if (el.previousElementSibling) {
+            el.previousElementSibling.style.display = "none";
+        }
         el.style.display = "none";
     };
 
