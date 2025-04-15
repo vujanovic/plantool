@@ -1638,6 +1638,16 @@ funeralType.addEventListener("change", e => {
 
 nextBtn.addEventListener("click", e => {
 
+    if (activeSlideNumber === 1) {
+        console.log("radim api za 1")
+    }
+    else if (activeSlideNumber === 2) {
+        console.log("radim api za 1")
+    }
+    else {
+        console.log("radim api za 3")
+    }
+
     activeSlideNumber = activeSlideNumber !== 3 ? activeSlideNumber + 1 : 1
     activeSlide = slides[`slide${activeSlideNumber}`]
 
@@ -1651,6 +1661,16 @@ nextBtn.addEventListener("click", e => {
 });
   
 prevBtn.addEventListener("click", e => {
+
+    if (activeSlideNumber === 1) {
+        console.log("radim api za 1")
+    }
+    else if (activeSlideNumber === 2) {
+        console.log("radim api za 1")
+    }
+    else {
+        console.log("radim api za 3")
+    }
 
     activeSlideNumber = activeSlideNumber !== 1 ? activeSlideNumber - 1 : 1
     activeSlide = slides[`slide${activeSlideNumber}`]
