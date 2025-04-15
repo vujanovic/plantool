@@ -1652,7 +1652,7 @@ nextBtn.addEventListener("click", e => {
         if (funeralHomeForm.checkValidity()) {
             const formData = new FormData(funeralHomeForm)
             const formEntries = Object.fromEntries(formData)
-            fetch(API_LINK + `/ceremonial/addFuneralHome?${currUserID}`, {
+            fetch(API_LINK + `/ceremonial/addFuneralHome?userID=${currUserID}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
