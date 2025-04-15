@@ -1637,9 +1637,9 @@ function updateCurrentSlide() {
 
     e.preventDefault()
 
-    currentSlide = updateCurrentSlide().previousSibling
+    currentSlide = updateCurrentSlide().previousElementSibling || updateCurrentSlide()
 
-    if (!currentSlide.previousSibling) {
+    if (!currentSlide.previousElementSibling) {
         prevBtn.style.display = "none"
     }
     else {
@@ -1656,9 +1656,9 @@ function updateCurrentSlide() {
 
     e.preventDefault()
 
-    currentSlide = updateCurrentSlide().previousSibling
+    currentSlide = updateCurrentSlide().previousElementSibling || updateCurrentSlide()
 
-    if (!currentSlide.previousSibling) {
+    if (!currentSlide.previousElementSibling) {
         prevBtn.style.display = "none"
     }
     else {
