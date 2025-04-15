@@ -62,6 +62,11 @@ const addToPlanBtn = productSection.querySelector('#addToPlanBtn');
 const productImageGrid = productSection.querySelector(".variant-images-grid")
 const variantImageWrapper = productSection.querySelector('.variant-link-image-wrapper');
 
+
+const burialCremationForm = document.querySelector("#burialCremationForm")
+const ceremonyPlanForm = document.querySelector("#ceremonyPlanForm")
+const funeralHomeForm = document.querySelector("#funeralHomeForm")
+
 // ========================
 // Event Listeners
 // ========================
@@ -871,6 +876,73 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
             for (const service of data.ceremonial?.services) {
                 ceremonialIDs[service.address["_id"]] = service["_id"]
             }
+
+            // first ceremonial step
+
+            if (data.ceremonial.typeBurial) {
+                for (const key in data.ceremonial.typeBurial) {
+                    const element = burialCremationForm.querySelector(`#${key}`)
+                    if (element) {
+                        element.value = data.ceremonial.typeBurial[key]
+                    } 
+                }
+            }
+
+            // second and third ceremonial step
+
+            for (const key in data.ceremonial) {
+                
+                if (key === "services") {
+                    continue
+                }
+
+                if (key === "ceremonyPlace") {
+
+                    for (const detailKey in data.ceremonial["ceremonyPlace"]) {
+                        const element = ceremonyPlanForm.querySelector(`input[name=${detailKey}]`)
+                        if (!element) {
+                            continue
+                        }
+                        element.value = data.ceremonial["ceremonyPlace"][detailKey]
+                    }
+
+                    for (const detailKey in data.ceremonial["ceremonyPlace"]["address"]) {
+                        const element = ceremonyPlanForm.querySelector(`input[name=${detailKey}]`)
+                        if (!element) {
+                            continue
+                        }
+                        element.value = data.ceremonial["ceremonyPlace"][detailKey]
+                    }
+
+                    
+                    continue
+                }
+
+                if (key === "funeralHome") {
+                    const homeName = funeralHomeForm.querySelector("input[name=name]")
+                    homeName.value = data.ceremonial[key]["name"]
+                    for (const detailKey in data.ceremonial[key]["address"]) {
+                        const element = funeralHomeForm.querySelector(`input[name=${detailKey}]`)
+                        if (!element) {
+                            continue
+                        }
+                        element.value = data.ceremonial[key]["address"][detailKey]
+                    }
+                    continue
+                }
+
+                const element = ceremonyPlanForm.querySelector(`#${key}`)
+
+                if (!element) {
+                    continue
+                }
+
+                element.value = data.ceremonial[key]
+
+            }
+
+
+
         }
 
 
@@ -1594,10 +1666,8 @@ function deleteContact(btn) {
 // BURIAL/CREMATION (SLIDE 1)
 /////////////////////////////
 
-const burialCremationForm = document.querySelector("#burialCremationForm")
-const ceremonyPlanForm = document.querySelector("#ceremonyPlanForm")
-const funeralHomeForm = document.querySelector("#funeralHomeForm")
 
+// forms defined in the beginning of the script
 const funeralType = burialCremationForm.querySelector("#type")
 const ashDestination = burialCremationForm.querySelector("#ashDestination")
 const cemetery = burialCremationForm.querySelector("#cemetery")
