@@ -1838,7 +1838,11 @@ nextBtn.addEventListener("click", e => {
                 body: JSON.stringify(formEntries)
             })
                 .then(res => res.json())
-                .then(data => console.log(data))
+                .then(data => {
+                    console.log(data)
+                    alert("GOTOVO CEKAJ SAD")
+                    slider.style.display = "none"
+                })
         }
 
         else {
@@ -1870,23 +1874,6 @@ prevBtn.addEventListener("click", e => {
     }
     else {
         console.log("radim api za 3")
-        if (funeralHomeForm.checkValidity()) {
-            const formData = new FormData(funeralHomeForm)
-            const formEntries = Object.fromEntries(formData)
-            fetch(API_LINK + `/ceremonial/addFuneralHome?${currUserID}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(formEntries)
-            })
-                .then(res => res.json())
-                .then(data => console.log(data))
-        }
-
-        else {
-            funeralHomeForm.reportValidity()
-        }
     }
 
     activeSlideNumber = activeSlideNumber !== 1 ? activeSlideNumber - 1 : 1
