@@ -884,14 +884,17 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
                     const element = burialCremationForm.querySelector(`#${key}`)
                     if (element) {
                         element.value = data.ceremonial.typeBurial[key]
-                    } 
+                        if (key === "type") {
+                            element.value = data.ceremonial.typeBurial[key].toLowerCase()
+                        }
+                    }
                 }
             }
 
             // second and third ceremonial step
 
             for (const key in data.ceremonial) {
-                
+
                 if (key === "services") {
                     continue
                 }
@@ -911,10 +914,10 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
                         if (!element) {
                             continue
                         }
-                        element.value = data.ceremonial["ceremonyPlace"][detailKey]
+                        element.value = data.ceremonial["ceremonyPlace"]["address"][detailKey]
                     }
 
-                    
+
                     continue
                 }
 
@@ -937,7 +940,17 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
                     continue
                 }
 
-                element.value = data.ceremonial[key]
+                if (element.name === "wake") {
+                    element.type = "date";
+                    element.value = data.ceremonial[key].split("T")[0];
+                }
+                else if (element.name === "ceremonyHour") {
+                    element.type = "datetime-local";
+                    element.value = data.ceremonial[key].slice(0, 16);
+                }
+                else {
+                    element.value = data.ceremonial[key]
+                }
 
             }
 
@@ -1772,7 +1785,7 @@ nextBtn.addEventListener("click", e => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({date: wake.value})
+            body: JSON.stringify({ date: wake.value })
         })
 
         fetch(API_LINK + `/ceremonial/setCeremonyHour?userID=${currUserID}`, {
@@ -1780,7 +1793,7 @@ nextBtn.addEventListener("click", e => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({date: ceremonyHour.value})
+            body: JSON.stringify({ date: ceremonyHour.value })
         })
 
         // /uploadEnlargementPhoto
