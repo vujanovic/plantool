@@ -1647,11 +1647,13 @@ funeralType.addEventListener("change", e => {
         show(cemetery);
         show(interment);
         hide(permitBlock);
+        hide(ashDestination)
     }
     else {
         hide(cemetery);
         hide(interment);
         show(permitBlock);
+        show(ashDestination)
     }
 
 })
@@ -1662,13 +1664,13 @@ nextBtn.addEventListener("click", e => {
         console.log("radim api za 1")
         const formData = new FormData(burialCremationForm)
         const formEntries = Object.fromEntries(formData)
-        alert(formEntries)
+        console.log(formEntries)
     }
     else if (activeSlideNumber === 2) {
         console.log("radim api za 2")
         const formData = new FormData(ceremonyPlanForm)
         const formEntries = Object.fromEntries(formData)
-        alert(formEntries)
+        console.log(formEntries)
     }
     else {
         console.log("radim api za 3")
