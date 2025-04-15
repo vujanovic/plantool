@@ -280,11 +280,11 @@ function addToPlaybookWithProduct() {
         number: "",
         zip: "",
         specific: ""
-      };
+    };
 
-      if (productCombo.value !== "") {
+    if (productCombo.value !== "") {
         bodyData.productID = productCombo.value
-      }
+    }
 
 
     fetch(API_LINK + `/ceremonial/setNewService?userID=${currUserID}&providerID=${providerID}&serviceID=${serviceID}`, {
@@ -1603,6 +1603,7 @@ const ashDestination = burialCremationForm.querySelector("#ashDestination")
 const cemetery = burialCremationForm.querySelector("#cemetery")
 const interment = burialCremationForm.querySelector("#interment")
 const permit = burialCremationForm.querySelector("#permit")
+const permitBlock = burialCremationForm.querySelector("#permitBlock")
 
 const nextBtn = document.querySelector("#nextBtn")
 const prevBtn = document.querySelector("#prevBtn")
@@ -1613,9 +1614,9 @@ const sliderAPI = Webflow.require("slider");
 const sliderMask = document.querySelector(".w-slider-mask");
 
 let slides = {
-    slide1 : sliderMask.children[0],
-    slide2 : sliderMask.children[1],
-    slide3 : sliderMask.children[2]
+    slide1: sliderMask.children[0],
+    slide2: sliderMask.children[1],
+    slide3: sliderMask.children[2]
 }
 
 
@@ -1624,16 +1625,29 @@ let activeSlideNumber = 1
 
 funeralType.addEventListener("change", e => {
 
-    if (funeralType.value === "") {
-        return
-    }
-    else if (funeralType.value === "burial") {
-        // do something
-        return
+    const type = funeralType.value;
+
+    if (!type) return;
+
+    const show = (el) => {
+        el.previousElementSibling?.style.display = "block";
+        el.style.display = "block";
+    };
+
+    const hide = (el) => {
+        el.previousElementSibling?.style.display = "none";
+        el.style.display = "none";
+    };
+
+    if (type === "burial") {
+        show(cemetery);
+        show(interment);
+        hide(permitBlock);
     }
     else {
-        // do something else
-        return
+        hide(cemetery);
+        hide(interment);
+        show(permitBlock);
     }
 
 })
@@ -1642,9 +1656,15 @@ nextBtn.addEventListener("click", e => {
 
     if (activeSlideNumber === 1) {
         console.log("radim api za 1")
+        const formData = new FormData(burialCremationForm)
+        const formEntries = Object.fromEntries(formData)
+        alert(formEntries)
     }
     else if (activeSlideNumber === 2) {
         console.log("radim api za 2")
+        const formData = new FormData(ceremonyPlanForm)
+        const formEntries = Object.fromEntries(formData)
+        alert(formEntries)
     }
     else {
         console.log("radim api za 3")
@@ -1659,15 +1679,15 @@ nextBtn.addEventListener("click", e => {
                 },
                 body: JSON.stringify(formEntries)
             })
-            .then(res => res.json())
-            .then(data => console.log(data))
+                .then(res => res.json())
+                .then(data => console.log(data))
         }
 
         else {
             funeralHomeForm.reportValidity()
         }
 
-        
+
     }
 
     activeSlideNumber = activeSlideNumber !== 3 ? activeSlideNumber + 1 : 1
@@ -1681,7 +1701,7 @@ nextBtn.addEventListener("click", e => {
     }
 
 });
-  
+
 prevBtn.addEventListener("click", e => {
 
     if (activeSlideNumber === 1) {
@@ -1702,8 +1722,8 @@ prevBtn.addEventListener("click", e => {
                 },
                 body: JSON.stringify(formEntries)
             })
-            .then(res => res.json())
-            .then(data => console.log(data))
+                .then(res => res.json())
+                .then(data => console.log(data))
         }
 
         else {
@@ -1722,4 +1742,3 @@ prevBtn.addEventListener("click", e => {
     }
 
 });
-  
