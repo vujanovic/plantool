@@ -291,6 +291,8 @@ function addToPlaybookWithProduct() {
         bodyData.productID = productCombo.value
     }
 
+    console.log(bodyData)
+
 
     fetch(API_LINK + `/ceremonial/setNewService?userID=${currUserID}&providerID=${providerID}&serviceID=${serviceID}`, {
         method: "POST",
@@ -300,6 +302,7 @@ function addToPlaybookWithProduct() {
         .then(res => res.json())
         .then(data => {
             alert("dodat u proizvode");
+            console.log(bodyData)
             closeBtn.click();
             console.log(data);
             return fetch(API_LINK + `/ceremonial/getServices?userID=${currUserID}`)
