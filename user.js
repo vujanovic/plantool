@@ -875,7 +875,9 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
             }
         }
 
+
         if (data.ceremonial) {
+
             for (const service of data.ceremonial?.services) {
                 ceremonialIDs[service.address["_id"]] = service["_id"]
             }
@@ -1763,7 +1765,7 @@ nextBtn.addEventListener("click", e => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(formEntries)
+            body: formData
         })
             .then(res => res.json())
             .then(data => console.log(data))
