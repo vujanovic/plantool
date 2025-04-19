@@ -1762,9 +1762,6 @@ nextBtn.addEventListener("click", e => {
         const formEntries = Object.fromEntries(formData)
         fetch(API_LINK + `/ceremonial/setBurialCremation?userID=${currUserID}`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
             body: formData
         })
             .then(res => res.json())
