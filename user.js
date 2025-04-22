@@ -954,7 +954,8 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
                     element.value = data.ceremonial[key].slice(0, 16);
                 }
                 else if (element.name === "permit") {
-                    element.value = data.ceremonial[key]["filename"]
+                    continue
+                    // element.value = data.ceremonial[key]["filename"]
                 }
                 else {
                     element.value = data.ceremonial[key]
