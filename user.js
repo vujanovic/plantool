@@ -898,6 +898,8 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
                         if (element.name === "file") {
                             permitName.textContent = data.ceremonial.typeBurial.permit.fileName
                             permitInfo.style.display = 'block'
+                            element.dataset.existingFileName = data.ceremonial.typeBurial.permit.fileName
+                            element.dataset.existingFileUrl = data.ceremonial.typeBurial.permit.fileURL
                             continue
                         }
                         element.value = data.ceremonial.typeBurial[key]
@@ -1766,12 +1768,19 @@ funeralType.addEventListener("change", e => {
 
 })
 
-nextBtn.addEventListener("click", e => {
+nextBtn.addEventListener("click", async e => {
 
     if (activeSlideNumber === 1) {
         console.log("radim api za 1")
         const formData = new FormData(burialCremationForm)
-        const formEntries = Object.fromEntries(formData)
+        
+        if (permitInput.files.length === 0) {
+            const existingFileUrl = permitInput.dataset.existingFileUrl
+            const existingFileName = permitInput.dataset.existingFileName
+            const file = await urlToFile(existingFileUrl, existingFileName)
+            formData.append("file", file)
+        }
+
         fetch(API_LINK + `/ceremonial/setBurialCremation?userID=${currUserID}`, {
             method: "POST",
             body: formData
