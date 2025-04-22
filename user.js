@@ -1664,11 +1664,11 @@ function deleteContact(btn) {
     const type = btn.dataset.deleteType
 
     if (type === "Partner" || type === "Friend") {
-        prevToDelete = 4
+        prevToDelete = 4 * 2 // for the responsive info titles
     }
 
     else if (type === "Child") {
-        prevToDelete = 6
+        prevToDelete = 6 * 2 // for the responsive info titles
     }
 
     fetch(API_LINK + `/user/delete${type}?userID=${currUserID}&${type.toLowerCase()}ID=${btn.dataset.idToDelete}`, {
@@ -1679,7 +1679,7 @@ function deleteContact(btn) {
     })
         .then(response => response.json())
         .then(data => {
-            for (let i = 0; i < prevToDelete + 1; i++) {
+            for (let i = 0; i < prevToDelete; i++) {
                 let lastSibling = btn.previousSibling
                 if (lastSibling) {
                     if (lastSibling.classList.contains("responsive-info-title")) {
