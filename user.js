@@ -1681,7 +1681,12 @@ function deleteContact(btn) {
         .then(data => {
             for (let i = 0; i < prevToDelete; i++) {
                 if (btn.previousSibling) {
-                    btn.previousSibling.remove()
+                    if (!btn.classList.contains("responsive-info-title")) {
+                        btn.previousSibling.remove()
+                    }
+                    else {
+                        btn.previousSibling.previousSibling.remove()
+                    }
                 }
                 else {
                     break
