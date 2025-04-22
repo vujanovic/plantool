@@ -56,6 +56,8 @@ const productSelection = productSection.querySelector(".product-selection")
 const productCombo = productSection.querySelector('#productCombo');
 const productDescription = productSection.querySelector('#productDescription');
 const productPrice = productSection.querySelector('#productPrice');
+const reviewsContainer = document.querySelector(".service-reviews")
+const reviewDiv = reviewsContainer.querySelector(".review")
 const closeBtn = productSection.querySelector('#closeBtn');
 const addToPlanBtn = productSection.querySelector('#addToPlanBtn');
 
@@ -188,8 +190,7 @@ const handleSelect = (ev) => {
 
     // handling reviews
     const reviews = JSON.parse(btn.dataset.reviews)
-    const reviewsContainer = document.querySelector(".service-reviews")
-    const reviewDiv = reviewsContainer.querySelector(".review")
+    reviewsContainer.innerHTML = ""
 
     for (const review of reviews) {
         const newReviewCard = reviewDiv.cloneNode(true)
