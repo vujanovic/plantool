@@ -445,8 +445,10 @@ function renderFeatured(data) {
         for (let i = 0; i < whole; i++) {
             stars.children[i].querySelector("div").style.width = "30px";
         }
-        stars.children[whole]?.querySelector("div").style.width = `${decimal * 30}px`;
-
+        if (whole < 5) {
+            stars.children[whole].querySelector("div").style.width = `${decimal * 30}px`;
+        }
+        
         if (ceremonialIDs[service.address["_id"]]) {
 
             cardBtn.textContent = "Remove from Plan";
