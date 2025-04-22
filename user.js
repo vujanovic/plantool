@@ -1774,12 +1774,12 @@ nextBtn.addEventListener("click", async e => {
         console.log("radim api za 1")
         const formData = new FormData(burialCremationForm)
         
-        if (permitInput.files.length === 0) {
-            const existingFileUrl = permitInput.dataset.existingFileUrl
-            const existingFileName = permitInput.dataset.existingFileName
-            const file = await urlToFile(existingFileUrl, existingFileName)
-            formData.append("file", file)
-        }
+        // if (permitInput.files.length === 0) {
+        //     const existingFileUrl = permitInput.dataset.existingFileUrl
+        //     const existingFileName = permitInput.dataset.existingFileName
+        //     const file = await urlToFile(existingFileUrl, existingFileName)
+        //     formData.append("file", file)
+        // }
 
         fetch(API_LINK + `/ceremonial/setBurialCremation?userID=${currUserID}`, {
             method: "POST",
