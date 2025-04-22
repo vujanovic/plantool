@@ -200,7 +200,7 @@ const handleSelect = (ev) => {
         name.textContent = review.name
         comment.textContent = review.comment || "-"
 
-        const stars = newReviewCard.querySelector("#featuredStars");
+        const stars = newReviewCard.querySelector("#ratingStars");
 
         for (let i = 0; i < review.grade; i++) {
             stars.children[i].querySelector("div").style.width = "30px";
@@ -445,7 +445,7 @@ function renderFeatured(data) {
         for (let i = 0; i < whole; i++) {
             stars.children[i].querySelector("div").style.width = "30px";
         }
-        stars.children[whole].querySelector("div").style.width = `${decimal * 30}px`;
+        stars.children[whole]?.querySelector("div").style.width = `${decimal * 30}px`;
 
         if (ceremonialIDs[service.address["_id"]]) {
 
