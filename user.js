@@ -852,6 +852,13 @@ function goToStep(stepIndex) {
 }
 
 
+async function urlToFile(url, filename) {
+    const res = await fetch(url);
+    const blob = await res.blob();
+    const contentType = res.headers.get("content-type") || blob.type || "application/octet-stream";
+    return new File([blob], filename, { type: contentType });
+  }
+  
 
 fetch(API_LINK + `/user/allData?id=${currUserID}`)
     .then(response => response.json())
@@ -888,6 +895,11 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
                 for (const key in data.ceremonial.typeBurial) {
                     const element = burialCremationForm.querySelector(`#${key}`)
                     if (element) {
+                        if (element.name === "file") {
+                            permitName.textContent = data.ceremonial.typeBurial.permit.fileName
+                            permitInfo.style.display = 'block'
+                            continue
+                        }
                         element.value = data.ceremonial.typeBurial[key]
                         if (key === "type") {
                             element.value = data.ceremonial.typeBurial[key].toLowerCase()
@@ -952,10 +964,6 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
                 else if (element.name === "ceremonyHour") {
                     element.type = "datetime-local";
                     element.value = data.ceremonial[key].slice(0, 16);
-                }
-                else if (element.name === "file") {
-                    continue
-                    // element.value = data.ceremonial[key]["filename"]
                 }
                 else {
                     element.value = data.ceremonial[key]
