@@ -155,6 +155,7 @@ function renderAllProviders(data) {
         cardBtn.dataset.addressID = item.address["_id"]
         cardBtn.dataset.contactInfo = JSON.stringify(item["contactInfo"] || { email: "-", phoneNumber: "-" });
         cardBtn.dataset.website = item["website"] || "-";
+        cardBtn.dataset.reviews = JSON.stringify(item.reviews)
 
         nameHeading.textContent = item.name;
         addressParagraph.textContent = `${item.address.street}, ${item.address.zip} ${item.address.city}, ${item.address.country}`;
@@ -184,6 +185,32 @@ const handleSelect = (ev) => {
     const address = JSON.parse(btn.dataset.address);
     const contactInfo = JSON.parse(btn.dataset.contactInfo);
     const website = btn.dataset.website;
+
+    // handling reviews
+    const reviews = JSON.parse(btn.dataset.reviews)
+    const reviewsContainer = document.querySelector(".service-reviews")
+    const reviewDiv = reviewsContainer.querySelector(".review")
+
+    for (const review of reviews) {
+        const newReviewCard = reviewDiv.cloneNode(true)
+        const name = newReviewCard.querySelector("#name")
+        const comment = newReviewCard.querySelector("#comment")
+
+        name.textContent = review.name
+        comment.textContent = review.comment || "-"
+
+        const stars = newReviewCard.querySelector("#featuredStars");
+
+        for (let i = 0; i < review.grade; i++) {
+            stars.children[i].querySelector("div").style.width = "30px";
+        }
+
+        newReviewCard.style.display = "flex"
+
+        reviewsContainer.appendChild(newReviewCard)
+    }
+
+    
 
     serviceDescription.textContent = description || "-";
     serviceAddress.textContent = `${address.street}, ${address.zip} ${address.city}, ${address.country}`;
@@ -441,6 +468,7 @@ function renderFeatured(data) {
         cardBtn.dataset.website = service["website"] || "-";
         cardBtn.dataset.name = service["name"];
         cardBtn.dataset.addressID = service.address["_id"]
+        cardBtn.dataset.reviews = JSON.stringify(service.reviews)
 
 
         featuredGrid.appendChild(currCard);
@@ -509,6 +537,7 @@ function renderNear(data) {
         cardBtn.dataset.website = service["website"] || "-";
         cardBtn.dataset.name = service["name"];
         cardBtn.dataset.addressID = service.address["_id"]
+        cardBtn.dataset.reviews = JSON.stringify(service.reviews)
 
         nearGrid.appendChild(currCard);
     }
