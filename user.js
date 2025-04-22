@@ -953,7 +953,7 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
                     element.type = "datetime-local";
                     element.value = data.ceremonial[key].slice(0, 16);
                 }
-                else if (element.name === "permit") {
+                else if (element.name === "file") {
                     continue
                     // element.value = data.ceremonial[key]["filename"]
                 }
