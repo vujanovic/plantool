@@ -995,6 +995,7 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
         }
 
         addDeleteListeners()
+        stepContainer.style.height = `${document.querySelector(".current-step").offsetHeight}px`;
 
         if (data["verified"]) {
             verificationStatus.style.color = "green"
@@ -1251,6 +1252,9 @@ function addPartnerToList(data) {
 
     addDeleteListeners()
 
+    stepContainer.style.height = `${document.querySelector(".current-step").offsetHeight}px`;
+
+
     window.Webflow && window.Webflow.require('ix2').init();
 
 }
@@ -1381,6 +1385,8 @@ function addChildToList(data) {
 
     childGrid.appendChild(newDelete)
     childGrid.appendChild(newLine)
+
+    stepContainer.style.height = `${document.querySelector(".current-step").offsetHeight}px`;
 
     addDeleteListeners()
 
@@ -1593,6 +1599,9 @@ function addFriendToList(data) {
     friendsGrid.appendChild(newDelete)
     friendsGrid.appendChild(newLine)
 
+    stepContainer.style.height = `${document.querySelector(".current-step").offsetHeight}px`;
+
+
     addDeleteListeners()
 
     window.Webflow && window.Webflow.require('ix2').init();
@@ -1671,20 +1680,23 @@ function deleteContact(btn) {
         .then(response => response.json())
         .then(data => {
             for (let i = 0; i < prevToDelete; i++) {
-                if (btn.previousElementSibling) {
-                    btn.previousElementSibling.remove()
+                if (btn.previousSibling) {
+                    btn.previousSibling.remove()
                 }
                 else {
                     break
                 }
             }
 
-            if (btn.nextElementSibling) {
-                btn.nextElementSibling.remove();
+            if (btn.nextSibling) {
+                btn.nextSibling.remove();
             }
 
             btn.remove()
         })
+
+    stepContainer.style.height = `${document.querySelector(".current-step").offsetHeight}px`;
+
 
 }
 
