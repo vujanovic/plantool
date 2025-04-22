@@ -448,6 +448,8 @@ function renderFeatured(data) {
         if (whole < 5) {
             stars.children[whole].querySelector("div").style.width = `${decimal * 30}px`;
         }
+
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
         
         if (ceremonialIDs[service.address["_id"]]) {
 
