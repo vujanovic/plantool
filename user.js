@@ -1679,7 +1679,7 @@ function deleteContact(btn) {
     })
         .then(response => response.json())
         .then(data => {
-            for (let i = 0; i < prevToDelete; i++) {
+            for (let i = 0; i < prevToDelete + 1; i++) {
                 let lastSibling = btn.previousSibling
                 if (lastSibling) {
                     if (lastSibling.classList.contains("responsive-info-title")) {
