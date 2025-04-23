@@ -902,6 +902,8 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
 
         nameHeading.textContent = nameHeading.textContent.replace("$name", data["firstname"]);
 
+        sessionStorage.setItem("name", `${data.firstname} ${data.lastname}`)
+
         for (const key in data) {
             if (key === "address") {
                 for (const detail in data[key]) {
