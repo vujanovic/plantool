@@ -934,10 +934,15 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
                     const element = burialCremationForm.querySelector(`#${key}`)
                     if (element) {
                         if (element.name === "file") {
-                            permitName.textContent = data.ceremonial.typeBurial.permit.fileName
-                            permitInfo.style.display = 'block'
-                            element.dataset.existingFileName = data.ceremonial.typeBurial.permit.fileName
-                            element.dataset.existingFileUrl = data.ceremonial.typeBurial.permit.fileURL
+                            fetch(API_LINK + `/ceremonial/getPermit?userID=${currUserID}`)
+                            .then(response => response.json())
+                            .then(permitData => {
+                                permitName.textContent = permitData.permit.fileName
+                                permitInfo.style.display = 'block'
+                                element.dataset.existingFileName = permitData.permit.fileName
+                                element.dataset.existingFileUrl = permitData.permit.fileURL
+                            })
+                            
                             continue
                         }
                         element.value = data.ceremonial.typeBurial[key]
@@ -1828,12 +1833,12 @@ nextBtn.addEventListener("click", async e => {
         console.log("radim api za 1")
         const formData = new FormData(burialCremationForm)
         
-        // if (permitInput.files.length === 0) {
-        //     const existingFileUrl = permitInput.dataset.existingFileUrl
-        //     const existingFileName = permitInput.dataset.existingFileName
-        //     const file = await urlToFile(existingFileUrl, existingFileName)
-        //     formData.append("file", file)
-        // }
+        if (permitInput.files.length === 0) {
+            const existingFileUrl = permitInput.dataset.existingFileUrl
+            const existingFileName = permitInput.dataset.existingFileName
+            const file = await urlToFile(existingFileUrl, existingFileName)
+            formData.append("file", file)
+        }
 
         fetch(API_LINK + `/ceremonial/setBurialCremation?userID=${currUserID}`, {
             method: "POST",
