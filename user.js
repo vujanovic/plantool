@@ -889,8 +889,7 @@ function goToStep(stepIndex) {
 
 
 async function urlToFile(url, filename) {
-    const corsProxy = "https://cors-anywhere.herokuapp.com/";
-    const res = await fetch(corsProxy + url);
+    const res = await fetch(url);
     const blob = await res.blob();
     const contentType = res.headers.get("content-type") || blob.type || "application/octet-stream";
     return new File([blob], filename, { type: contentType });
