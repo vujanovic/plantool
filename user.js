@@ -936,11 +936,12 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
                         if (element.name === "file") {
                             fetch(API_LINK + `/ceremonial/getPermit?userID=${currUserID}`)
                             .then(response => response.json())
-                            .then(permitData => {
-                                permitName.textContent = permitData.permit.fileName
+                            .then(rawData => {
+                                permitData = rawData.data.permit
+                                permitName.textContent = permitData.fileName
                                 permitInfo.style.display = 'block'
-                                element.dataset.existingFileName = permitData.permit.fileName
-                                element.dataset.existingFileUrl = permitData.permit.fileURL
+                                element.dataset.existingFileName = permitData.fileName
+                                element.dataset.existingFileUrl = permitData.fileURL
                             })
                             
                             continue
