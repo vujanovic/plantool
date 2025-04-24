@@ -276,6 +276,10 @@ const handleSelect = (ev) => {
                                 productMask.appendChild(slide);
                             })
 
+                            Webflow.destroy();
+                            Webflow.ready();
+                            Webflow.require('slider').redraw();
+
                             productImageGrid.appendChild(productImageContainer);
                             
                         });
