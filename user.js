@@ -268,7 +268,16 @@ const handleSelect = (ev) => {
                                 productCombo.dispatchEvent(new Event('change', { bubbles: true }));
                             });
 
+                            data.images.forEach(img => {
+                                const slide = originalProductSlide.cloneNode(true);
+                                const image = slide.querySelector("img");
+                                image.src = img.fileURL;
+                                slide.style.display = "inline-block";
+                                productMask.appendChild(slide);
+                            })
+
                             productImageGrid.appendChild(productImageContainer);
+                            
                         });
                 }
             }
