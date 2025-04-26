@@ -330,6 +330,21 @@ function addToPlaybookWithProduct() {
 
     if (productCombo.value !== "") {
         bodyData.productID = productCombo.value
+        fetch(API_LINK + `/commerce/addProductCeremonial?userID=${currUserID}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                productID: productCombo.value,
+                specific: ""
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+        })
+        
     }
 
     console.log(bodyData)
@@ -346,6 +361,7 @@ function addToPlaybookWithProduct() {
             console.log(bodyData)
             closeBtn.click();
             console.log(data);
+            // /addProductCeremonial
             return fetch(API_LINK + `/ceremonial/getServices?userID=${currUserID}`)
         })
         .then(res => res.json())
