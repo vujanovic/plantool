@@ -1095,6 +1095,7 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
     })
 
 submitInfo.addEventListener("click", function (e) {
+    e.preventDefault()
     if (!updateInfoForm.checkValidity()) {
         updateInfoForm.reportValidity()
         return
@@ -1124,7 +1125,7 @@ updateInfoForm.addEventListener("submit", function (e) {
             })
             .catch(err => alert("greska"))
 
-        fetch(`${API_LINK}/user/changeAddress`, {
+        fetch(`${API_LINK}/user/changeAddress?userID=${currUserID}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(dataObject)
