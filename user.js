@@ -934,6 +934,11 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
         for (const key in data) {
             if (key === "address") {
                 for (const detail in data[key]) {
+                    if (detail === "number") {
+                        const input = document.querySelector(`[name="streetNumber"]`)
+                        input.value = data[key][detail] || ""
+                        continue
+                    }
                     const input = document.querySelector(`[name="${detail}"]`)
                     if (input) {
                         input.value = data[key][detail] || ""
