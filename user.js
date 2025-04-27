@@ -362,6 +362,7 @@ function addToPlaybookWithProduct() {
             })
             .then(res => res.json())
             .then(services => {
+                console.log(services)
                 for (const service of services.data) {
                     if (service.serviceID === servicePickedBtn.dataset.serviceID) {
                         ceremonialIDs[service.serviceID] = service["_id"]
