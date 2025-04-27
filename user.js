@@ -363,8 +363,8 @@ function addToPlaybookWithProduct() {
             .then(res => res.json())
             .then(services => {
                 for (const service of services.data) {
-                    if (service.address["_id"] === servicePickedBtn.dataset.addressID) {
-                        ceremonialIDs[service.address["_id"]] = service["_id"]
+                    if (service.serviceID === servicePickedBtn.dataset.serviceID) {
+                        ceremonialIDs[service.serviceID] = service["_id"]
                         servicePickedBtn.dataset.serviceIdToDelete = service["_id"]
                         return
                     }
