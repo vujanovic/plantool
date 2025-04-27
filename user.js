@@ -1099,20 +1099,13 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
         console.log(err);
     })
 
-submitInfo.addEventListener("click", function (e) {
+submitInfo.addEventListener("click", e => {
     e.preventDefault()
     if (!updateInfoForm.checkValidity()) {
         updateInfoForm.reportValidity()
         return
     }
-    updateInfoForm.submit()
-});
-
-updateInfoForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-    if (updateInfoForm.checkValidity()) {
-
-        const formData = new FormData(updateInfoForm)
+    const formData = new FormData(updateInfoForm)
         const dataObject = Object.fromEntries(formData.entries())
         delete dataObject["cf-turnstile-response"]
 
@@ -1136,10 +1129,16 @@ updateInfoForm.addEventListener("submit", function (e) {
             body: JSON.stringify(dataObject)
         }).then(res => res.json())
             .then(data => console.log(data))
+    
+});
 
+updateInfoForm.addEventListener("keydown", e => {
+    
+    if (e.key === "Enter") {
+        e.preventDefault()
+        submitInfo.click()
     }
-
-
+    
 });
 
 const stepBtns = document.querySelectorAll(".step-btn")
