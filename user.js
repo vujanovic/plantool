@@ -135,13 +135,12 @@ function renderAllProviders(data) {
         const websiteParagraph = card.querySelector("#website");
         const cardBtn = card.querySelector(".card-btn");
 
-        if (ceremonialIDs[item.address["_id"]]) {
-
+        if (ceremonialIDs[item["_id"]]) {
+            // znaci da je vec dodatu ceremonial
             cardBtn.textContent = "Remove from Plan";
             cardBtn.style.backgroundColor = "red";
-            cardBtn.dataset.serviceIdToDelete = ceremonialIDs[item.address["_id"]]
+            cardBtn.dataset.serviceIdToDelete = ceremonialIDs[item["_id"]]
             cardBtn.addEventListener("click", removeFromPlaybookWithProduct);
-
         }
 
         else {
@@ -211,7 +210,7 @@ const handleSelect = (ev) => {
         reviewsContainer.appendChild(newReviewCard)
     }
 
-    
+
 
     serviceDescription.textContent = description || "-";
     serviceAddress.textContent = `${address.street}, ${address.zip} ${address.city}, ${address.country}`;
@@ -281,7 +280,7 @@ const handleSelect = (ev) => {
                             Webflow.require('slider').redraw();
 
                             productImageGrid.appendChild(productImageContainer);
-                            
+
                         });
                 }
             }
@@ -340,40 +339,39 @@ function addToPlaybookWithProduct() {
                 specific: ""
             })
         })
-        .then(res => res.json())
-        .then(data => {
-            console.log(data)
-        })
-        
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+            })
+
     }
 
-    console.log(bodyData)
-
-
-    fetch(API_LINK + `/ceremonial/setNewService?userID=${currUserID}&providerID=${providerID}&serviceID=${serviceID}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(bodyData)
-    })
-        .then(res => res.json())
-        .then(data => {
-            alert("dodat u proizvode");
-            console.log(bodyData)
-            closeBtn.click();
-            console.log(data);
-            // /addProductCeremonial
-            return fetch(API_LINK + `/ceremonial/getServices?userID=${currUserID}`)
+    else {
+        fetch(API_LINK + `/ceremonial/setNewService?userID=${currUserID}&providerID=${providerID}&serviceID=${serviceID}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(bodyData)
         })
-        .then(res => res.json())
-        .then(services => {
-            for (const service of services.data) {
-                if (service.address["_id"] === servicePickedBtn.dataset.addressID) {
-                    ceremonialIDs[service.address["_id"]] = service["_id"]
-                    servicePickedBtn.dataset.serviceIdToDelete = service["_id"]
-                    return
+            .then(res => res.json())
+            .then(data => {
+                alert("dodat u servise najceremonijalnije");
+                console.log(bodyData)
+                closeBtn.click();
+                console.log(data);
+                return fetch(API_LINK + `/ceremonial/getServices?userID=${currUserID}`)
+            })
+            .then(res => res.json())
+            .then(services => {
+                for (const service of services.data) {
+                    if (service.address["_id"] === servicePickedBtn.dataset.addressID) {
+                        ceremonialIDs[service.address["_id"]] = service["_id"]
+                        servicePickedBtn.dataset.serviceIdToDelete = service["_id"]
+                        return
+                    }
                 }
-            }
-        })
+            })
+    }
+
 }
 
 const removeFromPlaybookWithProduct = (e) => {
@@ -479,14 +477,13 @@ function renderFeatured(data) {
         }
 
         console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-        
-        if (ceremonialIDs[service.address["_id"]]) {
+
+        if (ceremonialIDs[service["_id"]]) {
 
             cardBtn.textContent = "Remove from Plan";
             cardBtn.style.backgroundColor = "red";
-            cardBtn.dataset.serviceIdToDelete = ceremonialIDs[service.address["_id"]]
+            cardBtn.dataset.serviceIdToDelete = ceremonialIDs[service["_id"]]
             cardBtn.addEventListener("click", removeFromPlaybookWithProduct);
-
         }
 
         else {
@@ -551,11 +548,11 @@ function renderNear(data) {
             stars.children[whole].querySelector("div").style.width = `${decimal * 30}px`;
         }
 
-        if (ceremonialIDs[service.address["_id"]]) {
+        if (ceremonialIDs[service["_id"]]) {
 
             cardBtn.textContent = "Remove from Plan";
             cardBtn.style.backgroundColor = "red";
-            cardBtn.dataset.serviceIdToDelete = ceremonialIDs[service.address["_id"]]
+            cardBtn.dataset.serviceIdToDelete = ceremonialIDs[service["_id"]]
             cardBtn.addEventListener("click", removeFromPlaybookWithProduct);
 
         }
@@ -922,8 +919,8 @@ async function urlToFile(url, filename) {
     const blob = await res.blob();
     const contentType = res.headers.get("content-type") || blob.type || "application/octet-stream";
     return new File([blob], filename, { type: contentType });
-  }
-  
+}
+
 
 fetch(API_LINK + `/user/allData?id=${currUserID}`)
     .then(response => response.json())
@@ -953,7 +950,7 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
         if (data.ceremonial) {
 
             for (const service of data.ceremonial?.services) {
-                ceremonialIDs[service.address["_id"]] = service["_id"]
+                ceremonialIDs[service.serviceID] = service["_id"]
             }
 
             // first ceremonial step
@@ -964,15 +961,15 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
                     if (element) {
                         if (element.name === "file") {
                             fetch(API_LINK + `/ceremonial/getPermit?userID=${currUserID}`)
-                            .then(response => response.json())
-                            .then(rawData => {
-                                permitData = rawData.data.permit
-                                permitName.textContent = permitData.fileName
-                                permitInfo.style.display = 'block'
-                                element.dataset.existingFileName = permitData.fileName
-                                element.dataset.existingFileUrl = permitData.fileURL
-                            })
-                            
+                                .then(response => response.json())
+                                .then(rawData => {
+                                    permitData = rawData.data.permit
+                                    permitName.textContent = permitData.fileName
+                                    permitInfo.style.display = 'block'
+                                    element.dataset.existingFileName = permitData.fileName
+                                    element.dataset.existingFileUrl = permitData.fileURL
+                                })
+
                             continue
                         }
                         element.value = data.ceremonial.typeBurial[key]
@@ -1862,7 +1859,7 @@ nextBtn.addEventListener("click", async e => {
     if (activeSlideNumber === 1) {
         console.log("radim api za 1")
         const formData = new FormData(burialCremationForm)
-        
+
         if (permitInput.files.length === 0) {
             const existingFileUrl = permitInput.dataset.existingFileUrl
             const existingFileName = permitInput.dataset.existingFileName
