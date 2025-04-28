@@ -31,7 +31,6 @@ fetch(API_LINK + "/data/getServiceTypes")
         const title = ogServiceCard.querySelector("h4")
         title.textContent = type.value
         typeCard.style.display = "block"
-        servicesGrid.appendChild(typeCard)
         typeCard.addEventListener("click", () => {
             const selectedType = type.value;
             providersSection.style.display = "none";
@@ -60,6 +59,11 @@ fetch(API_LINK + "/data/getServiceTypes")
                     stepContainer.style.height = `${document.querySelector(".current-step").offsetHeight}px`;
                 });
         });
+        
+        servicesGrid.appendChild(typeCard)
+
+        window.Webflow && window.Webflow.require('ix2').init();
+
 
     }
 })
