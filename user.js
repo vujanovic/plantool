@@ -21,7 +21,48 @@ console.log("UCITANNA SKRIPTA")
 // ========================
 const logoutBtn = document.querySelector("#logoutBtn");
 const servicesGrid = document.querySelector(".services-grid");
-const serviceBtns = servicesGrid.querySelectorAll(".service-card");
+const ogServiceCard = document.querySelector(".service-card")
+
+fetch(API_LINK + "/data/getServiceTypes")
+.then(res => res.json())
+.then(data => {
+    for (const type of data) {
+        const typeCard = ogServiceCard.cloneNode(true)
+        const title = ogServiceCard.querySelector("h4")
+        title.textContent = type.value
+        typeCard.style.display = "block"
+        servicesGrid.appendChild(typeCard)
+        typeCard.addEventListener("click", () => {
+            const selectedType = type.value;
+            providersSection.style.display = "none";
+            firstHeading.textContent = `ALL ${selectedType.toUpperCase()} PROVIDERS`;
+            bestMatchHeading.textContent = `FEATURED ${selectedType.toUpperCase()} PROVIDERS`;
+            nearSectionHeading.textContent = `${selectedType.toUpperCase()} PROVIDERS NEAR YOU`;
+            ctaLink.textContent = `See all the ${selectedType.toUpperCase()} providers`;
+    
+            if (types[selectedType]) {
+                const nearest = getNearestServices(userLat, userLng, types[selectedType].services);
+                renderFeatured(types[selectedType]);
+                renderNear(nearest);
+                renderAllProviders(types[selectedType]);
+                stepContainer.style.height = `${document.querySelector(".current-step").offsetHeight}px`;
+                return;
+            }
+    
+            fetch(API_LINK + `/searchServiceType?type=${selectedType}`)
+                .then(response => response.json())
+                .then(data => {
+                    const nearest = getNearestServices(userLat, userLng, data.services);
+                    renderFeatured(data);
+                    renderNear(nearest);
+                    renderAllProviders(data);
+                    types[selectedType] = data;
+                    stepContainer.style.height = `${document.querySelector(".current-step").offsetHeight}px`;
+                });
+        });
+
+    }
+})
 
 const providersSection = document.querySelector(".all-providers");
 const originalCard = document.querySelector(".provider-card");
@@ -592,37 +633,6 @@ function renderNear(data) {
 // ========================
 // Main Interaction Logic
 // ========================
-serviceBtns.forEach(button => {
-    button.addEventListener("click", () => {
-        const selectedType = button.querySelector(".service-grid-heading").textContent;
-        providersSection.style.display = "none";
-        firstHeading.textContent = `ALL ${selectedType.toUpperCase()} PROVIDERS`;
-        bestMatchHeading.textContent = `FEATURED ${selectedType.toUpperCase()} PROVIDERS`;
-        nearSectionHeading.textContent = `${selectedType.toUpperCase()} PROVIDERS NEAR YOU`;
-        ctaLink.textContent = `See all the ${selectedType.toUpperCase()} providers`;
-
-        if (types[selectedType]) {
-            const nearest = getNearestServices(userLat, userLng, types[selectedType].services);
-            renderFeatured(types[selectedType]);
-            renderNear(nearest);
-            renderAllProviders(types[selectedType]);
-            stepContainer.style.height = `${document.querySelector(".current-step").offsetHeight}px`;
-            return;
-        }
-
-        fetch(API_LINK + `/searchServiceType?type=${selectedType}`)
-            .then(response => response.json())
-            .then(data => {
-                const nearest = getNearestServices(userLat, userLng, data.services);
-                renderFeatured(data);
-                renderNear(nearest);
-                renderAllProviders(data);
-                types[selectedType] = data;
-                stepContainer.style.height = `${document.querySelector(".current-step").offsetHeight}px`;
-            });
-    });
-});
-
 ctaLink.addEventListener("click", e => {
     e.preventDefault();
     providersSection.style.display = "block";
