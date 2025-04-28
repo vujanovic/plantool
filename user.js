@@ -21,7 +21,7 @@ console.log("UCITANNA SKRIPTA")
 // ========================
 const logoutBtn = document.querySelector("#logoutBtn");
 const servicesGrid = document.querySelector(".services-grid");
-const ogServiceCard = document.querySelector(".service-card")
+const ogServiceCard = document.querySelector("#ogThisCard")
 
 fetch(API_LINK + "/data/getServiceTypes")
 .then(res => res.json())
@@ -59,12 +59,10 @@ fetch(API_LINK + "/data/getServiceTypes")
                     stepContainer.style.height = `${document.querySelector(".current-step").offsetHeight}px`;
                 });
         });
-        
+
         servicesGrid.appendChild(typeCard)
 
         window.Webflow && window.Webflow.require('ix2').init();
-
-
     }
 })
 
