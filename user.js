@@ -22,12 +22,15 @@ console.log("UCITANNA SKRIPTA")
 const logoutBtn = document.querySelector("#logoutBtn");
 const servicesGrid = document.querySelector(".services-grid");
 const ogServiceCard = document.querySelector("#ogThisCard")
+console.log(ogServiceCard)
 
 fetch(API_LINK + "/data/getServiceTypes")
 .then(res => res.json())
 .then(data => {
+
     ogServiceCard.style.display = "none"
     for (const type of data) {
+        console.log(type)
         const typeCard = ogServiceCard.cloneNode(true)
         const title = ogServiceCard.querySelector("h4")
         title.textContent = type.value
