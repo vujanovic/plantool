@@ -22,7 +22,7 @@ console.log("UCITANNA SKRIPTA")
 const logoutBtn = document.querySelector("#logoutBtn");
 const servicesGrid = document.querySelector(".services-grid");
 const ogServiceCard = document.querySelector("#ogThisCard")
-console.log(ogServiceCard)
+console.log(ogServiceCard.innerHTML)
 
 fetch(API_LINK + "/data/getServiceTypes")
 .then(res => res.json())
@@ -32,9 +32,14 @@ fetch(API_LINK + "/data/getServiceTypes")
     for (const type of data) {
         console.log(type)
         const typeCard = ogServiceCard.cloneNode(true)
+
         const title = ogServiceCard.querySelector("h4")
+
         title.textContent = type.value
+
         typeCard.style.display = "block"
+
+
         typeCard.addEventListener("click", () => {
             const selectedType = type.value;
             providersSection.style.display = "none";
@@ -66,8 +71,10 @@ fetch(API_LINK + "/data/getServiceTypes")
 
         servicesGrid.appendChild(typeCard)
 
-        window.Webflow && window.Webflow.require('ix2').init();
     }
+
+    window.Webflow && window.Webflow.require('ix2').init();
+
 })
 
 const providersSection = document.querySelector(".all-providers");
