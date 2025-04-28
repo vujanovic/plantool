@@ -342,6 +342,19 @@ function addToPlaybookWithProduct() {
             .then(res => res.json())
             .then(data => {
                 console.log(data)
+                closeBtn.click();
+                return fetch(API_LINK + `/ceremonial/getServices?userID=${currUserID}`)
+            })
+            .then(res => res.json())
+            .then(services => {
+                console.log(services)
+                for (const service of services.data) {
+                    if (service.providerID === servicePickedBtn.dataset.providerID) {
+                        ceremonialIDs[service.serviceID] = service["_id"]
+                        servicePickedBtn.dataset.serviceIdToDelete = service["_id"]
+                        return
+                    }
+                }
             })
 
     }
@@ -355,7 +368,6 @@ function addToPlaybookWithProduct() {
             .then(res => res.json())
             .then(data => {
                 alert("dodat u servise najceremonijalnije");
-                console.log(bodyData)
                 closeBtn.click();
                 console.log(data);
                 return fetch(API_LINK + `/ceremonial/getServices?userID=${currUserID}`)
@@ -364,7 +376,7 @@ function addToPlaybookWithProduct() {
             .then(services => {
                 console.log(services)
                 for (const service of services.data) {
-                    if (service.serviceID === servicePickedBtn.dataset.serviceID) {
+                    if (service.providerID === servicePickedBtn.dataset.providerID) {
                         ceremonialIDs[service.serviceID] = service["_id"]
                         servicePickedBtn.dataset.serviceIdToDelete = service["_id"]
                         return
