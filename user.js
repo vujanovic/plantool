@@ -26,6 +26,7 @@ const ogServiceCard = document.querySelector("#ogThisCard")
 fetch(API_LINK + "/data/getServiceTypes")
 .then(res => res.json())
 .then(data => {
+    ogServiceCard.style.display = "none"
     for (const type of data) {
         const typeCard = ogServiceCard.cloneNode(true)
         const title = ogServiceCard.querySelector("h4")
