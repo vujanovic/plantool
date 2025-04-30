@@ -270,7 +270,7 @@ const handleSelect = (ev) => {
     servicePhone.textContent = contactInfo.phoneNumber || "-";
     serviceWebsite.textContent = website || "-";
 
-    fetch(API_LINK + `/service/getImages?providerID=${providerID}&serviceID=${serviceID}`, {
+    fetch(API_LINK + `/getServiceImages?providerID=${providerID}&serviceID=${serviceID}`, {
         method: "GET",
         credentials: "include"
     })
@@ -310,7 +310,7 @@ const handleSelect = (ev) => {
                 productImageContainer.dataset.productID = product["_id"];
 
                 if (product.images.length > 0) {
-                    fetch(API_LINK + `/commerce/getImages?providerID=${providerID}&productID=${product["_id"]}`, {
+                    fetch(API_LINK + `/getProductImages?providerID=${providerID}&productID=${product["_id"]}`, {
                         method: "GET",
                         credentials: "include"
                     })
@@ -530,7 +530,7 @@ function renderFeatured(data) {
         image.src = "https://placehold.co/700x300?text=No\nImage";
 
         if (service.images.length > 0) {
-            fetch(API_LINK + `/service/getImages?providerID=${service["providerID"]}&serviceID=${service["_id"]}`, {
+            fetch(API_LINK + `/getServiceImages?providerID=${service["providerID"]}&serviceID=${service["_id"]}`, {
                 method: "GET",
                 credentials: "include"
             })
@@ -617,7 +617,7 @@ function renderNear(data) {
         image.src = "https://placehold.co/400x200?text=No\nImage";
 
         if (service.images.length > 0) {
-            fetch(API_LINK + `/service/getImages?providerID=${service["providerID"]}&serviceID=${service["_id"]}`, {
+            fetch(API_LINK + `/getServiceImages?providerID=${service["providerID"]}&serviceID=${service["_id"]}`, {
                 method: "GET",
                 credentials: "include"
             })
