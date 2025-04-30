@@ -967,6 +967,8 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
     .then(response => response.json())
     .then(data => {
 
+        console.log(data)
+
         nameHeading.textContent = nameHeading.textContent.replace("$name", data["firstname"]);
 
         sessionStorage.setItem("name", `${data.firstname} ${data.lastname}`)
