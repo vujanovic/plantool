@@ -270,7 +270,10 @@ const handleSelect = (ev) => {
     servicePhone.textContent = contactInfo.phoneNumber || "-";
     serviceWebsite.textContent = website || "-";
 
-    fetch(API_LINK + `/service/getImages?providerID=${providerID}&serviceID=${serviceID}`)
+    fetch(API_LINK + `/service/getImages?providerID=${providerID}&serviceID=${serviceID}`, {
+        method: "GET",
+        credentials: "include"
+    })
         .then(res => res.json())
         .then(data => {
             for (const img of data.images) {
@@ -285,7 +288,10 @@ const handleSelect = (ev) => {
             Webflow.require('slider').redraw();
         });
 
-    fetch(API_LINK + `/commerce/getProducts?providerID=${providerID}&serviceID=${serviceID}`)
+    fetch(API_LINK + `/commerce/getProducts?providerID=${providerID}&serviceID=${serviceID}`, {
+        method: "GET",
+        credentials: "include"
+    })
         .then(res => res.json())
         .then(data => {
             if (!data.products?.length) return;
@@ -304,7 +310,10 @@ const handleSelect = (ev) => {
                 productImageContainer.dataset.productID = product["_id"];
 
                 if (product.images.length > 0) {
-                    fetch(API_LINK + `/commerce/getImages?providerID=${providerID}&productID=${product["_id"]}`)
+                    fetch(API_LINK + `/commerce/getImages?providerID=${providerID}&productID=${product["_id"]}`, {
+                        method: "GET",
+                        credentials: "include"
+                    })
                         .then(res => res.json())
                         .then(data => {
                             productImg.src = data.images[0].fileURL;
@@ -349,7 +358,7 @@ const handleSelect = (ev) => {
 function addToPlaybookWithProduct() {
     fetch(API_LINK + "/user/addToPlaybook", {
         method: "POST",
-        
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userID: currUserID, providerID, serviceID })
     })
@@ -384,7 +393,7 @@ function addToPlaybookWithProduct() {
         bodyData.productID = productCombo.value
         fetch(API_LINK + `/commerce/addProductCeremonial?userID=${currUserID}`, {
             method: "POST",
-            
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -397,7 +406,10 @@ function addToPlaybookWithProduct() {
             .then(data => {
                 console.log(data)
                 closeBtn.click();
-                return fetch(API_LINK + `/ceremonial/getServices?userID=${currUserID}`)
+                return fetch(API_LINK + `/ceremonial/getServices?userID=${currUserID}`, {
+                    method: "GET",
+                    credentials: "include"
+                })
             })
             .then(res => res.json())
             .then(services => {
@@ -416,7 +428,7 @@ function addToPlaybookWithProduct() {
     else {
         fetch(API_LINK + `/ceremonial/setNewService?userID=${currUserID}&providerID=${providerID}&serviceID=${serviceID}`, {
             method: "POST",
-            
+            credentials: "include",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(bodyData)
         })
@@ -425,7 +437,10 @@ function addToPlaybookWithProduct() {
                 alert("dodat u servise najceremonijalnije");
                 closeBtn.click();
                 console.log(data);
-                return fetch(API_LINK + `/ceremonial/getServices?userID=${currUserID}`)
+                return fetch(API_LINK + `/ceremonial/getServices?userID=${currUserID}`, {
+                    method: "GET",
+                    credentials: "include"
+                })
             })
             .then(res => res.json())
             .then(services => {
@@ -449,7 +464,7 @@ const removeFromPlaybookWithProduct = (e) => {
 
     fetch(`${API_LINK}/ceremonial/removeService?userID=${currUserID}&serviceID=${btn.dataset.serviceIdToDelete}`, {
         method: "DELETE",
-        
+        credentials: "include"
     })
         .then(res => {
             // if there's no content, avoid calling .json()
@@ -460,7 +475,7 @@ const removeFromPlaybookWithProduct = (e) => {
 
             return fetch(`${API_LINK}/user/removeFromPlaybook`, {
                 method: "DELETE",
-                
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -515,7 +530,10 @@ function renderFeatured(data) {
         image.src = "https://placehold.co/700x300?text=No\nImage";
 
         if (service.images.length > 0) {
-            fetch(API_LINK + `/service/getImages?providerID=${service["providerID"]}&serviceID=${service["_id"]}`)
+            fetch(API_LINK + `/service/getImages?providerID=${service["providerID"]}&serviceID=${service["_id"]}`, {
+                method: "GET",
+                credentials: "include"
+            })
                 .then(res => res.json())
                 .then(data => { image.src = data.images[0].fileURL });
         }
@@ -599,7 +617,10 @@ function renderNear(data) {
         image.src = "https://placehold.co/400x200?text=No\nImage";
 
         if (service.images.length > 0) {
-            fetch(API_LINK + `/service/getImages?providerID=${service["providerID"]}&serviceID=${service["_id"]}`)
+            fetch(API_LINK + `/service/getImages?providerID=${service["providerID"]}&serviceID=${service["_id"]}`, {
+                method: "GET",
+                credentials: "include"
+            })
                 .then(res => res.json())
                 .then(data => { image.src = data.images[0].fileURL });
         }
@@ -900,7 +921,7 @@ const faInput = faSection.querySelector("input")
 resendFA.addEventListener("click", e => {
     fetch(API_LINK + `/sendFACode`, {
         method: "POST",
-        
+        credentials: "include",
         headers: {
             "Content-Type": "application/json"
         },
@@ -914,7 +935,7 @@ faSubmit.addEventListener("click", e => {
 
     fetch(API_LINK + `/2FACheck`, {
         method: "POST",
-        
+        credentials: "include",
         headers: {
             "Content-Type": "application/json"
         },
@@ -956,14 +977,20 @@ function goToStep(stepIndex) {
 
 
 async function urlToFile(url, filename) {
-    const res = await fetch(url);
+    const res = await fetch(url, {
+        method: "GET",
+        credentials: "include"
+    });
     const blob = await res.blob();
     const contentType = res.headers.get("content-type") || blob.type || "application/octet-stream";
     return new File([blob], filename, { type: contentType });
 }
 
 
-fetch(API_LINK + `/user/allData?id=${currUserID}`)
+fetch(API_LINK + `/user/allData?id=${currUserID}`, {
+    method: "GET",
+    credentials: "include"
+})
     .then(response => response.json())
     .then(data => {
 
@@ -1008,7 +1035,10 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
                     const element = burialCremationForm.querySelector(`#${key}`)
                     if (element) {
                         if (element.name === "file") {
-                            fetch(API_LINK + `/ceremonial/getPermit?userID=${currUserID}`)
+                            fetch(API_LINK + `/ceremonial/getPermit?userID=${currUserID}`, {
+                                method: "GET",
+                                credentials: "include"
+                            })
                                 .then(response => response.json())
                                 .then(rawData => {
                                     permitData = rawData.data.permit
@@ -1125,7 +1155,7 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`)
         if (data["enabledFA"] && data["verified"]) {
             fetch(API_LINK + `/sendFACode`, {
                 method: "POST",
-                
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -1154,7 +1184,7 @@ submitInfo.addEventListener("click", e => {
 
     fetch(API_LINK + `/user/updateBasicData?userID=${currUserID}`, {
         method: "POST",
-        
+        credentials: "include",
         headers: {
             "Content-Type": "application/json"
         },
@@ -1169,7 +1199,7 @@ submitInfo.addEventListener("click", e => {
 
     fetch(`${API_LINK}/user/changeAddress?userID=${currUserID}`, {
         method: "POST",
-        
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dataObject)
     }).then(res => res.json())
@@ -1214,7 +1244,7 @@ resendCode.addEventListener("click", e => {
     e.preventDefault()
     fetch(API_LINK + "/generateNewVerificationCode", {
         method: "POST",
-        
+        credentials: "include",
         headers: {
             "Content-Type": "application/json"
         },
@@ -1246,7 +1276,7 @@ verificationSubmit.addEventListener("click", e => {
     if (verificationForm.checkValidity()) {
         fetch(API_LINK + "/verifyAccount", {
             method: "POST",
-            
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -1394,7 +1424,7 @@ addPartnerBtn.addEventListener("click", e => {
 
     fetch(API_LINK + `/user/addPartner?userID=${currUserID}`, {
         method: "POST",
-        
+        credentials: "include",
         headers: {
             "Content-Type": "application/json"
         },
@@ -1534,7 +1564,7 @@ addChildBtn.addEventListener("click", e => {
 
     fetch(API_LINK + `/user/addPartnerChildren?userID=${currUserID}&partnerID=${childPartnerCombo.value}`, {
         method: "POST",
-        
+        credentials: "include",
         headers: {
             "Content-Type": "application/json"
         },
@@ -1638,7 +1668,7 @@ confirmFriendsBtn.addEventListener("click", async () => {
 
     fetch(API_LINK + `/user/addContactsTableImport?userID=${currUserID}`, {
         method: "POST",
-        
+        credentials: "include",
         body: formData
     })
         .then(res => res.json())
@@ -1748,7 +1778,7 @@ addFriendBtn.addEventListener("click", e => {
 
     fetch(API_LINK + `/user/addContacts`, {
         method: "POST",
-        
+        credentials: "include",
         headers: {
             "Content-Type": "application/json"
         },
@@ -1800,7 +1830,7 @@ function deleteContact(btn) {
 
     fetch(API_LINK + `/user/delete${type}?userID=${currUserID}&${type.toLowerCase()}ID=${btn.dataset.idToDelete}`, {
         method: "DELETE",
-        
+        credentials: "include",
         headers: {
             "Content-Type": "application/json"
         }
@@ -1927,7 +1957,7 @@ nextBtn.addEventListener("click", async e => {
 
         fetch(API_LINK + `/ceremonial/setBurialCremation?userID=${currUserID}`, {
             method: "POST",
-            
+            credentials: "include",
             body: formData
         })
             .then(res => res.json())
@@ -1954,7 +1984,7 @@ nextBtn.addEventListener("click", async e => {
 
         fetch(API_LINK + `/ceremonial/addWake?userID=${currUserID}`, {
             method: "POST",
-            
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -1963,7 +1993,7 @@ nextBtn.addEventListener("click", async e => {
 
         fetch(API_LINK + `/ceremonial/setCeremonyHour?userID=${currUserID}`, {
             method: "POST",
-            
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -1977,14 +2007,14 @@ nextBtn.addEventListener("click", async e => {
 
         fetch(API_LINK + `/ceremonial/uploadEnlargementPhoto?userID=${currUserID}`, {
             method: "POST",
-            
+            credentials: "include",
             body: enlargementPhotoFormData
         })
 
         endpoints.forEach(endpoint => {
             fetch(`${API_LINK}/ceremonial/${endpoint}?userID=${currUserID}`, {
                 method: "POST",
-                
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -2008,7 +2038,7 @@ nextBtn.addEventListener("click", async e => {
             const formEntries = Object.fromEntries(formData)
             fetch(API_LINK + `/ceremonial/addFuneralHome?userID=${currUserID}`, {
                 method: "POST",
-                
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json"
                 },
