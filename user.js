@@ -47,7 +47,8 @@ fetch(API_LINK + "/data/getServiceTypes")
                 ctaLink.textContent = `See all the ${selectedType.toUpperCase()} providers`;
 
                 if (types[selectedType]) {
-                    const nearest = getNearestServices(userLat, userLng, types[selectedType].services);
+                    const merged = [...new Set([...types[selectedType].services, ...types[selectedType].promoted])];
+                    const nearest = getNearestServices(userLat, userLng, merged);
                     renderFeatured(types[selectedType]);
                     renderNear(nearest);
                     renderAllProviders(types[selectedType]);
@@ -58,7 +59,8 @@ fetch(API_LINK + "/data/getServiceTypes")
                 fetch(API_LINK + `/searchServiceType?type=${selectedType}`)
                     .then(response => response.json())
                     .then(data => {
-                        const nearest = getNearestServices(userLat, userLng, data.services);
+                        const merged = [...new Set([...data.services, ...data.promoted])];
+                        const nearest = getNearestServices(userLat, userLng, merged);
                         renderFeatured(data);
                         renderNear(nearest);
                         renderAllProviders(data);
@@ -179,8 +181,8 @@ function setProductInfo(product) {
 // ========================
 function renderAllProviders(data) {
     cardsGrid.innerHTML = "";
-    const merged = [...data.services, ...data.promoted];
-    data.services.forEach(item => {
+    const merged = [...new Set([...data.services, ...data.promoted])];
+    merged.forEach(item => {
         const card = originalCard.cloneNode(true);
         const nameHeading = card.querySelector('.fourth-heading');
         const addressParagraph = card.querySelector("#address");
