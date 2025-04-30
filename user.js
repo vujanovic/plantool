@@ -179,6 +179,7 @@ function setProductInfo(product) {
 // ========================
 function renderAllProviders(data) {
     cardsGrid.innerHTML = "";
+    const merged = [...data.services, ...data.promoted];
     data.services.forEach(item => {
         const card = originalCard.cloneNode(true);
         const nameHeading = card.querySelector('.fourth-heading');
@@ -511,7 +512,7 @@ const featuredGrid = document.querySelector(".featured-grid");
 const ogFeatureCard = document.querySelector(".featured-card");
 
 function renderFeatured(data) {
-    const services = data.services;
+    const services = data.promoted;
     featuredGrid.innerHTML = "";
 
     for (const service of services) {
