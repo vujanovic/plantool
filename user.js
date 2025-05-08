@@ -22,6 +22,7 @@ console.log("UCITANNA SKRIPTA")
 const logoutBtn = document.querySelector("#logoutBtn");
 const servicesGrid = document.querySelector(".services-grid");
 const ogServiceCard = document.querySelector("#ogThisCard")
+const arrowScroll = document.querySelector(".arrow-scroll")
 
 fetch(API_LINK + "/data/getServiceTypes")
     .then(res => res.json())
@@ -40,6 +41,7 @@ fetch(API_LINK + "/data/getServiceTypes")
 
             typeCard.addEventListener("click", () => {
                 const selectedType = type.value;
+                arrowScroll.style.display = "flex";
                 providersSection.style.display = "none";
                 firstHeading.textContent = `ALL ${selectedType.toUpperCase()} PROVIDERS`;
                 bestMatchHeading.textContent = `FEATURED ${selectedType.toUpperCase()} PROVIDERS`;
