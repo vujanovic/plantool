@@ -675,6 +675,19 @@ function renderNear(data) {
 // ========================
 // Main Interaction Logic
 // ========================
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+        arrowScroll.style.display = "none"
+    }
+  });
+}, {
+  threshold: 0.7
+});
+
+observer.observe(ctaLink);
+
 ctaLink.addEventListener("click", e => {
     e.preventDefault();
     providersSection.style.display = "block";
