@@ -1114,7 +1114,7 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`, {
                     const homeName = funeralHomeForm.querySelector("input[name=name]")
                     homeName.value = data.ceremonial[key]["name"]
                     for (const detailKey in data.ceremonial[key]["address"]) {
-                        const element = funeralHomeForm.querySelector(`input[name=${detailKey}]`)
+                        const element = funeralHomeForm.querySelector(`[name=${detailKey}]`)
                         if (!element) {
                             continue
                         }
