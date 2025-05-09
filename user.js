@@ -1973,8 +1973,8 @@ nextBtn.addEventListener("click", async e => {
         if (permitInput.files.length === 0) {
             const existingFileUrl = permitInput.dataset.existingFileUrl
             const existingFileName = permitInput.dataset.existingFileName
-            const file = await urlToFile(existingFileUrl, existingFileName)
-            formData.append("file", file)
+            // const file = await urlToFile(existingFileUrl, existingFileName)
+            // formData.append("file", file)
         }
 
         fetch(API_LINK + `/ceremonial/setBurialCremation?userID=${currUserID}`, {
@@ -2082,7 +2082,7 @@ nextBtn.addEventListener("click", async e => {
 
     }
 
-    activeSlideNumber = activeSlideNumber !== 3 ? activeSlideNumber + 1 : 1
+    activeSlideNumber++
     activeSlide = slides[`slide${activeSlideNumber}`]
 
     if (activeSlide === slides.slide1) {
