@@ -1091,7 +1091,7 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`, {
                 if (key === "ceremonyPlace") {
 
                     for (const detailKey in data.ceremonial["ceremonyPlace"]) {
-                        const element = ceremonyPlanForm.querySelector(`input[name=${detailKey}]`)
+                        const element = ceremonyPlanForm.querySelector(`[name=${detailKey}]`)
                         if (!element) {
                             continue
                         }
@@ -1099,7 +1099,7 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`, {
                     }
 
                     for (const detailKey in data.ceremonial["ceremonyPlace"]["address"]) {
-                        const element = ceremonyPlanForm.querySelector(`input[name=${detailKey}]`)
+                        const element = ceremonyPlanForm.querySelector(`[name=${detailKey}]`)
                         if (!element) {
                             continue
                         }
