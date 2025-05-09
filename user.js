@@ -893,10 +893,14 @@ Yemen
 Zambia
 Zimbabwe`
 
-const countryField = document.querySelector("#countryField")
-const anotherCountryField = document.querySelector("#currentCountry")
+let countryFields = Array.from(document.querySelectorAll("[name=country]"));
+const birthCountry = document.querySelector("[name=birthCountry]");
 
-COUNTRIES_STRING.split("\n").forEach(country => {
+if (birthCountry) {
+  countryFields.push(birthCountry); // add to the array
+}
+countryFields.forEach(field => {
+		COUNTRIES_STRING.split("\n").forEach(country => {
 
     country = country.trim();
     if (!country) {
@@ -905,8 +909,8 @@ COUNTRIES_STRING.split("\n").forEach(country => {
     const option = document.createElement("option");
     option.value = country;
     option.textContent = country;
-    countryField.appendChild(option);
-    anotherCountryField.appendChild(option.cloneNode(true))
+   	field.appendChild(option);
+})
 })
 
 
