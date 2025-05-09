@@ -894,7 +894,7 @@ Zambia
 Zimbabwe`
 
 let countryFields = Array.from(document.querySelectorAll("[name=country]"));
-const birthCountry = document.querySelector("[name=birthCountry]");
+const birthCountry = document.querySelector("[name=placeOfBirthCountry]");
 
 if (birthCountry) {
   countryFields.push(birthCountry); // add to the array
