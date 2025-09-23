@@ -1217,6 +1217,10 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`, {
       verificationSection.style.display = "none";
       overlay.style.display = "none";
     }
+    else {
+      verificationSection.style.display = "flex";
+      overlay.style.display = "block";
+    }
 
     if (
       data["enabledFA"] &&
@@ -2111,3 +2115,4 @@ prevBtn.addEventListener("click", (e) => {
     prevBtn.style.display = "inline-block";
   }
 });
+
