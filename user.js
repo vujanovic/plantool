@@ -963,7 +963,7 @@ countryFields.forEach((field) => {
 
 let allUserData = null;
 
-const submitInfo = document.querySelector("#updateBasicInfoBtn");
+const submitInfo = document.querySelector("#");
 const nameField = document.querySelector("#nameField");
 const lastnameField = document.querySelector("#lastnameField");
 const dateField = document.querySelector("#dateField");
@@ -1247,37 +1247,49 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`, {
 
 submitInfo.addEventListener("click", (e) => {
   e.preventDefault();
+
   if (!updateInfoForm.checkValidity()) {
     updateInfoForm.reportValidity();
     return;
   }
+
   const formData = new FormData(updateInfoForm);
   const dataObject = Object.fromEntries(formData.entries());
   delete dataObject["cf-turnstile-response"];
 
-  fetch(API_LINK + `/user/updateBasicData?userID=${currUserID}`, {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(dataObject),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data);
-    })
-    .catch((err) => alert("greska"));
-
-  fetch(`${API_LINK}/user/changeAddress?userID=${currUserID}`, {
+  const req1 = fetch(`${API_LINK}/user/updateBasicData?userID=${currUserID}`, {
     method: "POST",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(dataObject),
-  })
-    .then((res) => res.json())
-    .then((data) => console.log(data));
+  }).then((res) => res.json());
+
+  const req2 = fetch(`${API_LINK}/user/changeAddress?userID=${currUserID}`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(dataObject),
+  }).then((res) => res.json());
+
+  Promise.all([req1, req2])
+    .then(([data1, data2]) => {
+      console.log("updateBasicData response:", data1);
+      console.log("changeAddress response:", data2);
+
+      for (const button of stepBtns) {
+        button.classList.remove("active-step-btn");
+        if (button.textContent == "2") {
+            button.classList.add("active-step-btn");
+        }
+      }
+      goToStep(2);
+    })
+    .catch((err) => {
+      console.error(err);
+      alert("Greška u komunikaciji sa serverom");
+    });
 });
+
 
 updateInfoForm.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
@@ -2115,4 +2127,5 @@ prevBtn.addEventListener("click", (e) => {
     prevBtn.style.display = "inline-block";
   }
 });
+
 
