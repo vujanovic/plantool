@@ -963,7 +963,7 @@ countryFields.forEach((field) => {
 
 let allUserData = null;
 
-const submitInfo = document.querySelector("#");
+const submitInfo = document.querySelector("#updateBasicInfoBtn");
 const nameField = document.querySelector("#nameField");
 const lastnameField = document.querySelector("#lastnameField");
 const dateField = document.querySelector("#dateField");
@@ -2127,6 +2127,7 @@ prevBtn.addEventListener("click", (e) => {
     prevBtn.style.display = "inline-block";
   }
 });
+
 
 
 
