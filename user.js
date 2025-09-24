@@ -1282,7 +1282,7 @@ submitInfo.addEventListener("click", (e) => {
             button.classList.add("active-step-btn");
         }
       }
-      goToStep(2);
+      goToStep(1);
     })
     .catch((err) => {
       console.error(err);
@@ -2127,6 +2127,7 @@ prevBtn.addEventListener("click", (e) => {
     prevBtn.style.display = "inline-block";
   }
 });
+
 
 
 
