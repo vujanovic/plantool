@@ -16,3 +16,4 @@ let productID = null;
 const ceremonialIDs = {};
 
 console.log("UCITANNA SKRIPTA");
+console.log(API_LINK);
