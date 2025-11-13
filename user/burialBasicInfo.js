@@ -68,8 +68,11 @@ nextBtn.addEventListener("click", async (e) => {
     goToStep(1);
     return;
   }
-  if (activeSlideNumber === 2) {
-    console.log("radim api za 1");
+  if (activeSlideNumber === 1) {
+    console.log("basic info");
+    submitInfo.click();
+  } else if (activeSlideNumber === 2) {
+    console.log("burial cremation");
     const formData = new FormData(burialCremationForm);
 
     if (permitInput.files.length === 0) {
@@ -87,8 +90,7 @@ nextBtn.addEventListener("click", async (e) => {
       .then((res) => res.json())
       .then((data) => console.log(data));
   } else if (activeSlideNumber === 3) {
-    console.log("radim api za 2");
-
+    console.log("ceremonial detials");
     const formData = new FormData(ceremonyPlanForm);
     const formEntries = Object.fromEntries(formData);
     const endpoints = [
@@ -153,9 +155,8 @@ nextBtn.addEventListener("click", async (e) => {
           console.error(`[${endpoint}] Error:`, err);
         });
     });
-  } else if (activeSlideNumber === 1) {
-    submitInfo.click();
   } else if (activeSlideNumber === 4) {
+    console.log("ceremonial detials");
     if (funeralHomeForm.checkValidity()) {
       const formData = new FormData(funeralHomeForm);
       const formEntries = Object.fromEntries(formData);
@@ -170,7 +171,6 @@ nextBtn.addEventListener("click", async (e) => {
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
-          slider.style.display = "none";
         });
     } else {
       funeralHomeForm.reportValidity();
