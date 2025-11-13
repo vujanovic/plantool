@@ -17,3 +17,5 @@ const ceremonialIDs = {};
 console.log("state.js");
 
 let allUserData = null;
+console.log("UCITANNA SKRIPTA");
+console.log(API_LINK);
