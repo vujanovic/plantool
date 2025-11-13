@@ -3,7 +3,13 @@ const servicesGrid = document.querySelector(".services-grid");
 const ogServiceCard = document.querySelector("#ogThisCard");
 const arrowScroll = document.querySelector(".arrow-scroll");
 
+const overlay = document.querySelector(".black-overlay");
+
 const providersSection = document.querySelector(".all-providers");
+const featuredProvidersSection = document.querySelector(
+  ".featured-providers-section"
+);
+const nearProvidersSection = document.querySelector(".near-section");
 const originalCard = document.querySelector(".provider-card");
 const firstHeading = providersSection.querySelector(".secondary-heading");
 const cardsGrid = document.querySelector(".all-providers-grid");

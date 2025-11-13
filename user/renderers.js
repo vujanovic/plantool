@@ -1,9 +1,20 @@
 // ========================
 // Provider Rendering
 // ========================
+
+const EMPTY_MESSAGE =
+  "Er zijn momenteel geen aanbieders voor dit soort diensten.";
+
 function renderAllProviders(data) {
   cardsGrid.innerHTML = "";
+  const emptyProvidersError = document.querySelector("#emptyProvidersError");
   const merged = [...new Set([...data.services, ...data.promotedServices])];
+  if (merged.length === 0) {
+    emptyProvidersError.style.display = "block";
+    return;
+  } else {
+    emptyProvidersError.style.display = "none";
+  }
   merged.forEach((item) => {
     const card = originalCard.cloneNode(true);
     const nameHeading = card.querySelector(".fourth-heading");
@@ -14,7 +25,7 @@ function renderAllProviders(data) {
 
     if (ceremonialIDs[item["_id"]]) {
       // znaci da je vec dodatu ceremonial
-      cardBtn.textContent = "Remove from Plan";
+      cardBtn.textContent = "Verwijderen uit plan";
       cardBtn.style.backgroundColor = "red";
       cardBtn.dataset.serviceIdToDelete = ceremonialIDs[item["_id"]];
       cardBtn.addEventListener("click", removeFromPlaybookWithProduct);
@@ -55,6 +66,13 @@ const ogFeatureCard = document.querySelector(".featured-card");
 function renderFeatured(data) {
   const services = data.promotedServices;
   featuredGrid.innerHTML = "";
+
+  if (services.length === 0) {
+    featuredProvidersSection.style.display = "none";
+    return;
+  } else {
+    featuredProvidersSection.style.display = "block";
+  }
 
   for (const service of services) {
     const currCard = ogFeatureCard.cloneNode(true);
@@ -119,7 +137,7 @@ function renderFeatured(data) {
     console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
     if (ceremonialIDs[service["_id"]]) {
-      cardBtn.textContent = "Remove from Plan";
+      cardBtn.textContent = "Verwijderen uit plan";
       cardBtn.style.backgroundColor = "red";
       cardBtn.dataset.serviceIdToDelete = ceremonialIDs[service["_id"]];
       cardBtn.addEventListener("click", removeFromPlaybookWithProduct);
@@ -153,6 +171,12 @@ const nearCard = document.querySelector(".near-me-card");
 function renderNear(data) {
   const services = data;
   nearGrid.innerHTML = "";
+  if (services.length === 0) {
+    nearProvidersSection.style.display = "none";
+    return;
+  } else {
+    nearProvidersSection.style.display = "block";
+  }
 
   for (const service of services) {
     const currCard = nearCard.cloneNode(true);
@@ -198,7 +222,7 @@ function renderNear(data) {
     }
 
     if (ceremonialIDs[service["_id"]]) {
-      cardBtn.textContent = "Remove from Plan";
+      cardBtn.textContent = "Verwijderen uit plan";
       cardBtn.style.backgroundColor = "red";
       cardBtn.dataset.serviceIdToDelete = ceremonialIDs[service["_id"]];
       cardBtn.addEventListener("click", removeFromPlaybookWithProduct);

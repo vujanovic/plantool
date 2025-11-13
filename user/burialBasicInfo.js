@@ -23,6 +23,9 @@ let slides = {
   slide1: sliderMask.children[0],
   slide2: sliderMask.children[1],
   slide3: sliderMask.children[2],
+  slide4: sliderMask.children[3],
+  slide5: sliderMask.children[4],
+  slide6: sliderMask.children[5],
 };
 
 let activeSlide = slides.slide1;
@@ -61,7 +64,11 @@ funeralType.addEventListener("change", (e) => {
 });
 
 nextBtn.addEventListener("click", async (e) => {
-  if (activeSlideNumber === 1) {
+  if (activeSlideNumber === 6) {
+    goToStep(1);
+    return;
+  }
+  if (activeSlideNumber === 2) {
     console.log("radim api za 1");
     const formData = new FormData(burialCremationForm);
 
@@ -79,7 +86,7 @@ nextBtn.addEventListener("click", async (e) => {
     })
       .then((res) => res.json())
       .then((data) => console.log(data));
-  } else if (activeSlideNumber === 2) {
+  } else if (activeSlideNumber === 3) {
     console.log("radim api za 2");
 
     const formData = new FormData(ceremonyPlanForm);
@@ -146,9 +153,9 @@ nextBtn.addEventListener("click", async (e) => {
           console.error(`[${endpoint}] Error:`, err);
         });
     });
-  } else {
-    console.log("radim api za 3");
-
+  } else if (activeSlideNumber === 1) {
+    submitInfo.click();
+  } else if (activeSlideNumber === 4) {
     if (funeralHomeForm.checkValidity()) {
       const formData = new FormData(funeralHomeForm);
       const formEntries = Object.fromEntries(formData);
@@ -163,9 +170,7 @@ nextBtn.addEventListener("click", async (e) => {
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
-          alert("GOTOVO CEKAJ SAD");
           slider.style.display = "none";
-          doneSection.style.display = "flex";
         });
     } else {
       funeralHomeForm.reportValidity();

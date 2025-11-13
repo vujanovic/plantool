@@ -19,10 +19,12 @@ fetch(API_LINK + "/data/getServiceTypes")
         const selectedType = type.value;
         arrowScroll.style.display = "flex";
         providersSection.style.display = "none";
-        firstHeading.textContent = `ALL ${selectedType.toUpperCase()} PROVIDERS`;
-        bestMatchHeading.textContent = `FEATURED ${selectedType.toUpperCase()} PROVIDERS`;
-        nearSectionHeading.textContent = `${selectedType.toUpperCase()} PROVIDERS NEAR YOU`;
-        ctaLink.textContent = `See all the ${selectedType.toUpperCase()} providers`;
+        featuredProvidersSection.style.display = "block";
+        nearProvidersSection.style.display = "block";
+        firstHeading.textContent = `ALLE ${selectedType.toUpperCase()} AANBIEDERS`;
+        bestMatchHeading.textContent = `AANBEVOLEN ${selectedType.toUpperCase()} AANBIEDERS`;
+        nearSectionHeading.textContent = `${selectedType.toUpperCase()} AANBIEDERS BIJ U IN DE BUURT`;
+        ctaLink.textContent = `Bekijk alle ${selectedType.toUpperCase()} aanbieders`;
 
         fetch(API_LINK + `/searchServiceType?type=${selectedType}`)
           .then((response) => response.json())
@@ -327,11 +329,10 @@ submitInfo.addEventListener("click", (e) => {
           button.classList.add("active-step-btn");
         }
       }
-      goToStep(1);
     })
     .catch((err) => {
       console.error(err);
-      alert("Greška u komunikaciji sa serverom");
+      alert("error");
     });
 });
 

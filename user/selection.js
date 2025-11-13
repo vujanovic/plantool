@@ -153,7 +153,7 @@ function addToPlaybookWithProduct() {
     .then((res) => res.json())
     .then((data) => {
       alert("dodat u plejbuk");
-      servicePickedBtn.textContent = "Remove from Plan";
+      servicePickedBtn.textContent = "Verwijderen uit plan";
       servicePickedBtn.style.backgroundColor = "red";
       servicePickedBtn.dataset.productID = productCombo.value;
 
@@ -286,7 +286,7 @@ const removeFromPlaybookWithProduct = (e) => {
     .then((playbookResponse) => {
       console.log("Playbook:", playbookResponse);
 
-      btn.textContent = "Select Service";
+      btn.textContent = "Selecteer";
       btn.style.backgroundColor = "#0e0ba6";
       btn.addEventListener("click", handleSelect);
       btn.removeEventListener("click", removeFromPlaybookWithProduct);
