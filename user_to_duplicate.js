@@ -24,6 +24,23 @@ fetch(API_LINK + "/data/getServiceTypes")
         nearSectionHeading.textContent = `${selectedType.toUpperCase()} PROVIDERS NEAR YOU`;
         ctaLink.textContent = `See all the ${selectedType.toUpperCase()} providers`;
 
+        // if (types[selectedType]) {
+        //   const merged = [
+        //     ...new Set([
+        //       ...types[selectedType].services,
+        //       ...types[selectedType].promotedServices,
+        //     ]),
+        //   ];
+        //   const nearest = getNearestServices(userLat, userLng, merged);
+        //   renderFeatured(types[selectedType]);
+        //   renderNear(nearest);
+        //   renderAllProviders(types[selectedType]);
+        //   stepContainer.style.height = `${
+        //     document.querySelector(".current-step").offsetHeight
+        //   }px`;
+        //   return;
+        // }
+
         fetch(API_LINK + `/searchServiceType?type=${selectedType}`)
           .then((response) => response.json())
           .then((data) => {
@@ -353,3 +370,15 @@ stepBtns.forEach((btn) => {
     goToStep(btn.textContent - 1);
   });
 });
+
+////////////////////////////////////
+// =================================
+// STEP 4 FUNCTIONALITY
+// =================================
+////////////////////////////////////
+
+/////////////////////////////
+// BURIAL/CREMATION (SLIDE 1)
+/////////////////////////////
+
+// forms defined in the beginning of the script

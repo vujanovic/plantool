@@ -1,9 +1,8 @@
 // ========================
-// Selection Logic and Playbook Add/Remove (copied from user.js)
+// Selection Logic
 // ========================
 const handleSelect = (ev) => {
   const btn = ev.target;
-  // preserve original name
   servicePickedBtn = btn;
   productSection.style.display = "flex";
   productSection.querySelector("h3").textContent = btn.dataset.name;
@@ -142,7 +141,7 @@ const handleSelect = (ev) => {
 };
 
 // ========================
-// Playbook Add/Remove (copied from user.js)
+// Playbook Add/Remove
 // ========================
 function addToPlaybookWithProduct() {
   fetch(API_LINK + "/user/addToPlaybook", {
@@ -288,7 +287,7 @@ const removeFromPlaybookWithProduct = (e) => {
       console.log("Playbook:", playbookResponse);
 
       btn.textContent = "Select Service";
-      btn.style.backgroundColor = "#15a60b";
+      btn.style.backgroundColor = "#0e0ba6";
       btn.addEventListener("click", handleSelect);
       btn.removeEventListener("click", removeFromPlaybookWithProduct);
     })
@@ -297,7 +296,4 @@ const removeFromPlaybookWithProduct = (e) => {
     });
 };
 
-// attach addToPlanBtn if present
-if (typeof addToPlanBtn !== "undefined" && addToPlanBtn) {
-  addToPlanBtn.addEventListener("click", addToPlaybookWithProduct);
-}
+addToPlanBtn.addEventListener("click", addToPlaybookWithProduct);

@@ -1,6 +1,3 @@
-// ========================
-// DOM Elements (copied from user.js)
-// ========================
 const logoutBtn = document.querySelector("#logoutBtn");
 const servicesGrid = document.querySelector(".services-grid");
 const ogServiceCard = document.querySelector("#ogThisCard");
@@ -18,80 +15,14 @@ const ctaLink = document.querySelector(".cta-link");
 const steps = document.querySelectorAll(".step");
 const stepContainer = document.querySelector(".steps");
 const step2 = document.querySelector("#step2");
-let selectBtns = step2 ? step2.querySelectorAll(".card-btn") : [];
+let selectBtns = step2.querySelectorAll(".card-btn");
 
-const productSection = document.querySelector(".pick-product-section");
-const productMask = document.querySelector(".pick-product-mask");
-const placeholderProductSlide = document.querySelector(".pick-product-slide");
-const originalProductSlide = placeholderProductSlide
-  ? placeholderProductSlide.cloneNode(true)
-  : null;
-if (originalProductSlide) {
-  originalProductSlide.style.display = "none";
-  placeholderProductSlide.remove();
-}
+const verificationSection = document.querySelector(".verification-section");
+const verificationStatus = document.querySelector(".verification-status");
 
-const originalProductImage = document.querySelector(
-  ".variant-link-image-wrapper"
-);
-
-const serviceDescription = productSection
-  ? productSection.querySelector("#serviceDescription")
-  : null;
-const serviceAddress = productSection
-  ? productSection.querySelector("#serviceAddress")
-  : null;
-const serviceMail = productSection
-  ? productSection.querySelector("#serviceMail")
-  : null;
-const servicePhone = productSection
-  ? productSection.querySelector("#servicePhone")
-  : null;
-const serviceWebsite = productSection
-  ? productSection.querySelector("#serviceWebsite")
-  : null;
-
-const productSelection = productSection
-  ? productSection.querySelector(".product-selection")
-  : null;
-const productCombo = productSection
-  ? productSection.querySelector("#productCombo")
-  : null;
-const productDescription = productSection
-  ? productSection.querySelector("#productDescription")
-  : null;
-const productPrice = productSection
-  ? productSection.querySelector("#productPrice")
-  : null;
-const reviewsContainer = document.querySelector(".service-reviews");
-const reviewDiv = reviewsContainer
-  ? reviewsContainer.querySelector(".review")
-  : null;
-const closeBtn = productSection
-  ? productSection.querySelector("#closeBtn")
-  : null;
-const addToPlanBtn = productSection
-  ? productSection.querySelector("#addToPlanBtn")
-  : null;
-
-const productImageGrid = productSection
-  ? productSection.querySelector(".variant-images-grid")
-  : null;
-const variantImageWrapper = productSection
-  ? productSection.querySelector(".variant-link-image-wrapper")
-  : null;
-
-const burialCremationForm = document.querySelector("#burialCremationForm");
-const ceremonyPlanForm = document.querySelector("#ceremonyPlanForm");
-const funeralHomeForm = document.querySelector("#funeralHomeForm");
-
-// Featured / Near selectors
-const featuredGrid = document.querySelector(".featured-grid");
-const ogFeatureCard = document.querySelector(".featured-card");
-const nearGrid = document.querySelector("#nearGrid");
-const nearCard = document.querySelector(".near-me-card");
-
-// Profile related selectors (some may be null on pages without profile)
+// ========================
+// STEP 1
+// ========================
 const submitInfo = document.querySelector("#updateBasicInfoBtn");
 const nameField = document.querySelector("#nameField");
 const lastnameField = document.querySelector("#lastnameField");
@@ -99,15 +30,58 @@ const dateField = document.querySelector("#dateField");
 const cityField = document.querySelector("#cityField");
 const emailField = document.querySelector("#emailField");
 const phoneField = document.querySelector("#phoneField");
+
 const updateInfoForm = document.querySelector("#updateInfoForm");
+
 const nameHeading = document.querySelector("#nameHeading");
 
-const verificationSection = document.querySelector(".verification-section");
-const verificationStatus = document.querySelector(".verification-status");
-const overlay = document.querySelector(".black-overlay");
+// ========================
+// STEP 2
+// ========================
+const productSection = document.querySelector(".pick-product-section");
+const productMask = document.querySelector(".pick-product-mask");
+const placeholderProductSlide = document.querySelector(".pick-product-slide");
+const originalProductSlide = placeholderProductSlide.cloneNode(true);
+originalProductSlide.style.display = "none";
+placeholderProductSlide.remove();
 
-const faSection = document.querySelector("#FASection");
-const faSubmit = document.querySelector("#FASubmit");
-const resendFA = document.querySelector("#resendFaCode");
-const faMessage = document.querySelector("#faMessage");
-const faInput = faSection ? faSection.querySelector("input") : null;
+const originalProductImage = document.querySelector(
+  ".variant-link-image-wrapper"
+);
+
+const serviceDescription = productSection.querySelector("#serviceDescription");
+const serviceAddress = productSection.querySelector("#serviceAddress");
+const serviceMail = productSection.querySelector("#serviceMail");
+const servicePhone = productSection.querySelector("#servicePhone");
+const serviceWebsite = productSection.querySelector("#serviceWebsite");
+
+const productSelection = productSection.querySelector(".product-selection");
+const productCombo = productSection.querySelector("#productCombo");
+const productDescription = productSection.querySelector("#productDescription");
+const productPrice = productSection.querySelector("#productPrice");
+const reviewsContainer = document.querySelector(".service-reviews");
+const reviewDiv = reviewsContainer.querySelector(".review");
+const closeBtn = productSection.querySelector("#closeBtn");
+const addToPlanBtn = productSection.querySelector("#addToPlanBtn");
+
+const productImageGrid = productSection.querySelector(".variant-images-grid");
+const variantImageWrapper = productSection.querySelector(
+  ".variant-link-image-wrapper"
+);
+
+// ========================
+// STEP 3
+// ========================
+const responsiveInfoTitle = document.querySelector(".responsive-info-title");
+
+const partnersGrid = document.querySelector("#partnersList");
+const addPartnerBtn = document.querySelector("#addPartnerBtn");
+const partnerForm = document.querySelector("#addPartnerForm");
+const deleteBtn = document.querySelector(".delete-btn");
+const line = document.querySelector(".grid-line");
+
+const childPartnerCombo = document.querySelector("#childPartnerCombo");
+
+const burialCremationForm = document.querySelector("#burialCremationForm");
+const ceremonyPlanForm = document.querySelector("#ceremonyPlanForm");
+const funeralHomeForm = document.querySelector("#funeralHomeForm");

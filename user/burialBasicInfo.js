@@ -1,12 +1,3 @@
-// ========================
-// STEP 4 FUNCTIONALITY - Burial/Cremation (copied from user.js)
-// ========================
-// Note: relies on global API_LINK and currUserID as declared in state.js
-
-// ========================
-// STEP 4 FUNCTIONALITY - Burial/Cremation (copied from user.js)
-// ========================
-
 const funeralType = burialCremationForm.querySelector("#type");
 const ashDestination = burialCremationForm.querySelector("#ashDestination");
 const cemetery = burialCremationForm.querySelector("#cemetery");

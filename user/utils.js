@@ -1,3 +1,4 @@
+console.log("utils.js");
 let userLat;
 let userLng;
 
@@ -37,4 +38,15 @@ function getNearestServices(userLat, userLng, services, maxResults = 6) {
     }))
     .sort((a, b) => a.distance - b.distance)
     .slice(0, maxResults);
+}
+
+async function urlToFile(url, filename) {
+  const res = await fetch(url, {
+    method: "GET",
+    credentials: "include",
+  });
+  const blob = await res.blob();
+  const contentType =
+    res.headers.get("content-type") || blob.type || "application/octet-stream";
+  return new File([blob], filename, { type: contentType });
 }

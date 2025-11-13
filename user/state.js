@@ -1,5 +1,5 @@
 // ========================
-// Constants and Globals (copied from user.js)
+// Constants and Globals
 // ========================
 const API_LINK =
   "https://planning-tool-e0efc2czdkbeeug7.westeurope-01.azurewebsites.net";
@@ -14,5 +14,6 @@ let productID = null;
 // u ceremonialIDs kao kljuc ide _id
 //  od adrese servisa a u vrednost id servisa za brisanje
 const ceremonialIDs = {};
+console.log("state.js");
 
-console.log("UCITANNA SKRIPTA");
+let allUserData = null;

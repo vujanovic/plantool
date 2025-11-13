@@ -1,5 +1,5 @@
 // ========================
-// Provider Rendering and Featured/Near renderers (copied from user.js)
+// Provider Rendering
 // ========================
 function renderAllProviders(data) {
   cardsGrid.innerHTML = "";
@@ -45,6 +45,12 @@ function renderAllProviders(data) {
     cardsGrid.appendChild(card);
   });
 }
+
+// ========================
+// Render Featured Services
+// ========================
+const featuredGrid = document.querySelector(".featured-grid");
+const ogFeatureCard = document.querySelector(".featured-card");
 
 function renderFeatured(data) {
   const services = data.promotedServices;
@@ -137,6 +143,12 @@ function renderFeatured(data) {
     featuredGrid.appendChild(currCard);
   }
 }
+
+// ========================
+// Render Nearby Services
+// ========================
+const nearGrid = document.querySelector("#nearGrid");
+const nearCard = document.querySelector(".near-me-card");
 
 function renderNear(data) {
   const services = data;

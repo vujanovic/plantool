@@ -145,9 +145,6 @@ logoutBtn.addEventListener("click", (e) => {
   window.location.href = "/";
 });
 
-// More event listeners and utility functions continue below...
-// (Note: Due to response limits, the full refactor will be saved to a file instead.)
-
 // ========================
 // Product Modal Logic
 // ========================
@@ -239,8 +236,6 @@ function renderAllProviders(data) {
     cardsGrid.appendChild(card);
   });
 }
-
-// Continue refactoring in same style...
 
 // ========================
 // Selection Logic
@@ -1216,8 +1211,7 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`, {
       verificationStatus.textContent = "VERIFIED";
       verificationSection.style.display = "none";
       overlay.style.display = "none";
-    }
-    else {
+    } else {
       verificationSection.style.display = "flex";
       overlay.style.display = "block";
     }
@@ -1279,7 +1273,7 @@ submitInfo.addEventListener("click", (e) => {
       for (const button of stepBtns) {
         button.classList.remove("active-step-btn");
         if (button.textContent == "2") {
-            button.classList.add("active-step-btn");
+          button.classList.add("active-step-btn");
         }
       }
       goToStep(1);
@@ -1289,7 +1283,6 @@ submitInfo.addEventListener("click", (e) => {
       alert("Greška u komunikaciji sa serverom");
     });
 });
-
 
 updateInfoForm.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
@@ -2127,8 +2120,3 @@ prevBtn.addEventListener("click", (e) => {
     prevBtn.style.display = "inline-block";
   }
 });
-
-
-
-
-
