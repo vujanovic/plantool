@@ -116,9 +116,7 @@ function addFriendToList(data) {
   const formEntries = data;
 
   const aftercareInfoObject = {};
-  aftercareInfoObject[
-    "name"
-  ] = `${formEntries["firstname"]} ${formEntries["lastname"]}`;
+  aftercareInfoObject["name"] = `${formEntries["name"]}`;
 
   aftercareInfoObject["parenthesesText"] = formEntries["email"];
 
