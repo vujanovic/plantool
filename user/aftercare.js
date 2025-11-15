@@ -18,7 +18,7 @@ const aftercareFriendsContainer = document.querySelector(
 
 function createAftercareContactBox(name, parenthesesText, type, id) {
   const newBox = boxForCopy.cloneNode(true);
-  newBox.style.display = "flex";
+  newBox.style.display = "grid";
   const contactName = newBox.querySelector(".contact-name-status");
   contactName.textContent = `${name} (${parenthesesText || ""})`;
   newBox.dataset.id = id || "";
