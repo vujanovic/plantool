@@ -10,6 +10,18 @@ function addPartnerToList(data) {
 
   childPartnerCombo.appendChild(option);
 
+  const aftercareInfoObject = {};
+  aftercareInfoObject[
+    "name"
+  ] = `${formEntries["firstname"]} ${formEntries["lastname"]}`;
+  aftercareInfoObject["parenthesesText"] = formEntries["status"];
+  createAftercareContactBox(
+    aftercareInfoObject["name"],
+    aftercareInfoObject["parenthesesText"],
+    "Partner",
+    formEntries["_id"]
+  );
+
   for (const key in formEntries) {
     const infoTitle = responsiveInfoTitle.cloneNode(true);
     let titleText = "";
@@ -121,6 +133,11 @@ function addChildToList(data) {
     "dateOfDeath",
   ];
 
+  const aftercareInfoObject = {};
+  aftercareInfoObject[
+    "name"
+  ] = `${formEntries["firstname"]} ${formEntries["lastname"]}`;
+
   for (const key of keys) {
     const infoTitle = responsiveInfoTitle.cloneNode(true);
     let titleText = "";
@@ -134,6 +151,7 @@ function addChildToList(data) {
       for (const option of childPartnerCombo.options) {
         if (option.value === formEntries[key]) {
           info.textContent = option.text;
+          aftercare["parenthesesText"] = option.text;
         }
       }
     }
@@ -180,6 +198,13 @@ function addChildToList(data) {
 
   childGrid.appendChild(newDelete);
   childGrid.appendChild(newLine);
+
+  createAftercareContactBox(
+    aftercareInfoObject["name"],
+    aftercareInfoObject["parenthesesText"],
+    "Child",
+    formEntries["_id"]
+  );
 
   stepContainer.style.height = `${
     document.querySelector(".current-step").offsetHeight

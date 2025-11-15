@@ -272,7 +272,8 @@ fetch(API_LINK + `/user/allData?id=${currUserID}`, {
     if (
       data["enabledFA"] &&
       data["verified"] &&
-      !sessionStorage.getItem("confirmedFA")
+      !sessionStorage.getItem("confirmedFA") &&
+      false
     ) {
       fetch(API_LINK + `/sendFACode`, {
         method: "POST",

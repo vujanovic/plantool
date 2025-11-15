@@ -115,6 +115,20 @@ function addFriendToList(data) {
   // const formEntries = Object.fromEntries(formData.entries())
   const formEntries = data;
 
+  const aftercareInfoObject = {};
+  aftercareInfoObject[
+    "name"
+  ] = `${formEntries["firstname"]} ${formEntries["lastname"]}`;
+
+  aftercareInfoObject["parenthesesText"] = formEntries["email"];
+
+  createAftercareContactBox(
+    aftercareInfoObject["name"],
+    aftercareInfoObject["parenthesesText"],
+    "Friend",
+    formEntries["_id"]
+  );
+
   for (const key in formEntries) {
     if (key === "userID") {
       continue;
@@ -246,6 +260,14 @@ function deleteContact(btn) {
   )
     .then((response) => response.json())
     .then((data) => {
+      const aftercareContactsBoxes = document.querySelectorAll(
+        ".aftercare-contact-box"
+      );
+      aftercareContactsBoxes.forEach((box) => {
+        if (box.dataset.id === btn.dataset.idToDelete) {
+          box.remove();
+        }
+      });
       for (let i = 0; i < prevToDelete; i++) {
         let lastSibling = btn.previousSibling;
         if (lastSibling) {
