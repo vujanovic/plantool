@@ -1,6 +1,8 @@
 // ========================
 // Selection Logic
 // ========================
+
+const duplicateServiceMsg = document.querySelector("#duplicateServiceMsg");
 const handleSelect = (ev) => {
   const btn = ev.target;
   servicePickedBtn = btn;
@@ -143,26 +145,68 @@ const handleSelect = (ev) => {
 // ========================
 // Playbook Add/Remove
 // ========================
-function addToPlaybookWithProduct() {
-  fetch(API_LINK + "/user/addToPlaybook", {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ userID: currUserID, providerID, serviceID }),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      alert("dodat u plejbuk");
-      servicePickedBtn.textContent = "Verwijderen uit plan";
-      servicePickedBtn.style.backgroundColor = "red";
-      servicePickedBtn.dataset.productID = productCombo.value;
-
-      servicePickedBtn.removeEventListener("click", handleSelect);
-      servicePickedBtn.addEventListener("click", removeFromPlaybookWithProduct);
+async function addToPlaybookWithProduct() {
+  try {
+    // 1. Add service to user's playbook
+    const playbookRes = await fetch(API_LINK + "/user/addToPlaybook", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userID: currUserID, providerID, serviceID }),
     });
 
-  Webflow.require("slider").redraw();
+    const playbookData = await playbookRes.json();
 
+    if (playbookData.status !== 200) {
+      duplicateServiceMsg.style.display = "block";
+      return;
+    }
+
+    servicePickedBtn.textContent = "Verwijderen uit plan";
+    servicePickedBtn.style.backgroundColor = "red";
+    servicePickedBtn.dataset.productID = productCombo.value;
+
+    servicePickedBtn.removeEventListener("click", handleSelect);
+    servicePickedBtn.addEventListener("click", removeFromPlaybookWithProduct);
+
+    // 3. Fix slider layout
+    Webflow.require("slider").redraw();
+
+    if (productCombo.value !== "") {
+      await addCeremonialProduct();
+    } else {
+      await createCeremonialServiceWithoutProduct();
+    }
+
+    await updateCeremonialMapping();
+  } catch (err) {
+    console.error("Error in addToPlaybookWithProduct:", err);
+  }
+}
+
+async function addCeremonialProduct() {
+  const res = await fetch(
+    API_LINK + `/commerce/addProductCeremonial?userID=${currUserID}`,
+    {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        productID: productCombo.value,
+        specific: "",
+      }),
+    }
+  );
+
+  const data = await res.json();
+  console.log("addProductCeremonial response:", data);
+
+  closeBtn.click();
+}
+
+async function createCeremonialServiceWithoutProduct() {
   const bodyData = {
     name: "",
     type: "",
@@ -176,78 +220,62 @@ function addToPlaybookWithProduct() {
     specific: "",
   };
 
-  if (productCombo.value !== "") {
-    bodyData.productID = productCombo.value;
-    fetch(API_LINK + `/commerce/addProductCeremonial?userID=${currUserID}`, {
+  const res = await fetch(
+    API_LINK +
+      `/ceremonial/setNewService?userID=${currUserID}&providerID=${providerID}&serviceID=${serviceID}`,
+    {
       method: "POST",
       credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        productID: productCombo.value,
-        specific: "",
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        closeBtn.click();
-        return fetch(
-          API_LINK + `/ceremonial/getServices?userID=${currUserID}`,
-          {
-            method: "GET",
-            credentials: "include",
-          }
-        );
-      })
-      .then((res) => res.json())
-      .then((services) => {
-        console.log(services);
-        for (const service of services.data) {
-          if (service.providerID === servicePickedBtn.dataset.providerID) {
-            ceremonialIDs[service.serviceID] = service["_id"];
-            servicePickedBtn.dataset.serviceIdToDelete = service["_id"];
-            return;
-          }
-        }
-      });
-  } else {
-    fetch(
-      API_LINK +
-        `/ceremonial/setNewService?userID=${currUserID}&providerID=${providerID}&serviceID=${serviceID}`,
-      {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(bodyData),
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        alert("dodat u servise najceremonijalnije");
-        closeBtn.click();
-        console.log(data);
-        return fetch(
-          API_LINK + `/ceremonial/getServices?userID=${currUserID}`,
-          {
-            method: "GET",
-            credentials: "include",
-          }
-        );
-      })
-      .then((res) => res.json())
-      .then((services) => {
-        console.log(services);
-        for (const service of services.data) {
-          if (service.providerID === servicePickedBtn.dataset.providerID) {
-            ceremonialIDs[service.serviceID] = service["_id"];
-            servicePickedBtn.dataset.serviceIdToDelete = service["_id"];
-            return;
-          }
-        }
-      });
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(bodyData),
+    }
+  );
+
+  const data = await res.json();
+  console.log("setNewService response:", data);
+
+  if (data.status !== 200) {
+    duplicateServiceMsg.style.display = "block";
+    return;
   }
+
+  alert("dodat u servise najceremonijalnije");
+  closeBtn.click();
+}
+
+async function updateCeremonialMapping() {
+  const res = await fetch(
+    API_LINK + `/ceremonial/getServices?userID=${currUserID}`,
+    {
+      method: "GET",
+      credentials: "include",
+    }
+  );
+
+  const services = await res.json();
+  console.log("ceremonial services:", services);
+
+  if (!services || !services.data || !Array.isArray(services.data)) {
+    console.warn("Unexpected ceremonial services format:", services);
+    return;
+  }
+
+  const providerIdToMatch = servicePickedBtn.dataset.providerID || providerID;
+
+  const matchingService = services.data.find(
+    (service) => service.providerID === providerIdToMatch
+  );
+
+  if (!matchingService) {
+    console.warn(
+      "No ceremonial service found for providerID:",
+      providerIdToMatch
+    );
+    return;
+  }
+
+  ceremonialIDs[matchingService.serviceID] = matchingService["_id"];
+  servicePickedBtn.dataset.serviceIdToDelete = matchingService["_id"];
 }
 
 const removeFromPlaybookWithProduct = (e) => {

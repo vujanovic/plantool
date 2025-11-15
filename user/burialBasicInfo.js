@@ -65,6 +65,7 @@ funeralType.addEventListener("change", (e) => {
 
 nextBtn.addEventListener("click", async (e) => {
   if (activeSlideNumber === 6) {
+    activeSlideNumber = 1;
     goToStep(1);
     return;
   }
