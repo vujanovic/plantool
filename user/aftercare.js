@@ -47,4 +47,6 @@ function createAftercareContactBox(name, parenthesesText, type, id) {
   } else if (type === "Friend") {
     aftercareFriendsContainer.appendChild(newBox);
   }
+
+  window.Webflow && window.Webflow.require("ix2").init();
 }
