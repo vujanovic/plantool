@@ -6,11 +6,18 @@ const duplicateServiceMsg = document.querySelector("#duplicateServiceMsg");
 const handleSelect = (ev) => {
   const btn = ev.target;
   servicePickedBtn = btn;
+
   productSection.style.display = "flex";
+
+  arrowScroll.style.display = "none";
+
   productSection.querySelector("h3").textContent = btn.dataset.name;
+
+  duplicateServiceMsg.style.display = "none";
 
   providerID = btn.dataset.providerID;
   serviceID = btn.dataset.serviceID;
+
   const description = btn.dataset.serviceDescription;
   const address = JSON.parse(btn.dataset.address);
   const contactInfo = JSON.parse(btn.dataset.contactInfo);
