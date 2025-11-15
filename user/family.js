@@ -151,7 +151,7 @@ function addChildToList(data) {
       for (const option of childPartnerCombo.options) {
         if (option.value === formEntries[key]) {
           info.textContent = option.text;
-          aftercare["parenthesesText"] = option.text;
+          aftercareInfoObject["parenthesesText"] = option.text;
         }
       }
     }
