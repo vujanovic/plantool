@@ -22,10 +22,10 @@ function createAftercareContactBox(name, parenthesesText, type, id) {
   const contactName = newBox.querySelector(".contact-name-status");
   contactName.textContent = `${name} (${parenthesesText || ""})`;
   newBox.dataset.id = id || "";
-  const wishFile = newBox.getElementById("wishFile");
-  const wishInfo = newBox.getElementById("wishInfo");
-  const wishName = newBox.getElementById("wishName");
-  const removeWish = newBox.getElementById("removeWish");
+  const wishFile = newBox.querySelector("#wishFile");
+  const wishInfo = newBox.querySelector("#wishInfo");
+  const wishName = newBox.querySelector("#wishName");
+  const removeWish = newBox.querySelector("#removeWish");
 
   wishFile.addEventListener("change", () => {
     if (wishFile.files.length > 0) {
