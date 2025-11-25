@@ -79,7 +79,7 @@ allPagPrev.addEventListener("click", () => {
   )
     .then((res) => res.json())
     .then((data) => {
-      renderAll(data.services);
+      renderAllProviders(data.services);
       paginationAllStepNum.textContent = currentAllPaginationStep;
     });
 });
@@ -105,7 +105,6 @@ function renderAllProviders(data) {
   const emptyProvidersError = document.querySelector("#emptyProvidersError");
   const merged = data;
   if (merged.length === 0) {
-    emptyProvidersError.style.display = "block";
     arrowScroll.style.display = "none";
     return;
   } else {

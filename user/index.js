@@ -60,6 +60,14 @@ fetch(API_LINK + "/data/getServiceTypes")
             ]),
           ];
           const nearest = getNearestServices(userLat, userLng, merged);
+
+          if (
+            normalData.services.length === 0 &&
+            promotedData.services.length === 0
+          ) {
+            emptyProvidersError.style.display = "block";
+          }
+
           renderFeatured({ promotedServices: promotedData.services });
           renderNear(nearest);
           console.log(normalData.services);
