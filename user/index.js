@@ -2,6 +2,9 @@
 // INDEX
 // ========================
 
+let currentFeaturedPaginationStep = 1;
+let currentAllPaginationStep = 1;
+
 fetch(API_LINK + "/data/getServiceTypes")
   .then((res) => res.json())
   .then((data) => {

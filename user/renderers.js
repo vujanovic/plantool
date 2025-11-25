@@ -5,6 +5,42 @@
 const EMPTY_MESSAGE =
   "Er zijn momenteel geen aanbieders voor dit soort diensten.";
 
+let promises = [
+  fetch(API_LINK + `/normalServices`).then((res) => res.json()),
+  fetch(API_LINK + `/promotedServices`).then((res) => res.json()),
+];
+
+const faturedPagPrev = document.querySelector("#featuredPagPrev");
+const faturedPagNext = document.querySelector("#featuredPagNext");
+
+featuredPagNext.addEventListener("click", () => {
+  currentFeaturedPaginationStep++;
+  fetch(
+    API_LINK +
+      `/promotedServices?page=${currentFeaturedPaginationStep}&pageSize=2`
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      renderFeatured({ promotedServices: data.services });
+    });
+});
+
+function handleRender(toRender = null) {
+  Promise.all(promises).then(([normal, promoted]) => {
+    const merged = [...new Set([...normal, ...promoted])];
+    const nearest = getNearestServices(userLat, userLng, merged);
+    if (toRender === null) {
+      renderFeatured({ promotedServices: promoted });
+      renderNear(nearest);
+      renderAllProviders({ services: normal, promotedServices: promoted });
+    } else if (toRender === "featured") {
+      renderFeatured({ promotedServices: promoted });
+    } else if (toRender === "all") {
+      renderAllProviders({ services: normal, promotedServices: promoted });
+    }
+  });
+}
+
 function renderAllProviders(data) {
   cardsGrid.innerHTML = "";
   const emptyProvidersError = document.querySelector("#emptyProvidersError");
