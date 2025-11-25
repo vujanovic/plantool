@@ -40,7 +40,7 @@ featuredPagPrev.addEventListener("click", () => {
   )
     .then((res) => res.json())
     .then((data) => {
-      renderFeatured({ promotedServices: data.services, promotedServices: [] });
+      renderFeatured({ promotedServices: data.services });
       paginationFeaturedStepNum.textContent = currentFeaturedPaginationStep;
     });
 });
@@ -71,7 +71,7 @@ allPagPrev.addEventListener("click", () => {
   )
     .then((res) => res.json())
     .then((data) => {
-      renderFeatured({ services: data.services });
+      renderAll({ services: data.services, promotedServices: [] });
       paginationAllStepNum.textContent = currentAllPaginationStep;
     });
 });
@@ -179,7 +179,7 @@ function renderFeatured(data) {
     if (service.images.length > 0) {
       fetch(
         API_LINK +
-          `/getServiceImages?providerID=${service["providerID"]}&serviceID=${service["_id"]}`,
+          `/getServiceImages?providerID=${service["providerID"]}&serviceID=${service["id"]}`,
         {
           method: "GET",
           credentials: "include",
@@ -223,7 +223,7 @@ function renderFeatured(data) {
 
     console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
-    if (ceremonialIDs[service["_id"]]) {
+    if (ceremonialIDs[service["id"]]) {
       cardBtn.textContent = "Verwijderen uit plan";
       cardBtn.style.backgroundColor = "red";
       cardBtn.dataset.serviceIdToDelete = ceremonialIDs[service["_id"]];
@@ -232,7 +232,7 @@ function renderFeatured(data) {
       cardBtn.addEventListener("click", handleSelect);
     }
 
-    cardBtn.dataset.serviceID = service["_id"];
+    cardBtn.dataset.serviceID = service["id"];
     cardBtn.dataset.providerID = service["providerID"];
     cardBtn.dataset.serviceImages = service["images"];
     cardBtn.dataset.serviceDescription = service["description"] || "-";
