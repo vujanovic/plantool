@@ -29,21 +29,44 @@ fetch(API_LINK + "/data/getServiceTypes")
         nearSectionHeading.textContent = `${selectedType.toUpperCase()} AANBIEDERS BIJ U IN DE BUURT`;
         ctaLink.textContent = `Bekijk alle ${selectedType.toUpperCase()} aanbieders`;
 
-        fetch(API_LINK + `/searchServiceType?type=${selectedType}`)
-          .then((response) => response.json())
-          .then((data) => {
-            const merged = [
-              ...new Set([...data.services, ...data.promotedServices]),
-            ];
-            const nearest = getNearestServices(userLat, userLng, merged);
-            renderFeatured(data);
-            renderNear(nearest);
-            renderAllProviders(data);
-            types[selectedType] = data;
-            stepContainer.style.height = `${
-              document.querySelector(".current-step").offsetHeight
-            }px`;
+        let promises = [
+          fetch(API_LINK + `/normalServices`).then((res) => res.json()),
+          fetch(API_LINK + `/promotedServices`).then((res) => res.json()),
+        ];
+
+        Promise.all(promises).then(([normalData, promotedData]) => {
+          const merged = [
+            ...new Set([
+              ...normalData.services,
+              ...promotedData.promotedServices,
+            ]),
+          ];
+          const nearest = getNearestServices(userLat, userLng, merged);
+          renderFeatured({ promotedServices: promotedData });
+          renderNear(nearest);
+          renderAllProviders({
+            services: normalData,
+            promotedServices: promotedData,
           });
+          stepContainer.style.height = `${
+            document.querySelector(".current-step").offsetHeight
+          }px`;
+        });
+        // fetch(API_LINK + `/searchServiceType?type=${selectedType}`)
+        //   .then((response) => response.json())
+        //   .then((data) => {
+        //     const merged = [
+        //       ...new Set([...data.services, ...data.promotedServices]),
+        //     ];
+        //     const nearest = getNearestServices(userLat, userLng, merged);
+        //     renderFeatured(data);
+        //     renderNear(nearest);
+        //     renderAllProviders(data);
+        //     types[selectedType] = data;
+        //     stepContainer.style.height = `${
+        //       document.querySelector(".current-step").offsetHeight
+        //     }px`;
+        //   });
       });
 
       servicesGrid.appendChild(typeCard);
