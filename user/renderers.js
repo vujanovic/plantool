@@ -12,6 +12,9 @@ let promises = [
 
 const faturedPagPrev = document.querySelector("#featuredPagPrev");
 const faturedPagNext = document.querySelector("#featuredPagNext");
+const paginationFeaturedStepNum = document.querySelector(
+  "#paginationFeaturedStepNum"
+);
 
 featuredPagNext.addEventListener("click", () => {
   currentFeaturedPaginationStep++;
@@ -22,6 +25,21 @@ featuredPagNext.addEventListener("click", () => {
     .then((res) => res.json())
     .then((data) => {
       renderFeatured({ promotedServices: data.services });
+      paginationFeaturedStepNum.textContent = currentFeaturedPaginationStep;
+    });
+});
+
+featuredPagPrev.addEventListener("click", () => {
+  if (currentFeaturedPaginationStep === 1) return;
+  currentFeaturedPaginationStep--;
+  fetch(
+    API_LINK +
+      `/promotedServices?type=${selected}page=${currentFeaturedPaginationStep}&pageSize=2`
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      renderFeatured({ promotedServices: data.services });
+      paginationFeaturedStepNum.textContent = currentFeaturedPaginationStep;
     });
 });
 

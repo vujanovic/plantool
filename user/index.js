@@ -4,6 +4,7 @@
 
 let currentFeaturedPaginationStep = 1;
 let currentAllPaginationStep = 1;
+let globalSelectedType = null;
 
 fetch(API_LINK + "/data/getServiceTypes")
   .then((res) => res.json())
@@ -20,6 +21,7 @@ fetch(API_LINK + "/data/getServiceTypes")
 
       typeCard.addEventListener("click", () => {
         const selectedType = type.value;
+        globalSelectedType = selectedType;
         arrowScroll.style.display = "flex";
         providersSection.style.display = "none";
         featuredProvidersSection.style.display = "block";
@@ -38,11 +40,17 @@ fetch(API_LINK + "/data/getServiceTypes")
             API_LINK +
               `/promotedServices?type=${selectedType}&page=${currentFeaturedPaginationStep}&pageSize=2`
           ).then((res) => res.json()),
+          fetch(API_LINK + `/searchServiceType?type=${selectedType}`).then(
+            (res) => res.json()
+          ),
         ];
 
-        Promise.all(promises).then(([normalData, promotedData]) => {
+        Promise.all(promises).then(([normalData, promotedData, searchData]) => {
           const merged = [
-            ...new Set([...normalData.services, ...promotedData.services]),
+            ...new Set([
+              ...searchData.services,
+              ...searchData.promotedServices,
+            ]),
           ];
           const nearest = getNearestServices(userLat, userLng, merged);
           renderFeatured({ promotedServices: promotedData.services });
