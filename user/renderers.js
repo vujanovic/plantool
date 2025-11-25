@@ -10,8 +10,8 @@ let promises = [
   fetch(API_LINK + `/promotedServices`).then((res) => res.json()),
 ];
 
-const faturedPagPrev = document.querySelector("#featuredPagPrev");
-const faturedPagNext = document.querySelector("#featuredPagNext");
+const featuredPagPrev = document.querySelector("#featuredPagPrev");
+const featuredPagNext = document.querySelector("#featuredPagNext");
 const paginationFeaturedStepNum = document.querySelector(
   "#paginationFeaturedStepNum"
 );
