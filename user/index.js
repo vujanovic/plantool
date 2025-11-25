@@ -30,23 +30,26 @@ fetch(API_LINK + "/data/getServiceTypes")
         ctaLink.textContent = `Bekijk alle ${selectedType.toUpperCase()} aanbieders`;
 
         let promises = [
-          fetch(API_LINK + `/normalServices`).then((res) => res.json()),
-          fetch(API_LINK + `/promotedServices`).then((res) => res.json()),
+          fetch(
+            API_LINK +
+              `/normalServices?type=${selectedType}&page=${currentFeaturedPaginationStep}&pageSize=2`
+          ).then((res) => res.json()),
+          fetch(
+            API_LINK +
+              `/promotedServices?type=${selectedType}&page=${currentFeaturedPaginationStep}&pageSize=2`
+          ).then((res) => res.json()),
         ];
 
         Promise.all(promises).then(([normalData, promotedData]) => {
           const merged = [
-            ...new Set([
-              ...normalData.services,
-              ...promotedData.promotedServices,
-            ]),
+            ...new Set([...normalData.services, ...promotedData.services]),
           ];
           const nearest = getNearestServices(userLat, userLng, merged);
-          renderFeatured({ promotedServices: promotedData });
+          renderFeatured({ promotedServices: promotedData.services });
           renderNear(nearest);
           renderAllProviders({
-            services: normalData,
-            promotedServices: promotedData,
+            services: normalData.services,
+            promotedServices: promotedData.services,
           });
           stepContainer.style.height = `${
             document.querySelector(".current-step").offsetHeight
