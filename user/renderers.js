@@ -65,7 +65,7 @@ allPagNext.addEventListener("click", () => {
         currentAllPaginationStep--;
         return;
       }
-      renderAllProviders({ services: data.services, promotedServices: [] });
+      renderAllProviders(data.services);
       paginationAllStepNum.textContent = currentAllPaginationStep;
     });
 });
@@ -79,7 +79,7 @@ allPagPrev.addEventListener("click", () => {
   )
     .then((res) => res.json())
     .then((data) => {
-      renderAll({ services: data.services, promotedServices: [] });
+      renderAll(data.services);
       paginationAllStepNum.textContent = currentAllPaginationStep;
     });
 });
