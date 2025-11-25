@@ -40,6 +40,10 @@ featuredPagPrev.addEventListener("click", () => {
   )
     .then((res) => res.json())
     .then((data) => {
+      if (data.status !== "success" || data.services.length === 0) {
+        currentFeaturedPaginationStep--;
+        return;
+      }
       renderFeatured({ promotedServices: data.services });
       paginationFeaturedStepNum.textContent = currentFeaturedPaginationStep;
     });
@@ -57,6 +61,10 @@ allPagNext.addEventListener("click", () => {
   )
     .then((res) => res.json())
     .then((data) => {
+      if (data.status !== "success" || data.services.length === 0) {
+        currentAllPaginationStep--;
+        return;
+      }
       renderAllProviders({ services: data.services, promotedServices: [] });
       paginationAllStepNum.textContent = currentAllPaginationStep;
     });
@@ -98,6 +106,7 @@ function renderAllProviders(data) {
   const merged = data;
   if (merged.length === 0) {
     emptyProvidersError.style.display = "block";
+    arrowScroll.style.display = "none";
     return;
   } else {
     emptyProvidersError.style.display = "none";
