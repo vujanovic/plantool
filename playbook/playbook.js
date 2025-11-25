@@ -375,7 +375,7 @@ Promise.all(promises)
           ).then((res) => res.json()),
         ]).then(([data1, data2]) => {
           if (data1.status === 200 && data2.status === 200) {
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 6; i++) {
               removeBtn.previousSibling.remove();
             }
             removeBtn.nextSibling.remove();
