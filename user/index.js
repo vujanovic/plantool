@@ -55,6 +55,7 @@ fetch(API_LINK + "/data/getServiceTypes")
           const nearest = getNearestServices(userLat, userLng, merged);
           renderFeatured({ promotedServices: promotedData.services });
           renderNear(nearest);
+          console.log(normalData.services);
           renderAllProviders(normalData.services);
           stepContainer.style.height = `${
             document.querySelector(".current-step").offsetHeight
