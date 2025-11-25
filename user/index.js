@@ -34,7 +34,7 @@ fetch(API_LINK + "/data/getServiceTypes")
         let promises = [
           fetch(
             API_LINK +
-              `/normalServices?type=${selectedType}&page=${currentFeaturedPaginationStep}&pageSize=2`
+              `/normalServices?type=${selectedType}&page=${currentAllPaginationStep}&pageSize=2`
           ).then((res) => res.json()),
           fetch(
             API_LINK +
@@ -55,10 +55,7 @@ fetch(API_LINK + "/data/getServiceTypes")
           const nearest = getNearestServices(userLat, userLng, merged);
           renderFeatured({ promotedServices: promotedData.services });
           renderNear(nearest);
-          renderAllProviders({
-            services: normalData.services,
-            promotedServices: [],
-          });
+          renderAllProviders(normalData.services);
           stepContainer.style.height = `${
             document.querySelector(".current-step").offsetHeight
           }px`;

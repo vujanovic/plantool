@@ -57,7 +57,7 @@ allPagNext.addEventListener("click", () => {
   )
     .then((res) => res.json())
     .then((data) => {
-      renderAll({ services: data.services, promotedServices: [] });
+      renderAllProviders({ services: data.services, promotedServices: [] });
       paginationAllStepNum.textContent = currentAllPaginationStep;
     });
 });
@@ -95,7 +95,7 @@ function handleRender(toRender = null) {
 function renderAllProviders(data) {
   cardsGrid.innerHTML = "";
   const emptyProvidersError = document.querySelector("#emptyProvidersError");
-  const merged = [...new Set([...data.services, ...data.promotedServices])];
+  const merged = data;
   if (merged.length === 0) {
     emptyProvidersError.style.display = "block";
     return;
