@@ -23,6 +23,10 @@ fetch(API_LINK + "/data/getServiceTypes")
       typeCard.style.display = "block";
 
       typeCard.addEventListener("click", () => {
+        currentAllPaginationStep = 1;
+        currentFeaturedPaginationStep = 1;
+        paginationAllStepNum.textContent = currentAllPaginationStep;
+        paginationFeaturedStepNum.textContent = currentFeaturedPaginationStep;
         const selectedType = type.value;
         globalSelectedType = selectedType;
         arrowScroll.style.display = "flex";
