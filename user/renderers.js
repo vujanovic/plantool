@@ -26,6 +26,10 @@ featuredPagNext.addEventListener("click", () => {
   )
     .then((res) => res.json())
     .then((data) => {
+      if (data.status !== "success" || data.services.length === 0) {
+        currentFeaturedPaginationStep--;
+        return;
+      }
       renderFeatured({ promotedServices: data.services });
       paginationFeaturedStepNum.textContent = currentFeaturedPaginationStep;
     });
@@ -40,10 +44,6 @@ featuredPagPrev.addEventListener("click", () => {
   )
     .then((res) => res.json())
     .then((data) => {
-      if (data.status !== "success" || data.services.length === 0) {
-        currentFeaturedPaginationStep--;
-        return;
-      }
       renderFeatured({ promotedServices: data.services });
       paginationFeaturedStepNum.textContent = currentFeaturedPaginationStep;
     });
