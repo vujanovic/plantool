@@ -57,7 +57,7 @@ fetch(API_LINK + "/data/getServiceTypes")
           renderNear(nearest);
           renderAllProviders({
             services: normalData.services,
-            promotedServices: promotedData.services,
+            promotedServices: [],
           });
           stepContainer.style.height = `${
             document.querySelector(".current-step").offsetHeight

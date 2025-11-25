@@ -5,6 +5,8 @@
 const EMPTY_MESSAGE =
   "Er zijn momenteel geen aanbieders voor dit soort diensten.";
 
+const PAGE_SIZE = 2;
+
 let promises = [
   fetch(API_LINK + `/normalServices`).then((res) => res.json()),
   fetch(API_LINK + `/promotedServices`).then((res) => res.json()),
@@ -20,7 +22,7 @@ featuredPagNext.addEventListener("click", () => {
   currentFeaturedPaginationStep++;
   fetch(
     API_LINK +
-      `/promotedServices?page=${currentFeaturedPaginationStep}&pageSize=2`
+      `/promotedServices?type=${globalSelectedType}&page=${currentFeaturedPaginationStep}&pageSize=${PAGE_SIZE}`
   )
     .then((res) => res.json())
     .then((data) => {
@@ -34,12 +36,43 @@ featuredPagPrev.addEventListener("click", () => {
   currentFeaturedPaginationStep--;
   fetch(
     API_LINK +
-      `/promotedServices?type=${selected}page=${currentFeaturedPaginationStep}&pageSize=2`
+      `/promotedServices?type=${globalSelectedType}&page=${currentFeaturedPaginationStep}&pageSize=${PAGE_SIZE}`
   )
     .then((res) => res.json())
     .then((data) => {
-      renderFeatured({ promotedServices: data.services });
+      renderFeatured({ promotedServices: data.services, promotedServices: [] });
       paginationFeaturedStepNum.textContent = currentFeaturedPaginationStep;
+    });
+});
+
+const allPagPrev = document.querySelector("#allPagPrev");
+const allPagNext = document.querySelector("#allPagNext");
+const paginationAllStepNum = document.querySelector("#paginationAllStepNum");
+
+allPagNext.addEventListener("click", () => {
+  currentAllPaginationStep++;
+  fetch(
+    API_LINK +
+      `/normalServices?type=${globalSelectedType}&page=${currentAllPaginationStep}&pageSize=${PAGE_SIZE}`
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      renderAll({ services: data.services, promotedServices: [] });
+      paginationAllStepNum.textContent = currentAllPaginationStep;
+    });
+});
+
+allPagPrev.addEventListener("click", () => {
+  if (currentAllPaginationStep === 1) return;
+  currentAllPaginationStep--;
+  fetch(
+    API_LINK +
+      `/normalServices?type=${globalSelectedType}&page=${currentAllPaginationStep}&pageSize=${PAGE_SIZE}`
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      renderFeatured({ services: data.services });
+      paginationAllStepNum.textContent = currentAllPaginationStep;
     });
 });
 
