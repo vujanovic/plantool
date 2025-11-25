@@ -2,6 +2,9 @@
 // INDEX
 // ========================
 
+const ctaSection = document.querySelector(".cta-section");
+ctaSection.style.display = "none";
+
 let currentFeaturedPaginationStep = 1;
 let currentAllPaginationStep = 1;
 let globalSelectedType = null;
@@ -30,7 +33,7 @@ fetch(API_LINK + "/data/getServiceTypes")
         bestMatchHeading.textContent = `AANBEVOLEN ${selectedType.toUpperCase()} AANBIEDERS`;
         nearSectionHeading.textContent = `${selectedType.toUpperCase()} AANBIEDERS BIJ U IN DE BUURT`;
         ctaLink.textContent = `Bekijk alle ${selectedType.toUpperCase()} aanbieders`;
-
+        ctaSection.style.display = "none";
         let promises = [
           fetch(
             API_LINK +
@@ -38,7 +41,7 @@ fetch(API_LINK + "/data/getServiceTypes")
           ).then((res) => res.json()),
           fetch(
             API_LINK +
-              `/promotedServices?type=${selectedType}&page=${currentFeaturedPaginationStep}&pageSize=2`
+              `/promotedServices?type=${selectedType}&page=${currentFeaturedPaginationStep}&pageSize=${PAGE_SIZE}`
           ).then((res) => res.json()),
           fetch(API_LINK + `/searchServiceType?type=${selectedType}`).then(
             (res) => res.json()

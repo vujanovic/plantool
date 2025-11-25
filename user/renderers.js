@@ -101,6 +101,7 @@ function renderAllProviders(data) {
     return;
   } else {
     emptyProvidersError.style.display = "none";
+    ctaSection.style.display = "inline-block";
   }
   merged.forEach((item) => {
     const card = originalCard.cloneNode(true);
